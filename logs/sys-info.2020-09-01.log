@@ -1,0 +1,180 @@
+2020-09-01 16:42:23.180 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 16:42:23.220 [main] [WARN]--org.springframework.context.annotation.AnnotationConfigApplicationContext.refresh: Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'tenantRedisTemplate' defined in com.qjzh.link.mqtt.Main: Unsatisfied dependency expressed through method 'tenantRedisTemplate' parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.data.redis.connection.RedisConnectionFactory' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2020-09-01 16:42:23.223 [main] [INFO]--org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage: 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-09-01 16:42:23.241 [main] [ERROR]--org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter.report: 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of method tenantRedisTemplate in com.qjzh.link.mqtt.Main required a bean of type 'org.springframework.data.redis.connection.RedisConnectionFactory' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.data.redis.connection.RedisConnectionFactory' in your configuration.
+
+2020-09-01 16:44:30.079 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 16:44:30.665 [main] [WARN]--org.springframework.boot.actuate.endpoint.EndpointId.logWarning: Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2020-09-01 16:44:30.928 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 16:44:30.930 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 16:44:31.074 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 127ms. Found 0 Redis repository interfaces.
+2020-09-01 16:44:31.113 [main] [WARN]--org.springframework.boot.actuate.endpoint.EndpointId.logWarning: Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2020-09-01 16:44:33.699 [main] [INFO]--org.springframework.cloud.context.scope.GenericScope.setSerializationId: BeanFactory id=8ebc0cb0-9720-3849-a3f0-34c58fb04c89
+2020-09-01 16:45:15.109 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-01 16:45:15.110 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-01 16:45:15.118 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-01 16:45:15.119 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-01 16:45:15.533 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService
+2020-09-01 16:45:15.969 [main] [WARN]--org.springframework.context.annotation.AnnotationConfigApplicationContext.refresh: Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jmxMBeanExporter' defined in class path resource [org/springframework/boot/actuate/autoconfigure/endpoint/jmx/JmxEndpointAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.jmx.JmxEndpointExporter]: Factory method 'jmxMBeanExporter' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'serviceRegistryEndpoint' defined in class path resource [org/springframework/cloud/client/serviceregistry/ServiceRegistryAutoConfiguration$ServiceRegistryEndpointConfiguration.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [org.springframework.cloud.client.serviceregistry.endpoint.ServiceRegistryEndpoint] from ClassLoader [sun.misc.Launcher$AppClassLoader@18b4aac2]
+2020-09-01 16:45:16.035 [main] [INFO]--org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage: 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-09-01 16:45:16.062 [main] [ERROR]--org.springframework.boot.SpringApplication.reportFailure: Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jmxMBeanExporter' defined in class path resource [org/springframework/boot/actuate/autoconfigure/endpoint/jmx/JmxEndpointAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.jmx.JmxEndpointExporter]: Factory method 'jmxMBeanExporter' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'serviceRegistryEndpoint' defined in class path resource [org/springframework/cloud/client/serviceregistry/ServiceRegistryAutoConfiguration$ServiceRegistryEndpointConfiguration.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [org.springframework.cloud.client.serviceregistry.endpoint.ServiceRegistryEndpoint] from ClassLoader [sun.misc.Launcher$AppClassLoader@18b4aac2]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:627)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:607)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1159)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:555)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:24)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.boot.actuate.endpoint.jmx.JmxEndpointExporter]: Factory method 'jmxMBeanExporter' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'serviceRegistryEndpoint' defined in class path resource [org/springframework/cloud/client/serviceregistry/ServiceRegistryAutoConfiguration$ServiceRegistryEndpointConfiguration.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [org.springframework.cloud.client.serviceregistry.endpoint.ServiceRegistryEndpoint] from ClassLoader [sun.misc.Launcher$AppClassLoader@18b4aac2]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:622)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'serviceRegistryEndpoint' defined in class path resource [org/springframework/cloud/client/serviceregistry/ServiceRegistryAutoConfiguration$ServiceRegistryEndpointConfiguration.class]: Post-processing of merged bean definition failed; nested exception is java.lang.IllegalStateException: Failed to introspect Class [org.springframework.cloud.client.serviceregistry.endpoint.ServiceRegistryEndpoint] from ClassLoader [sun.misc.Launcher$AppClassLoader@18b4aac2]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:570)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1105)
+	at org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer.createEndpointBean(EndpointDiscoverer.java:141)
+	at org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer.createEndpointBeans(EndpointDiscoverer.java:131)
+	at org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer.discoverEndpoints(EndpointDiscoverer.java:120)
+	at org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer.getEndpoints(EndpointDiscoverer.java:114)
+	at org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration.jmxMBeanExporter(JmxEndpointAutoConfiguration.java:92)
+	at org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration$$EnhancerBySpringCGLIB$$265bf840.CGLIB$jmxMBeanExporter$1(<generated>)
+	at org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration$$EnhancerBySpringCGLIB$$265bf840$$FastClassBySpringCGLIB$$eb5f20d4.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:244)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:363)
+	at org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration$$EnhancerBySpringCGLIB$$265bf840.jmxMBeanExporter(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154)
+	... 19 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [org.springframework.cloud.client.serviceregistry.endpoint.ServiceRegistryEndpoint] from ClassLoader [sun.misc.Launcher$AppClassLoader@18b4aac2]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:507)
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:367)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.buildLifecycleMetadata(InitDestroyAnnotationBeanPostProcessor.java:207)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.findLifecycleMetadata(InitDestroyAnnotationBeanPostProcessor.java:189)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessMergedBeanDefinition(InitDestroyAnnotationBeanPostProcessor.java:128)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessMergedBeanDefinition(CommonAnnotationBeanPostProcessor.java:298)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyMergedBeanDefinitionPostProcessors(AbstractAutowireCapableBeanFactory.java:1076)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:567)
+	... 40 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: org/springframework/http/ResponseEntity
+	at java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.lang.Class.privateGetDeclaredMethods(Unknown Source)
+	at java.lang.Class.getDeclaredMethods(Unknown Source)
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:489)
+	... 47 common frames omitted
+Caused by: java.lang.ClassNotFoundException: org.springframework.http.ResponseEntity
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	... 51 common frames omitted
+2020-09-01 16:47:52.789 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 16:47:53.242 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 16:47:53.246 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 16:47:53.423 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 161ms. Found 0 Redis repository interfaces.
+2020-09-01 16:47:53.556 [main] [INFO]--org.springframework.cloud.context.scope.GenericScope.setSerializationId: BeanFactory id=bdc54b39-aa96-3457-a7c4-38ff21f90d0f
+2020-09-01 16:47:58.123 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-01 16:47:58.124 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-01 16:47:58.131 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-01 16:47:58.132 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-01 16:47:58.536 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService
+2020-09-01 16:47:59.218 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 7.999 seconds (JVM running for 9.673)
+2020-09-01 16:58:41.629 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 37092 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 16:58:41.637 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 16:58:42.534 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 1.463 seconds (JVM running for 2.994)
+2020-09-01 17:00:19.635 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 48056 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:00:19.641 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:00:20.149 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:00:20.151 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:00:20.298 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 130ms. Found 0 Redis repository interfaces.
+2020-09-01 17:00:21.053 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 1.857 seconds (JVM running for 3.145)
+2020-09-01 17:01:25.465 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 54592 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:01:25.470 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:01:25.986 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:01:25.989 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:01:26.095 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 89ms. Found 0 Redis repository interfaces.
+2020-09-01 17:01:34.091 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 9.079 seconds (JVM running for 10.561)
+2020-09-01 17:06:34.135 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 23740 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:06:34.140 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:06:34.632 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:06:34.635 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:06:34.736 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 86ms. Found 0 Redis repository interfaces.
+2020-09-01 17:07:11.842 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 38.122 seconds (JVM running for 39.25)
+2020-09-01 17:07:52.101 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 50560 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:07:52.107 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:07:52.774 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:07:52.777 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:07:52.899 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 101ms. Found 0 Redis repository interfaces.
+2020-09-01 17:08:47.097 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 55.481 seconds (JVM running for 56.766)
+2020-09-01 17:11:07.025 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 58312 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:11:07.030 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:11:07.554 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:11:07.558 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:11:07.663 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 89ms. Found 0 Redis repository interfaces.
+2020-09-01 17:14:30.835 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 204.421 seconds (JVM running for 205.62)
+2020-09-01 17:14:48.691 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 56580 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:14:48.696 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:14:49.333 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:14:49.336 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:14:49.441 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 87ms. Found 0 Redis repository interfaces.
+2020-09-01 17:18:20.264 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 50308 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:18:20.280 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:18:24.767 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:18:24.775 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:18:25.396 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 572ms. Found 0 Redis repository interfaces.
+2020-09-01 17:44:14.193 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 21708 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 17:44:14.198 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 17:44:14.777 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-01 17:44:14.780 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-01 17:44:14.889 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 93ms. Found 0 Redis repository interfaces.
+2020-09-01 18:28:02.845 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 53968 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 18:28:02.850 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 18:35:34.412 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 33820 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 18:35:34.418 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 19:28:50.231 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 66072 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 19:28:50.240 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 20:01:23.528 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 16568 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 20:01:23.535 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 20:08:31.591 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 7196 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 20:08:31.597 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 20:17:52.828 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 38308 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 20:17:52.834 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-01 20:39:36.141 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 26780 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-01 20:39:36.146 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default

@@ -1,0 +1,13 @@
+2020-09-02 17:45:17.655 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 46972 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-02 17:45:17.668 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-02 17:47:20.860 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 69944 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-02 17:47:20.864 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-02 17:47:21.904 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-02 17:47:21.911 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-02 17:47:22.076 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 132ms. Found 0 Redis repository interfaces.
+2020-09-02 17:47:31.014 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 10.66 seconds (JVM running for 11.819)
+2020-09-02 17:47:41.277 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 17856 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-02 17:47:41.283 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-02 17:47:41.903 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-02 17:47:41.906 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-02 17:47:42.011 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 88ms. Found 0 Redis repository interfaces.

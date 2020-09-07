@@ -1,0 +1,13 @@
+#web服务器启动端口
+server:
+  port: 8080
+   
+spring:
+  application:
+    name: iots-hub-mqtt
+
+
+
+      
+      
+    
