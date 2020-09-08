@@ -2,16 +2,17 @@ package com.qjzh.link.mqtt.server;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.base.ISendExecutor;
-import com.qjzh.link.mqtt.base.QJSend;
+import com.qjzh.link.mqtt.base.AbsQJSend;
+import com.qjzh.link.mqtt.base.QJRequest;
 import com.qjzh.link.mqtt.channel.BadNetworkException;
 import com.qjzh.link.mqtt.channel.ConnectState;
-import com.qjzh.link.mqtt.server.callback.MqttRpcMsgCallback;
+import com.qjzh.link.mqtt.server.callback.RpcMsgCallback;
 import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
 import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
 import com.qjzh.link.mqtt.utils.MqttProtocolHelper;
@@ -23,11 +24,11 @@ import com.qjzh.link.mqtt.utils.MqttProtocolHelper;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttSendExecutor implements ISendExecutor {
+public class MqttSendExecutor{
 	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(MqttSendExecutor.class);
 
-	public void asyncSend(QJSend send) {
+	public static void send(AbsQJSend send) {
 		if (null == send || null == send.getRequest()) {
 			logger.error("bad parameters: null");
 			return;
@@ -53,26 +54,25 @@ public class MqttSendExecutor implements ISendExecutor {
 		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
 			logger.error("mqtt not connected!");
 			mqttSend.setStatus(MqttSendStatus.completed);
-			mqttSend.onFailure(null, (Throwable) new BadNetworkException());
+			mqttSend.onFailure(null, new BadNetworkException());
 
 			return;
 		}
+		
+		QJRequest qJRequest = send.getRequest();
 
-		if (send.getRequest() instanceof MqttPublishRequest) {
-			MqttPublishRequest publishRequest = (MqttPublishRequest) send.getRequest();
+		if (qJRequest instanceof MqttPublishRequest) {
+			MqttPublishRequest publishRequest = (MqttPublishRequest) qJRequest;
 
 			if (StringUtils.isEmpty(publishRequest.getTopic()) || publishRequest.getPayload() == null) {
 				logger.error("bad parameters: topic or payload empty");
 				mqttSend.onFailure(null, new NullPointerException("topic or payload empty"));
-
 				return;
 			}
-
-			if (publishRequest.isRPC() && (mqttSend.getStatus() == MqttSendStatus.waitingToSend
-					|| mqttSend.getStatus() == MqttSendStatus.completed)) {
+			
+			if (publishRequest.isRPC()) {
 				try {
 					String payloadStr = null;
-
 					if (publishRequest.getPayload() instanceof String) {
 						payloadStr = publishRequest.getPayload().toString();
 					} else if (publishRequest.getPayload() instanceof byte[]) {
@@ -97,7 +97,7 @@ public class MqttSendExecutor implements ISendExecutor {
 					logger.info("publish: RPC sub reply topic: [ " + publishRequest.getReplyTopic() + " ]");
 					mqttSend.setStatus(MqttSendStatus.waitingToSubReply);
 					mqttAsyncClient.subscribe(publishRequest.getReplyTopic(), 0, null, mqttSend,
-							new MqttRpcMsgCallback(publishRequest.getReplyTopic(), mqttSend));
+							new RpcMsgCallback(publishRequest.getReplyTopic(), mqttSend));
 				} catch (Exception e) {
 					logger.error("publish , send subsribe reply error", e);
 					mqttSend.setStatus(MqttSendStatus.completed);
@@ -109,11 +109,11 @@ public class MqttSendExecutor implements ISendExecutor {
 
 					Object objPayload = publishRequest.getPayload();
 					if (objPayload instanceof String) {
-						payload = objPayload.toString().getBytes("utf-8");
+						payload = objPayload.toString().getBytes("UTF-8");
 					} else if (objPayload instanceof byte[]) {
 						payload = (byte[]) objPayload;
 					} else {
-						payload = JSON.toJSONString(objPayload).getBytes("utf-8");
+						payload = JSON.toJSONString(objPayload).getBytes("UTF-8");
 					}
 
 					if (objPayload == null) {
@@ -142,29 +142,28 @@ public class MqttSendExecutor implements ISendExecutor {
 
 			}
 
-		} else if (send.getRequest() instanceof MqttSubscribeRequest) {
-			MqttSubscribeRequest subscribeRequest = (MqttSubscribeRequest) send.getRequest();
+		} else if (qJRequest instanceof MqttSubscribeRequest) {
+			
+			MqttSubscribeRequest subscribeRequest = (MqttSubscribeRequest) qJRequest;
 			if (StringUtils.isEmpty(subscribeRequest.getTopic())) {
-				logger.error("bad parameters: subsribe req , topic empty");
-				mqttSend.onFailure(null, new NullPointerException("subsribe req , topic empty"));
+				logger.error("bad parameters: subscribe request , topic empty");
+				mqttSend.onFailure(null, new NullPointerException("subscribe request , topic empty"));
 				return;
 			}
 			
 			String topic = subscribeRequest.getTopic();
-			
+			int qos = subscribeRequest.getQos();
+			IMqttMessageListener mqttMessageListener = subscribeRequest.getMqttMessageListener();
 			try {
-				mqttSend.setStatus(MqttSendStatus.waitingToComplete);
-				
 				if (subscribeRequest.isSubscribe()) {
-					logger.info("subscribe: topic: [{}]", topic);
-					mqttAsyncClient.subscribe(topic, 0, null, mqttSend);
+					//logger.info("subscribe: topic: [{}]", topic);
+					mqttAsyncClient.subscribe(topic, qos, null, mqttSend, mqttMessageListener);
 				} else {
-					logger.info("unsubscribe: topic: [{}]", topic);
+					//logger.info("unsubscribe: topic: [{}]", topic);
 					mqttAsyncClient.unsubscribe(topic, null, mqttSend);
 				}
 			} catch (Exception e) {
 				logger.error("send subsribe error! ", e);
-				mqttSend.setStatus(MqttSendStatus.completed);
 				mqttSend.onFailure(null, new MqttThrowable(e.getMessage()));
 			}
 		}

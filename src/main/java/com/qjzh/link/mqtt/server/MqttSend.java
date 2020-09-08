@@ -6,11 +6,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.qjzh.link.mqtt.base.AbsQJSend;
 import com.qjzh.link.mqtt.base.IOnCallListener;
 import com.qjzh.link.mqtt.base.QJError;
 import com.qjzh.link.mqtt.base.QJRequest;
 import com.qjzh.link.mqtt.base.QJResponse;
-import com.qjzh.link.mqtt.base.QJSend;
+import com.qjzh.link.mqtt.channel.BadNetworkException;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
 import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
@@ -22,19 +23,19 @@ import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttSend extends QJSend implements IMqttActionListener {
+public class MqttSend extends AbsQJSend implements IMqttActionListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private IOnSubscribeListener subscribeListener = null;
 
-	public MqttSend(MqttNet mqttNet, QJRequest request, IOnCallListener listener) {
-		super(mqttNet, request, listener);
+	public MqttSend(MqttNet mqttNet, QJRequest qJRequest, IOnCallListener listener) {
+		super(mqttNet, qJRequest, listener);
 		setStatus(MqttSendStatus.waitingToSend);
 	}
 
-	public MqttSend(MqttNet mqttNet, QJRequest request, IOnSubscribeListener listener) {
-		super(mqttNet, request, null);
+	public MqttSend(MqttNet mqttNet, QJRequest qJRequest, IOnSubscribeListener listener) {
+		super(mqttNet, qJRequest, null);
 		this.subscribeListener = listener;
 		setStatus(MqttSendStatus.waitingToSend);
 	}
@@ -52,98 +53,71 @@ public class MqttSend extends QJSend implements IMqttActionListener {
 	}
 
 	public void onSuccess(IMqttToken asyncActionToken) {
-		if (this.request instanceof MqttSubscribeRequest) {
-			setStatus(MqttSendStatus.completed);
-
+		if (this.qJRequest instanceof MqttSubscribeRequest) {
 			boolean isSucc = true;
 			try {
 				int qos = asyncActionToken.getGrantedQos()[0];
-				if (qos == 128)
-					isSucc = false;
+				if (qos == 128) isSucc = false;
 			} catch (Exception e) {
 				logger.error("获取Qos异常!", e);
 			}
+			String topic = ((MqttSubscribeRequest)this.qJRequest).getTopic();
+			
 			if (this.subscribeListener != null) {
 				if (isSucc) {
-					this.subscribeListener.onSuccess(((MqttSubscribeRequest) this.request).getTopic());
+					this.subscribeListener.onSuccess(topic);
 				} else {
 					QJError error = new QJError();
 					error.setCode(4103);
 					error.setMsg("subACK Failure");
-					this.subscribeListener.onFailed(((MqttSubscribeRequest) this.request).getTopic(), error);
+					this.subscribeListener.onFailed(topic, error);
 				}
-
 			}
-		} else if (this.request instanceof MqttPublishRequest) {
-			MqttPublishRequest publishRequest = (MqttPublishRequest) this.request;
-
-			if (!publishRequest.isRPC()) {
-				setStatus(MqttSendStatus.completed);
-
-				if (this.listener != null) {
-					this.listener.onSuccess(this.request, this.response);
-				}
-
-			} else if (this.status == MqttSendStatus.waitingToSubReply) {
-				setStatus(MqttSendStatus.subReplyed);
-				MqttSendExecutor sendExecutor = new MqttSendExecutor();
-				sendExecutor.asyncSend(this);
-			} else if (this.status == MqttSendStatus.waitingToPublish) {
-				setStatus(MqttSendStatus.published);
+		} else if (this.qJRequest instanceof MqttPublishRequest) {
+			if (this.listener != null) {
+				this.listener.onSuccess(this.qJRequest, this.qJResponse);
 			}
 		}
 	}
 
 	public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-		String msg = (null != exception) ? exception.getMessage() : "MqttNet send failed: unknown error";
+		
+		String msg = (null != exception) ? exception.getMessage() : "Mqtt send failed: unknown error";
 
-		setStatus(MqttSendStatus.completed);
-		if (this.request instanceof MqttSubscribeRequest) {
+		if (this.qJRequest instanceof MqttSubscribeRequest 
+				&& this.subscribeListener != null) {
 
-			if (this.subscribeListener != null) {
-				byte type = 5;
-				if (exception instanceof com.qjzh.link.mqtt.channel.BadNetworkException) {
-					type = 6;
-				}
-
-				if (type == 6) {
-					QJError error = new QJError();
-					error.setCode(4101);
-					this.subscribeListener.onFailed(((MqttSubscribeRequest) this.request).getTopic(), error);
-				} else {
-					QJError error = new QJError();
-					error.setCode(4201);
-					error.setMsg(msg);
-					this.subscribeListener.onFailed(((MqttSubscribeRequest) this.request).getTopic(), error);
-				}
-
-			}
-
-		} else if (this.request instanceof MqttPublishRequest && this.listener != null) {
-
-			byte type = 2;
-			if (exception instanceof com.qjzh.link.mqtt.channel.BadNetworkException) {
-				type = 3;
-			}
-
-			if (type == 3) {
+			if (exception instanceof BadNetworkException) {
 				QJError error = new QJError();
 				error.setCode(4101);
-				this.listener.onFailed(this.request, error);
+				this.subscribeListener.onFailed(((MqttSubscribeRequest) this.qJRequest).getTopic(), error);
 			} else {
 				QJError error = new QJError();
 				error.setCode(4201);
 				error.setMsg(msg);
-				this.listener.onFailed(this.request, error);
+				this.subscribeListener.onFailed(((MqttSubscribeRequest) this.qJRequest).getTopic(), error);
+			}
+
+		} else if (this.qJRequest instanceof MqttPublishRequest && this.listener != null) {
+
+			if (exception instanceof BadNetworkException) {
+				QJError error = new QJError();
+				error.setCode(4101);
+				this.listener.onFailed(this.qJRequest, error);
+			} else {
+				QJError error = new QJError();
+				error.setCode(4201);
+				error.setMsg(msg);
+				this.listener.onFailed(this.qJRequest, error);
 			}
 		}
 	}
 
 	public void rpcMessageArrived(String topic, MqttMessage message) {
 		logger.info("rpc topic={}, msg={}", topic, message.toString());
-		if (this.request instanceof MqttPublishRequest) {
+		if (this.qJRequest instanceof MqttPublishRequest) {
 
-			MqttPublishRequest publishRequest = (MqttPublishRequest) this.request;
+			MqttPublishRequest publishRequest = (MqttPublishRequest) this.qJRequest;
 
 			if (publishRequest.isRPC()
 					&& (this.status == MqttSendStatus.published || this.status == MqttSendStatus.waitingToPublish)
@@ -152,12 +126,12 @@ public class MqttSend extends QJSend implements IMqttActionListener {
 
 				setStatus(MqttSendStatus.completed);
 
-				if (null == this.response)
-					this.response = new QJResponse();
-				this.response.data = message.toString();
+				if (null == this.qJResponse)
+					this.qJResponse = new QJResponse();
+				this.qJResponse.data = message.toString();
 
 				if (this.listener != null)
-					this.listener.onSuccess(this.request, this.response);
+					this.listener.onSuccess(this.qJRequest, this.qJResponse);
 			}
 		}
 	}

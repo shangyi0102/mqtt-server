@@ -1,6 +1,7 @@
 package com.qjzh.link.mqtt.base;
 
 public class QJError {
+	
 	public static final String ERR_DOMAIN_NAME_ALINK = "alinkErrorDomain";
 	public static final int AKErrorSuccess = 0;
 	

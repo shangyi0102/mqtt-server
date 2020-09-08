@@ -1,6 +1,15 @@
 package com.qjzh.link.mqtt.model;
 
-public class ResponseModel<T> {
+import java.util.Map;
+
+/**
+ * @DESC: 数据响应结构
+ * @author LIU.ZHENXING
+ * @date 2020年8月19日下午2:18:42
+ * @version 1.0.0
+ * @copyright www.7g.com
+ */
+public class ResponseModel {
 
 	private String msgId;
 
@@ -10,7 +19,7 @@ public class ResponseModel<T> {
 
 	private String message;
 
-	private T data;
+	private Map<String, Object> data;
 
 	public String getMsgId() {
 		return msgId;
@@ -44,11 +53,11 @@ public class ResponseModel<T> {
 		this.message = message;
 	}
 
-	public T getData() {
+	public Map<String, Object> getData() {
 		return data;
 	}
 
-	public void setData(T data) {
+	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
 

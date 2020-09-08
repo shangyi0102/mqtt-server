@@ -4,9 +4,9 @@ import com.qjzh.link.mqtt.base.QJError;
 
 public interface IOnSubscribeListener {
 	
-	void onSuccess(String paramString);
+	void onSuccess(String topic);
 
-	void onFailed(String paramString, QJError paramAError);
+	void onFailed(String topic, QJError error);
 
 	boolean needUISafety();
 	

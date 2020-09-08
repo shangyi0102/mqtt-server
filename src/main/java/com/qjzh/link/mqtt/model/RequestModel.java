@@ -2,13 +2,20 @@ package com.qjzh.link.mqtt.model;
 
 import com.alibaba.fastjson.JSON;
 
-public class RequestModel<T> {
+/**
+ * @DESC: 数据请求结构
+ * @author LIU.ZHENXING
+ * @date 2020年8月19日下午2:11:42
+ * @version 1.0.0
+ * @copyright www.7g.com
+ */
+public class RequestModel {
 
 	private String msgId;
 
 	private Long timestamp;
 
-	private T params;
+	private Object params;
 
 	public String getMsgId() {
 		return msgId;
@@ -26,11 +33,11 @@ public class RequestModel<T> {
 		this.timestamp = timestamp;
 	}
 
-	public T getParams() {
+	public Object getParams() {
 		return params;
 	}
 
-	public void setParams(T params) {
+	public void setParams(Object params) {
 		this.params = params;
 	}
 

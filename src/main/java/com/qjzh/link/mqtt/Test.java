@@ -19,7 +19,7 @@ public class Test {
 		try {
 			long start = System.currentTimeMillis();
             done.await(5000, TimeUnit.MILLISECONDS);
-            if (isDone() || System.currentTimeMillis() - start > 5000) {
+            if (isDone() || (System.currentTimeMillis() - start) > 5000) {
                 System.out.println("timeout");
             }
         } catch (InterruptedException e) {
@@ -40,7 +40,6 @@ public class Test {
 			
 			MqttPublishRequest mqttRequest = new MqttPublishRequest();
 			mqttRequest.setTopic(DMConstants.PROP_GET.replace(DMConstants.REPLACE_PRODUCTID, name).replace(DMConstants.REPLACE_DEVICEID, suffix));
-			//request.replyTopic = DMConstants.TSL_GET_REPLY.replace("{productKey}", info.productKey).replace("{deviceName}", info.deviceName);
 			mqttRequest.setRPC(true);
 			RequestModel<PropGet> model = new RequestModel<>();
 			model.setMsgId("UID:"+QjzhAtomicInteger.incre());

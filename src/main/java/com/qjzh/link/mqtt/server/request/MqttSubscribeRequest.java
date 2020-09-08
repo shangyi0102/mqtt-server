@@ -15,9 +15,11 @@ public class MqttSubscribeRequest extends QJRequest {
 	
 	//订阅主题
 	private String topic;
+	//服务质量
+	private int qos = 0;
 	//是否取消订阅
 	private boolean isSubscribe = true;
-	
+	//消息监听器
 	private IMqttMessageListener mqttMessageListener;
 
 	public String getTopic() {
@@ -26,6 +28,14 @@ public class MqttSubscribeRequest extends QJRequest {
 
 	public void setTopic(String topic) {
 		this.topic = topic;
+	}
+
+	public int getQos() {
+		return qos;
+	}
+
+	public void setQos(int qos) {
+		this.qos = qos;
 	}
 
 	public boolean isSubscribe() {

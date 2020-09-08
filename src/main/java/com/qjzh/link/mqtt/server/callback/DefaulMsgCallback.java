@@ -21,7 +21,7 @@ import com.qjzh.link.mqtt.channel.IOnRrpcResponseHandle;
 import com.qjzh.link.mqtt.channel.IOnSubscribeRrpcListener;
 import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
 import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
-import com.qjzh.link.mqtt.server.request.MqttRrpcRequest;
+import com.qjzh.link.mqtt.server.request.MqttRpcRequest;
 import com.qjzh.link.mqtt.channel.ConnectState;
 
 /**
@@ -31,7 +31,7 @@ import com.qjzh.link.mqtt.channel.ConnectState;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttDefaulCallback implements MqttCallbackExtended {
+public class DefaulMsgCallback implements MqttCallbackExtended {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -41,7 +41,7 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 
 	private INet mqttNet;
 	
-	public MqttDefaulCallback(INet mqttNet){
+	public DefaulMsgCallback(INet mqttNet){
 		this.mqttNet = mqttNet;
 	}
 	
@@ -87,22 +87,22 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 		}
 
 		if (this.rrpcListenerMap != null && this.rrpcListenerMap.containsKey(topic)) {
-			MqttRrpcRequest mqttRrpcRequest = new MqttRrpcRequest();
-			mqttRrpcRequest.setTopic(topic);
-			mqttRrpcRequest.setPayload(message.getPayload());
+			MqttRpcRequest mqttRpcRequest = new MqttRpcRequest();
+			mqttRpcRequest.setTopic(topic);
+			mqttRpcRequest.setPayload(message.getPayload());
 			
 			IOnSubscribeRrpcListener listener = this.rrpcListenerMap.get(topic);
-			handleRrpcRequest(mqttRrpcRequest, listener);
+			handleRrpcRequest(mqttRpcRequest, listener);
 		} else if (this.rrpcPatternListenerMap != null && this.rrpcPatternListenerMap.size() > 0) {
 
 			for (String topicPattern : this.rrpcPatternListenerMap.keySet()) {
 				if (isTopicMatchForPattern(topicPattern, topic)) {
 					logger.info("match pattern, topicPattern={}", topicPattern);
-					MqttRrpcRequest mqttRrpcRequest = new MqttRrpcRequest();
-					mqttRrpcRequest.setTopic(topic);
-					mqttRrpcRequest.setPayload(message.getPayload());
+					MqttRpcRequest mqttRpcRequest = new MqttRpcRequest();
+					mqttRpcRequest.setTopic(topic);
+					mqttRpcRequest.setPayload(message.getPayload());
 					IOnSubscribeRrpcListener listener = this.rrpcPatternListenerMap.get(topicPattern);
-					handleRrpcRequest(mqttRrpcRequest, listener);
+					handleRrpcRequest(mqttRpcRequest, listener);
 					break;
 				}
 			}
@@ -114,7 +114,7 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 				+ ((token == null || token.getResponse() == null) ? "null" : token.getResponse().getKey()));
 	}
 
-	private void handleRrpcRequest(final MqttRrpcRequest request, final IOnSubscribeRrpcListener listener) {
+	private void handleRrpcRequest(final MqttRpcRequest request, final IOnSubscribeRrpcListener listener) {
 		logger.info("handleRrpcRequest()");
 		if (listener == null || request == null)
 			return;
@@ -122,7 +122,7 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					listener.onReceived(request.getTopic(), request,
-							new MqttDefaulCallback.RrpcResponseHandle(request.getTopic(), listener));
+							new DefaulMsgCallback.RrpcResponseHandle(request.getTopic(), listener));
 				}
 			});
 		} else {
@@ -164,7 +164,7 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 			this.listener = listener;
 		}
 
-		public void onRrpcResponse(String replyTopic, QJResponse response) {
+		public void onRrpcResponse(String replyTopic, QJResponse qJResponse) {
 			logger.info("reply topic = " + replyTopic);
 			MqttPublishRequest publishRequest = new MqttPublishRequest();
 			publishRequest.setRPC(false) ;
@@ -173,24 +173,24 @@ public class MqttDefaulCallback implements MqttCallbackExtended {
 			} else {
 				publishRequest.setTopic(replyTopic);
 			}
-			if (response != null && response.data != null) {
-				publishRequest.setPayload(response.data);
+			if (qJResponse != null && qJResponse.data != null) {
+				publishRequest.setPayload(qJResponse.data);
 			}
-			mqttNet.asyncSend((QJRequest) publishRequest, new IOnCallListener() {
-				public void onSuccess(QJRequest request, QJResponse response) {
+			mqttNet.send((QJRequest) publishRequest, new IOnCallListener() {
+				public void onSuccess(QJRequest qJRequest, QJResponse qJResponse) {
 					logger.info("publish succ");
-					MqttDefaulCallback.RrpcResponseHandle.this.listener
-							.onResponseSuccess(MqttDefaulCallback.RrpcResponseHandle.this.topic);
+					DefaulMsgCallback.RrpcResponseHandle.this.listener
+							.onResponseSuccess(DefaulMsgCallback.RrpcResponseHandle.this.topic);
 				}
 
-				public void onFailed(QJRequest request, QJError error) {
+				public void onFailed(QJRequest qJRequest, QJError error) {
 					logger.info("publish fail");
-					MqttDefaulCallback.RrpcResponseHandle.this.listener
-							.onResponseFailed(MqttDefaulCallback.RrpcResponseHandle.this.topic, error);
+					DefaulMsgCallback.RrpcResponseHandle.this.listener
+							.onResponseFailed(DefaulMsgCallback.RrpcResponseHandle.this.topic, error);
 				}
 
 				public boolean needUISafety() {
-					return MqttDefaulCallback.RrpcResponseHandle.this.listener.needUISafety();
+					return DefaulMsgCallback.RrpcResponseHandle.this.listener.needUISafety();
 				}
 			});
 		}

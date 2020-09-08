@@ -1,31 +1,31 @@
 package com.qjzh.link.mqtt.base;
 
-public abstract class QJSend {
+public abstract class AbsQJSend {
 	
 	protected INet mqttNet;
 	
-	protected final QJRequest request;
+	protected final QJRequest qJRequest;
 	
-	protected QJResponse response = null;
+	protected QJResponse qJResponse = null;
 	
 	protected ISendStatus status = null;
 
 	protected final IOnCallListener listener;
 
-	public QJSend(INet mqttNet, QJRequest request, IOnCallListener listener) {
+	public AbsQJSend(INet mqttNet, QJRequest qJRequest, IOnCallListener listener) {
 		this.mqttNet = mqttNet;
-		this.request = request;
+		this.qJRequest = qJRequest;
 		this.listener = listener;
 		this.status = QJSendStatus.waitingToSend;
-		this.response = new QJResponse();
+		this.qJResponse = new QJResponse();
 	}
 
 	public QJRequest getRequest() {
-		return this.request;
+		return this.qJRequest;
 	}
 
 	public QJResponse getResponse() {
-		return this.response;
+		return this.qJResponse;
 	}
 
 	public IOnCallListener getListener() {

@@ -2,6 +2,8 @@ package com.qjzh.link.mqtt.server;
 
 import java.io.InputStream;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
@@ -9,26 +11,25 @@ import javax.net.ssl.TrustManager;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
+import com.qjzh.link.mqtt.base.AbsQJSend;
 import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.base.IOnCallListener;
-import com.qjzh.link.mqtt.base.QJError;
 import com.qjzh.link.mqtt.base.QJRequest;
-import com.qjzh.link.mqtt.base.QJSend;
+import com.qjzh.link.mqtt.channel.ConnectState;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.channel.IOnSubscribeRrpcListener;
 import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
-import com.qjzh.link.mqtt.server.callback.MqttDefaulCallback;
+import com.qjzh.link.mqtt.server.callback.DefaulMsgCallback;
+import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
 import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
-import com.qjzh.link.mqtt.channel.ConnectState;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 
 /**
@@ -38,7 +39,7 @@ import com.qjzh.link.mqtt.utils.MqttTrustManager;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttNet implements INet, InitializingBean,DisposableBean {
+public class MqttNet implements INet{
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//保存形式，默认为以内存保存
@@ -56,14 +57,15 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 	//连接状态
 	private ConnectState connectState = ConnectState.DISCONNECTED;
 	//回调类
-	private MqttDefaulCallback defaulCallback = null;
+	private DefaulMsgCallback defaulCallback = null;
 	//mqtt初始化连接配置
 	private MqttInitParams mqttInitParams;
 
 	public MqttNet(MqttInitParams initParams) {
 		this.mqttInitParams = initParams;
 	}
-
+	
+	@PostConstruct
 	public void init() {
 		logger.debug("init");
 
@@ -104,29 +106,31 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 		return this.connectState;
 	}
 
-	public QJSend asyncSend(QJRequest request, IOnCallListener listener) {
-		MqttSend mqttSend = new MqttSend(this, request, listener);
-		MqttSendExecutor sendExecutor = new MqttSendExecutor();
-		sendExecutor.asyncSend(mqttSend);
-		return (QJSend) mqttSend;
+	public AbsQJSend send(QJRequest qJRequest, IOnCallListener listener) {
+		MqttSend mqttSend = new MqttSend(this, qJRequest, listener);
+		MqttSendExecutor.send(mqttSend); 
+		return (AbsQJSend) mqttSend;
 	}
+	
+	
+	public void publish(MqttPublishRequest publishRequest, IOnCallListener listener) {
+		MqttSend mqttSend = new MqttSend(this, publishRequest, listener);
+		MqttSendExecutor.send(mqttSend);
+	} 
 
-	public void retry(QJSend mqttSend) {
-		MqttSendExecutor sendExecutor = new MqttSendExecutor();
-		sendExecutor.asyncSend(mqttSend);
-	}
-
-	public void subscribe(String topic, IOnSubscribeListener listener) {
-		if (StringUtils.isEmpty(topic)) {
-			logger.info("topic is empty");
+	public void subscribe(String topic, IMqttMessageListener mqttMessageListener, 
+			IOnSubscribeListener listener) {
+		if (StringUtils.isEmpty(topic) || null == mqttMessageListener) {
+			logger.info("topic or MessageListener is null");
 			return;
 		}
 		MqttSubscribeRequest subscribeRequest = new MqttSubscribeRequest();
 		subscribeRequest.setTopic(topic);
 		subscribeRequest.setSubscribe(true);
-		MqttSend mqttSend = new MqttSend(this, (QJRequest) subscribeRequest, listener);
-		MqttSendExecutor sendExecutor = new MqttSendExecutor();
-		sendExecutor.asyncSend((QJSend) mqttSend);
+		subscribeRequest.setMqttMessageListener(mqttMessageListener);
+		
+		MqttSend mqttSend = new MqttSend(this, subscribeRequest, listener);
+		MqttSendExecutor.send(mqttSend);
 	}
 
 	public void unSubscribe(String topic, IOnSubscribeListener listener) {
@@ -137,19 +141,18 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 		MqttSubscribeRequest subscribeRequest = new MqttSubscribeRequest();
 		subscribeRequest.setTopic(topic);
 		subscribeRequest.setSubscribe(false);
-		MqttSend mqttSend = new MqttSend(this, (QJRequest) subscribeRequest, listener);
-		MqttSendExecutor sendExecutor = new MqttSendExecutor();
-		sendExecutor.asyncSend((QJSend) mqttSend);
+		MqttSend mqttSend = new MqttSend(this, subscribeRequest, listener);
+		MqttSendExecutor.send(mqttSend);
 	}
 
-	public void subscribeRrpc(String topic, final IOnSubscribeRrpcListener listener) {
+	public void subscribeRpc(String topic, final IOnSubscribeRrpcListener listener) {
 		logger.debug("topic = " + topic);
 
 		if (StringUtils.isEmpty(topic) || listener == null) {
 			logger.info("params error");
 			return;
 		}
-		subscribe(topic, new IOnSubscribeListener() {
+		/*subscribe(topic, new IOnSubscribeListener() {
 			public void onSuccess(String topic) {
 				listener.onSubscribeSuccess(topic);
 			}
@@ -161,13 +164,16 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 			public boolean needUISafety() {
 				return listener.needUISafety();
 			}
-		});
+		});*/
 		if (this.defaulCallback != null) {
 			logger.info("registerRrpcListener");
 			this.defaulCallback.registerRrpcListener(topic, listener);
 		}
 	}
-
+	
+	public void retry(AbsQJSend mqttSend) {
+		MqttSendExecutor.send(mqttSend);
+	}
 	
 	public IMqttAsyncClient getClient() {
 		return (IMqttAsyncClient) this.mqttAsyncClient;
@@ -212,7 +218,7 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 		this.connOpts.setPassword(password.toCharArray());
 		this.connOpts.setKeepAliveInterval(mqttInitParams.getKeepAliveInterval());
 
-		this.defaulCallback = new MqttDefaulCallback(this);
+		this.defaulCallback = new DefaulMsgCallback(this);
 		this.mqttAsyncClient.setCallback(this.defaulCallback);
 		try {
 			this.connectState = ConnectState.CONNECTING;
@@ -244,12 +250,7 @@ public class MqttNet implements INet, InitializingBean,DisposableBean {
 		return socketFactory;
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		init();
-	}
-
-	
+	@PreDestroy
 	public void destroy() {
 		logger.debug("destroy");
 		this.isInitConnect = false;

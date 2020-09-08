@@ -1,6 +1,6 @@
 package com.qjzh.link.mqtt.base;
 
-public class DMConstants {
+public class TopicConstants {
 	
   public static final String REPLACE_PRODUCTID = "{productId}";
   

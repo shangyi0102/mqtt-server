@@ -9,7 +9,7 @@ import com.qjzh.link.mqtt.base.QJRequest;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttRrpcRequest extends QJRequest {
+public class MqttRpcRequest extends QJRequest {
 	
 	private String topic;
 	
