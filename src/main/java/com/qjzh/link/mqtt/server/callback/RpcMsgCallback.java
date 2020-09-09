@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qjzh.link.mqtt.model.ResponseModel;
-import com.qjzh.link.mqtt.server.MqttSend;
-import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
+import com.qjzh.link.mqtt.server.MqttPublish;
+import com.qjzh.link.mqtt.server.request.GeneralPublishRequest;
 import com.qjzh.link.mqtt.utils.MqttProtocolHelper;
 
 /**
@@ -34,7 +34,7 @@ public class RpcMsgCallback implements IMqttMessageListener {
 		this.replyTopic = replyTopic;
 	}
 	
-	public RpcMsgCallback(String topic, MqttSend mqttSend) {
+	public RpcMsgCallback(String topic, MqttPublish mqttPublish) {
 		/*if (messageMap == null) {
 			messageMap = new HashMap<>();
 		}
@@ -61,6 +61,7 @@ public class RpcMsgCallback implements IMqttMessageListener {
 		if (StringUtils.isEmpty(msgId)) {
 			return;
 		}
+		
 		
 		//logger.info("match Id = <" + topic + ",id=" + msgid + ">");
 		/*MqttSend mqttSend = messageMap.get(topic + ",id=" + msgid);

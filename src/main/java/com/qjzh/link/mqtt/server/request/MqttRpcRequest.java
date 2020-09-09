@@ -1,6 +1,6 @@
 package com.qjzh.link.mqtt.server.request;
 
-import com.qjzh.link.mqtt.base.QJRequest;
+import com.qjzh.link.mqtt.base.PublishRequest;
 
 /**
  * @DESC: RPC 发送请求参数
@@ -9,7 +9,7 @@ import com.qjzh.link.mqtt.base.QJRequest;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttRpcRequest extends QJRequest {
+public class MqttRpcRequest implements PublishRequest {
 	
 	private String topic;
 	
@@ -26,6 +26,36 @@ public class MqttRpcRequest extends QJRequest {
 
 	public String getReplyTopic() {
 		return replyTopic;
+	}
+
+	@Override
+	public int getQos() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getMsgId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void check() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Class getResponseClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getPayload() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

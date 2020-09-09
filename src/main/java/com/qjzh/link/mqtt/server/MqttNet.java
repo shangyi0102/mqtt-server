@@ -8,10 +8,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -19,17 +17,16 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.qjzh.link.mqtt.base.AbsQJSend;
 import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.base.IOnCallListener;
-import com.qjzh.link.mqtt.base.QJRequest;
+import com.qjzh.link.mqtt.base.PublishRequest;
+import com.qjzh.link.mqtt.base.PublishResponse;
+import com.qjzh.link.mqtt.base.SubscribeRequest;
 import com.qjzh.link.mqtt.channel.ConnectState;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
-import com.qjzh.link.mqtt.channel.IOnSubscribeRrpcListener;
 import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
 import com.qjzh.link.mqtt.server.callback.DefaulMsgCallback;
-import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
-import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
+import com.qjzh.link.mqtt.server.request.GeneralSubscribeRequest;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 
 /**
@@ -106,31 +103,19 @@ public class MqttNet implements INet{
 		return this.connectState;
 	}
 
-	public AbsQJSend send(QJRequest qJRequest, IOnCallListener listener) {
-		MqttSend mqttSend = new MqttSend(this, qJRequest, listener);
-		MqttSendExecutor.send(mqttSend); 
-		return (AbsQJSend) mqttSend;
-	}
-	
-	
-	public void publish(MqttPublishRequest publishRequest, IOnCallListener listener) {
-		MqttSend mqttSend = new MqttSend(this, publishRequest, listener);
-		MqttSendExecutor.send(mqttSend);
-	} 
-
-	public void subscribe(String topic, IMqttMessageListener mqttMessageListener, 
+	/*public void subscribe(String topic, IMqttMessageListener mqttMessageListener, 
 			IOnSubscribeListener listener) {
 		if (StringUtils.isEmpty(topic) || null == mqttMessageListener) {
 			logger.info("topic or MessageListener is null");
 			return;
 		}
-		MqttSubscribeRequest subscribeRequest = new MqttSubscribeRequest();
+		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
 		subscribeRequest.setTopic(topic);
 		subscribeRequest.setSubscribe(true);
 		subscribeRequest.setMqttMessageListener(mqttMessageListener);
 		
-		MqttSend mqttSend = new MqttSend(this, subscribeRequest, listener);
-		MqttSendExecutor.send(mqttSend);
+		MqttPublish mqttPublish = new MqttPublish(this, subscribeRequest, listener);
+		MqttSendExecutor.send(mqttPublish);
 	}
 
 	public void unSubscribe(String topic, IOnSubscribeListener listener) {
@@ -138,21 +123,21 @@ public class MqttNet implements INet{
 			logger.info("topic is empty");
 			return;
 		}
-		MqttSubscribeRequest subscribeRequest = new MqttSubscribeRequest();
+		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
 		subscribeRequest.setTopic(topic);
 		subscribeRequest.setSubscribe(false);
-		MqttSend mqttSend = new MqttSend(this, subscribeRequest, listener);
-		MqttSendExecutor.send(mqttSend);
-	}
+		MqttPublish mqttPublish = new MqttPublish(this, subscribeRequest, listener);
+		MqttSendExecutor.send(mqttPublish);
+	}*/
 
-	public void subscribeRpc(String topic, final IOnSubscribeRrpcListener listener) {
+	/*public void subscribeRpc(String topic, final IOnSubscribeRpcListener listener) {
 		logger.debug("topic = " + topic);
 
 		if (StringUtils.isEmpty(topic) || listener == null) {
 			logger.info("params error");
 			return;
 		}
-		/*subscribe(topic, new IOnSubscribeListener() {
+		subscribe(topic, new IOnSubscribeListener() {
 			public void onSuccess(String topic) {
 				listener.onSubscribeSuccess(topic);
 			}
@@ -164,16 +149,16 @@ public class MqttNet implements INet{
 			public boolean needUISafety() {
 				return listener.needUISafety();
 			}
-		});*/
+		});
 		if (this.defaulCallback != null) {
 			logger.info("registerRrpcListener");
 			this.defaulCallback.registerRrpcListener(topic, listener);
 		}
-	}
+	}*/
 	
-	public void retry(AbsQJSend mqttSend) {
-		MqttSendExecutor.send(mqttSend);
-	}
+	/*public void retry(AbsQJSend mqttSend) {
+		MqttSendExecutor.send((MqttPublish) mqttSend);
+	}*/
 	
 	public IMqttAsyncClient getClient() {
 		return (IMqttAsyncClient) this.mqttAsyncClient;
@@ -275,6 +260,41 @@ public class MqttNet implements INet{
 		} catch (Exception ex) {
 			logger.error("destroy error! ", ex);
 		}
+	}
+
+	@Override
+	public void publish(PublishRequest publishRequest, IOnCallListener listener) {
+		MqttPublish mqttPublish = new MqttPublish(this, publishRequest, listener);
+		MqttExecutor.publish(mqttPublish);
+	}
+
+	@Override
+	public PublishResponse publishRpc(PublishRequest publishRequest,
+			IOnCallListener listener) {
+		MqttPublishRpc mqttPublish = new MqttPublishRpc(this, publishRequest, listener);
+		return MqttExecutor.publishRpc(mqttPublish);
+	}
+	
+	@Override
+	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout,
+			IOnCallListener listener) {
+		MqttPublishRpc mqttPublish = new MqttPublishRpc(this, publishRequest, timeout, listener);
+		return MqttExecutor.publishRpc(mqttPublish);
+	}
+
+	
+	@Override
+	public void subscribe(SubscribeRequest subscribeRequest, IOnSubscribeListener onSubscribeListener) {
+		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, onSubscribeListener);
+		MqttExecutor.subscribe(mqttSubscribe);
+	}
+	
+	@Override
+	public void unSubscribe(String topic, IOnSubscribeListener onSubscribeListener) {
+		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
+		subscribeRequest.setTopic(topic);
+		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, onSubscribeListener);
+		MqttExecutor.subscribe(mqttSubscribe);
 	}
 	
 }

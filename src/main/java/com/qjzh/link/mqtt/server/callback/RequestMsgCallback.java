@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.qjzh.link.mqtt.model.RequestModel;
 import com.qjzh.link.mqtt.model.ResponseModel;
-import com.qjzh.link.mqtt.server.MqttSend;
-import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
+import com.qjzh.link.mqtt.server.MqttPublish;
+import com.qjzh.link.mqtt.server.request.GeneralPublishRequest;
 import com.qjzh.link.mqtt.utils.MqttProtocolHelper;
 
 /**
@@ -33,7 +33,7 @@ public class RequestMsgCallback implements IMqttMessageListener {
 		this.topic = topic;
 	}
 	
-	public RequestMsgCallback(String topic, MqttSend mqttSend) {
+	public RequestMsgCallback(String topic, MqttPublish mqttPublish) {
 		/*if (messageMap == null) {
 			messageMap = new HashMap<>();
 		}

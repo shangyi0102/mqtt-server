@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
 import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.base.IOnCallListener;
 import com.qjzh.link.mqtt.base.QJError;
-import com.qjzh.link.mqtt.base.QJRequest;
-import com.qjzh.link.mqtt.base.QJResponse;
+import com.qjzh.link.mqtt.base.PublishRequest;
+import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.channel.IOnRrpcResponseHandle;
-import com.qjzh.link.mqtt.channel.IOnSubscribeRrpcListener;
+import com.qjzh.link.mqtt.channel.IOnSubscribeRpcListener;
 import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
-import com.qjzh.link.mqtt.server.request.MqttPublishRequest;
+import com.qjzh.link.mqtt.server.request.GeneralPublishRequest;
 import com.qjzh.link.mqtt.server.request.MqttRpcRequest;
 import com.qjzh.link.mqtt.channel.ConnectState;
 
@@ -35,9 +35,9 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private Map<String, IOnSubscribeRrpcListener> rrpcListenerMap;
+	private Map<String, IOnSubscribeRpcListener> rrpcListenerMap;
 	
-	private Map<String, IOnSubscribeRrpcListener> rrpcPatternListenerMap;
+	private Map<String, IOnSubscribeRpcListener> rrpcPatternListenerMap;
 
 	private INet mqttNet;
 	
@@ -45,7 +45,7 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 		this.mqttNet = mqttNet;
 	}
 	
-	public void registerRrpcListener(String topic, IOnSubscribeRrpcListener listener) {
+	public void registerRrpcListener(String topic, IOnSubscribeRpcListener listener) {
 		logger.debug("topic = " + topic);
 
 		if (StringUtils.isEmpty(topic) || listener == null) {
@@ -91,7 +91,7 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 			mqttRpcRequest.setTopic(topic);
 			mqttRpcRequest.setPayload(message.getPayload());
 			
-			IOnSubscribeRrpcListener listener = this.rrpcListenerMap.get(topic);
+			IOnSubscribeRpcListener listener = this.rrpcListenerMap.get(topic);
 			handleRrpcRequest(mqttRpcRequest, listener);
 		} else if (this.rrpcPatternListenerMap != null && this.rrpcPatternListenerMap.size() > 0) {
 
@@ -101,7 +101,7 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 					MqttRpcRequest mqttRpcRequest = new MqttRpcRequest();
 					mqttRpcRequest.setTopic(topic);
 					mqttRpcRequest.setPayload(message.getPayload());
-					IOnSubscribeRrpcListener listener = this.rrpcPatternListenerMap.get(topicPattern);
+					IOnSubscribeRpcListener listener = this.rrpcPatternListenerMap.get(topicPattern);
 					handleRrpcRequest(mqttRpcRequest, listener);
 					break;
 				}
@@ -114,7 +114,7 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 				+ ((token == null || token.getResponse() == null) ? "null" : token.getResponse().getKey()));
 	}
 
-	private void handleRrpcRequest(final MqttRpcRequest request, final IOnSubscribeRrpcListener listener) {
+	private void handleRrpcRequest(final MqttRpcRequest request, final IOnSubscribeRpcListener listener) {
 		logger.info("handleRrpcRequest()");
 		if (listener == null || request == null)
 			return;
@@ -157,33 +157,33 @@ public class DefaulMsgCallback implements MqttCallbackExtended {
 	private class RrpcResponseHandle implements IOnRrpcResponseHandle {
 		private String topic;
 
-		private IOnSubscribeRrpcListener listener;
+		private IOnSubscribeRpcListener listener;
 
-		public RrpcResponseHandle(String topic, IOnSubscribeRrpcListener listener) {
+		public RrpcResponseHandle(String topic, IOnSubscribeRpcListener listener) {
 			this.topic = topic;
 			this.listener = listener;
 		}
 
-		public void onRrpcResponse(String replyTopic, QJResponse qJResponse) {
+		public void onRrpcResponse(String replyTopic, PublishResponse publishResponse) {
 			logger.info("reply topic = " + replyTopic);
-			MqttPublishRequest publishRequest = new MqttPublishRequest();
+			GeneralPublishRequest publishRequest = new GeneralPublishRequest();
 			publishRequest.setRPC(false) ;
 			if (StringUtils.isEmpty(replyTopic)) {
 				publishRequest.setTopic(this.topic + "_reply");
 			} else {
 				publishRequest.setTopic(replyTopic);
 			}
-			if (qJResponse != null && qJResponse.data != null) {
-				publishRequest.setPayload(qJResponse.data);
+			if (publishResponse != null && publishResponse.data != null) {
+				publishRequest.setPayload(publishResponse.data);
 			}
-			mqttNet.send((QJRequest) publishRequest, new IOnCallListener() {
-				public void onSuccess(QJRequest qJRequest, QJResponse qJResponse) {
+			mqttNet.send((PublishRequest) publishRequest, new IOnCallListener() {
+				public void onSuccess(PublishRequest publishRequest, PublishResponse publishResponse) {
 					logger.info("publish succ");
 					DefaulMsgCallback.RrpcResponseHandle.this.listener
 							.onResponseSuccess(DefaulMsgCallback.RrpcResponseHandle.this.topic);
 				}
 
-				public void onFailed(QJRequest qJRequest, QJError error) {
+				public void onFailed(PublishRequest publishRequest, QJError error) {
 					logger.info("publish fail");
 					DefaulMsgCallback.RrpcResponseHandle.this.listener
 							.onResponseFailed(DefaulMsgCallback.RrpcResponseHandle.this.topic, error);

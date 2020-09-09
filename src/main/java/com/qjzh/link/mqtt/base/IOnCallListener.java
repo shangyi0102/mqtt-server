@@ -2,9 +2,9 @@ package com.qjzh.link.mqtt.base;
 
 public interface IOnCallListener {
 	
-	void onSuccess(QJRequest paramARequest, QJResponse paramAResponse);
+	void onSuccess(PublishRequest paramARequest, PublishResponse paramAResponse);
 
-	void onFailed(QJRequest paramARequest, QJError paramAError);
+	void onFailed(PublishRequest paramARequest, QJError paramAError);
 
 	boolean needUISafety();
 }

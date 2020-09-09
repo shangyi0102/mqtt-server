@@ -1,29 +1,38 @@
 package com.qjzh.link.mqtt.base;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-
 import com.qjzh.link.mqtt.channel.ConnectState;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
-import com.qjzh.link.mqtt.channel.IOnSubscribeRrpcListener;
+import com.qjzh.link.mqtt.channel.IOnSubscribeRpcListener;
 
+/**
+ * @DESC: 连接接口
+ * @author LIU.ZHENXING
+ * @date 2020年8月9日下午3:31:44
+ * @version 1.0.0
+ * @copyright www.7g.com
+ */
 public interface INet {
 	
 	void init();
 
-	AbsQJSend send(QJRequest qJRequest, IOnCallListener onCallListener);
-	
 	void setConnectState(ConnectState connectState);
 	
 	ConnectState getConnectState();
 	
-	void retry(AbsQJSend send);
+	void publish(PublishRequest publishRequest, 
+			IOnCallListener listener);
+	
+    PublishResponse publishRpc(PublishRequest publishRequest,
+			IOnCallListener listener);
+	
+    PublishResponse publishRpc(PublishRequest publishRequest, 
+			int timeout, IOnCallListener listener);
 
-	void subscribe(String topic, IMqttMessageListener mqttMessageListener, 
-			IOnSubscribeListener listener);
+	void subscribe(SubscribeRequest subscribeRequest, IOnSubscribeListener listener);
+	
+	//void subscribeRpc(SubscribeRequest subscribeRequest, IOnSubscribeRpcListener onSubscribeRpcListener);
 
 	void unSubscribe(String topic, IOnSubscribeListener onSubscribeListener);
-
-	void subscribeRpc(String topic, IOnSubscribeRrpcListener onSubscribeRrpcListener);
 	
 	void destroy();
 

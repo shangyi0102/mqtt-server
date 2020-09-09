@@ -1,7 +1,7 @@
 package com.qjzh.link.mqtt.server;
 
 import com.qjzh.link.mqtt.base.QJError;
-import com.qjzh.link.mqtt.server.request.MqttSubscribeRequest;
+import com.qjzh.link.mqtt.server.request.GeneralSubscribeRequest;
 
 /**
  * @DESC: mqtt发送响应线程
@@ -24,13 +24,13 @@ public class MqttSendResponseRunnable implements Runnable {
 	
 	public static final byte MSG_SUBSRIBE_BADNET = 6;
 	
-	private MqttSend sendObj = null;
+	private MqttPublish sendObj = null;
 	
 	private byte msgType = 0;
 	
 	private String errorMsg = null;
 
-	public MqttSendResponseRunnable(MqttSend send, byte type, String errorMsg) {
+	public MqttSendResponseRunnable(MqttPublish send, byte type, String errorMsg) {
 		this.sendObj = send;
 		this.msgType = type;
 		this.errorMsg = errorMsg;
@@ -67,7 +67,7 @@ public class MqttSendResponseRunnable implements Runnable {
 		case 4:
 			if (this.sendObj.getSubscribeListener() == null)
 				return;
-			this.sendObj.getSubscribeListener().onSuccess(((MqttSubscribeRequest) this.sendObj.getRequest()).getTopic());
+			this.sendObj.getSubscribeListener().onSuccess(((GeneralSubscribeRequest) this.sendObj.getRequest()).getTopic());
 			break;
 		case 5:
 		case 6:
@@ -81,7 +81,7 @@ public class MqttSendResponseRunnable implements Runnable {
 				error1.setCode(4201);
 			}
 			error1.setMsg(this.errorMsg);
-			this.sendObj.getSubscribeListener().onFailed(((MqttSubscribeRequest) this.sendObj.getRequest()).getTopic(),
+			this.sendObj.getSubscribeListener().onFailed(((GeneralSubscribeRequest) this.sendObj.getRequest()).getTopic(),
 					error1);
 			break;
 		}
