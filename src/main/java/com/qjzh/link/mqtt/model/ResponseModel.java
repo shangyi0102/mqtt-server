@@ -2,6 +2,8 @@ package com.qjzh.link.mqtt.model;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * @DESC: 数据响应结构
  * @author LIU.ZHENXING
@@ -60,5 +62,12 @@ public class ResponseModel {
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
+
+	@Override
+	public String toString() {
+		return JSON.toJSONString(this);
+	}
+	
+	
 
 }

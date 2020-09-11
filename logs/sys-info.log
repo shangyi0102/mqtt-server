@@ -1,13 +1,513 @@
-2020-09-02 17:45:17.655 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 46972 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
-2020-09-02 17:45:17.668 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
-2020-09-02 17:47:20.860 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 69944 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
-2020-09-02 17:47:20.864 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
-2020-09-02 17:47:21.904 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-09-02 17:47:21.911 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2020-09-02 17:47:22.076 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 132ms. Found 0 Redis repository interfaces.
-2020-09-02 17:47:31.014 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 10.66 seconds (JVM running for 11.819)
-2020-09-02 17:47:41.277 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 17856 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
-2020-09-02 17:47:41.283 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
-2020-09-02 17:47:41.903 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
-2020-09-02 17:47:41.906 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2020-09-02 17:47:42.011 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 88ms. Found 0 Redis repository interfaces.
+2020-09-11 09:08:25.079 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 09:08:25.550 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 09:08:25.552 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 09:08:25.556 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 09:11:36.094 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = [{
+    "msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }
+}]
+2020-09-11 09:11:36.282 [MQTT Call: clientId,timestamp=1599786505099|] [ERROR]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectionLost: connection lost!!!
+org.eclipse.paho.client.mqttv3.MqttException: MqttException
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:228)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException: null
+	at com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived(ReplyMsgCallback.java:70)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.deliverMessage(CommsCallback.java:506)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.handleMessage(CommsCallback.java:417)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:214)
+	... 1 common frames omitted
+2020-09-11 09:11:37.630 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 09:11:37.631 [MQTT Call: clientId,timestamp=1599786505099|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 09:14:40.736 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 09:14:41.193 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 09:14:41.194 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 09:14:41.198 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 09:14:54.330 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = [{
+    "msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }
+}]
+2020-09-11 09:14:54.517 [MQTT Call: clientId,timestamp=1599786880747|] [ERROR]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectionLost: connection lost!!!
+org.eclipse.paho.client.mqttv3.MqttException: MqttException
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:228)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException: null
+	at com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived(ReplyMsgCallback.java:70)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.deliverMessage(CommsCallback.java:506)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.handleMessage(CommsCallback.java:417)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:214)
+	... 1 common frames omitted
+2020-09-11 09:14:55.835 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 09:14:55.836 [MQTT Call: clientId,timestamp=1599786880747|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 09:20:25.356 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 09:20:25.807 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 09:20:25.808 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 09:20:25.810 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 09:20:44.309 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:22:06.699 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:23:45.499 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:23:54.355 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:23:55.493 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:23:56.768 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = ["msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }]
+2020-09-11 09:25:07.749 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = []
+2020-09-11 09:25:13.053 [MQTT Call: clientId,timestamp=1599787225365|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = []
+2020-09-11 10:43:54.598 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 10:43:55.082 [MQTT Call: clientId,timestamp=1599792234620|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 10:43:55.083 [MQTT Call: clientId,timestamp=1599792234620|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 10:43:55.086 [MQTT Call: clientId,timestamp=1599792234620|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 10:44:21.607 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 10:44:21.775 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttExecutor.subscribe: mqtt not connected!
+2020-09-11 10:44:21.921 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/A0002/0002/property/report], error=[{"code":4101}]
+2020-09-11 10:44:22.101 [MQTT Call: clientId,timestamp=1599792261625|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 10:44:22.103 [MQTT Call: clientId,timestamp=1599792261625|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 10:44:22.107 [MQTT Call: clientId,timestamp=1599792261625|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 10:49:08.536 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 10:49:09.103 [MQTT Call: clientId,timestamp=1599792548545|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 10:49:09.104 [MQTT Call: clientId,timestamp=1599792548545|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 10:49:09.107 [MQTT Call: clientId,timestamp=1599792548545|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 13:59:21.926 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 13:59:24.081 [MQTT Call: clientId,timestamp=1599803961982|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 13:59:24.083 [MQTT Call: clientId,timestamp=1599803961982|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 13:59:24.093 [MQTT Call: clientId,timestamp=1599803961982|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 13:59:45.085 [MQTT Call: clientId,timestamp=1599803961982|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/A0002/0002/property/report]
+2020-09-11 14:01:40.476 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 14:01:40.941 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 14:01:40.941 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 14:01:40.946 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 14:02:25.127 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/A0002/0002/property/report]
+2020-09-11 14:04:49.593 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived: receive topic = [/device/A0002/0002/property/report], msg = [{
+    "msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }
+}]
+2020-09-11 14:05:25.894 [MQTT Call: clientId,timestamp=1599804100486|] [ERROR]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectionLost: connection lost!!!
+org.eclipse.paho.client.mqttv3.MqttException: MqttException
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:228)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException: null
+	at com.qjzh.link.mqtt.server.callback.ReplyMsgCallback.messageArrived(ReplyMsgCallback.java:70)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.deliverMessage(CommsCallback.java:506)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.handleMessage(CommsCallback.java:417)
+	at org.eclipse.paho.client.mqttv3.internal.CommsCallback.run(CommsCallback.java:214)
+	... 1 common frames omitted
+2020-09-11 14:05:27.224 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 14:05:27.225 [MQTT Call: clientId,timestamp=1599804100486|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 14:13:04.727 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 14:13:06.922 [MQTT Call: clientId,timestamp=1599804784787|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 14:13:06.925 [MQTT Call: clientId,timestamp=1599804784787|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: befer connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 14:13:06.935 [MQTT Call: clientId,timestamp=1599804784787|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMsgCallback.connectComplete: after connect complete ---->
+2020-09-11 20:02:53.017 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 16764 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:02:53.022 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:02:53.782 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:02:53.787 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:02:53.846 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 34ms. Found 0 Redis repository interfaces.
+2020-09-11 20:02:54.176 [main] [WARN]--org.springframework.context.annotation.AnnotationConfigApplicationContext.refresh: Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'thingsDriven': Unsatisfied dependency expressed through field 'mqttNet'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'mqttNet': Unsatisfied dependency expressed through field 'callListener'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.qjzh.link.mqtt.channel.IOnCallListener' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2020-09-11 20:02:54.186 [main] [INFO]--org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage: 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-09-11 20:02:54.437 [main] [ERROR]--org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter.report: 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field callListener in com.qjzh.link.mqtt.server.MqttNet required a bean of type 'com.qjzh.link.mqtt.channel.IOnCallListener' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.qjzh.link.mqtt.channel.IOnCallListener' in your configuration.
+
+2020-09-11 20:03:46.996 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 2804 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:03:47.017 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:03:47.597 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:03:47.600 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:03:47.648 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 33ms. Found 0 Redis repository interfaces.
+2020-09-11 20:03:47.946 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: init error ,params error
+2020-09-11 20:03:47.961 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: MqttNet::getClient() return null
+2020-09-11 20:03:47.962 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: MqttNet::getClient() return null
+2020-09-11 20:03:47.962 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: MqttNet::getClient() return null
+2020-09-11 20:03:47.962 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: MqttNet::getClient() return null
+2020-09-11 20:03:47.962 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: MqttNet::getClient() return null
+2020-09-11 20:03:47.966 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-11 20:03:48.687 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 2.092 seconds (JVM running for 3.281)
+2020-09-11 20:03:48.725 [Thread-3] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.shutdown: Shutting down ExecutorService 'taskScheduler'
+2020-09-11 20:03:48.727 [Thread-3] [INFO]--com.qjzh.link.mqtt.server.MqttNet.destroy: client is null
+2020-09-11 20:05:15.999 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 19028 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:05:16.007 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:05:16.635 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:05:16.638 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:05:16.687 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 31ms. Found 0 Redis repository interfaces.
+2020-09-11 20:08:46.879 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 17140 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:08:46.885 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:08:47.573 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:08:47.576 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:08:47.627 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 34ms. Found 0 Redis repository interfaces.
+2020-09-11 20:09:33.725 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 20:09:34.101 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 20:09:34.108 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 20:09:39.140 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribe(MqttNet.java:276)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:30)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:09:39.226 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/property/report], error=[{"code":4102}]
+2020-09-11 20:09:44.227 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribe(MqttNet.java:276)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:30)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:09:44.230 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/event/+/report], error=[{"code":4102}]
+2020-09-11 20:09:49.248 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribeReply(MqttNet.java:283)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:09:49.250 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/property/set_reply], error=[{"code":4102}]
+2020-09-11 20:09:54.256 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribeReply(MqttNet.java:283)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:09:54.258 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/property/read_reply], error=[{"code":4102}]
+2020-09-11 20:09:56.023 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-11 20:09:57.850 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-11 20:09:59.261 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribeReply(MqttNet.java:283)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:09:59.263 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/service/+/invoke_reply], error=[{"code":4102}]
+2020-09-11 20:09:59.270 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-11 20:09:59.925 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 73.489 seconds (JVM running for 74.643)
+2020-09-11 20:10:09.166 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-11 20:10:09.167 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-11 20:10:09.168 [MQTT Call: clientId=things,timestamp=1599826173726|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-11 20:12:50.099 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 15472 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:12:50.106 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:12:50.969 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:12:50.972 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:12:51.030 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 35ms. Found 0 Redis repository interfaces.
+2020-09-11 20:12:51.381 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 20:12:51.753 [MQTT Call: clientId=things,timestamp=1599826371381|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 20:12:51.754 [MQTT Call: clientId=things,timestamp=1599826371381|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 20:13:19.107 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribe(MqttNet.java:276)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:30)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:13:19.345 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/property/report], error=[{"code":4102}]
+2020-09-11 20:13:36.425 [MQTT Call: clientId=things,timestamp=1599826371381|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-11 20:13:45.063 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribe(MqttNet.java:276)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:30)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:13:45.075 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/event/+/report], error=[{"code":4102}]
+2020-09-11 20:13:47.075 [MQTT Call: clientId=things,timestamp=1599826371381|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-11 20:14:07.094 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.receive: subsribe request error! 
+org.eclipse.paho.client.mqttv3.MqttException: 等待来自服务器的响应时超时
+	at org.eclipse.paho.client.mqttv3.internal.Token.waitForCompletion(Token.java:112)
+	at org.eclipse.paho.client.mqttv3.MqttToken.waitForCompletion(MqttToken.java:67)
+	at com.qjzh.link.mqtt.server.MqttSubscribe.receive(MqttSubscribe.java:101)
+	at com.qjzh.link.mqtt.server.MqttNet.subscribeReply(MqttNet.java:283)
+	at com.qjzh.link.mqtt.server.ThingsDriven.init(ThingsDriven.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:414)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1763)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:593)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:515)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:320)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:318)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:847)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:877)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.qjzh.link.mqtt.Main.main(Main.java:18)
+2020-09-11 20:14:07.105 [main] [ERROR]--com.qjzh.link.mqtt.server.MqttSubscribe.onFailed: subscribe fail, topic = [/device/+/+/property/set_reply], error=[{"code":4102}]
+2020-09-11 20:14:09.112 [MQTT Call: clientId=things,timestamp=1599826371381|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-11 20:15:21.258 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 18788 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:15:21.265 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:15:21.933 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:15:21.937 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:15:21.990 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 35ms. Found 0 Redis repository interfaces.
+2020-09-11 20:15:22.321 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 20:15:22.682 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 20:15:22.683 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 20:15:22.696 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-11 20:15:23.265 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 2.505 seconds (JVM running for 3.717)
+2020-09-11 20:15:57.725 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-11 20:15:57.726 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-11 20:15:57.728 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-11 20:15:57.728 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-11 20:15:57.729 [MQTT Call: clientId=things,timestamp=1599826522322|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-11 20:16:32.250 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 17472 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-11 20:16:32.254 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-11 20:16:33.220 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-11 20:16:33.229 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-11 20:16:33.303 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 54ms. Found 0 Redis repository interfaces.
+2020-09-11 20:16:33.823 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-11 20:16:34.205 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-11 20:16:34.207 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.91:1883
+2020-09-11 20:16:34.222 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-11 20:16:35.941 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 4.225 seconds (JVM running for 5.067)
+2020-09-11 20:17:09.246 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-11 20:17:09.248 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-11 20:17:09.248 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-11 20:17:09.249 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-11 20:17:09.250 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-11 20:20:17.579 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.callback.RequestMessageListener.messageArrived: topic = [/device/A0002/0002/property/report], msg = [{
+    "msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }
+}]
+2020-09-11 20:21:03.075 [MQTT Call: clientId=things,timestamp=1599826593826|] [INFO]--com.qjzh.link.mqtt.server.callback.RequestMessageListener.messageArrived: topic = [/device/A0002/0002/property/report], msg = [{
+    "msgId": "123",
+    "timestamp": 123465,
+    "params": {
+        "sn": "xxxx",
+        "status": "online"
+    }
+}]

@@ -10,6 +10,8 @@
  */
 package com.qjzh.link.mqtt.exception;
 
+import com.qjzh.link.mqtt.base.ErrorCode;
+
 /**
  * @DESC: 同步调用超时异常
  * @author LIU.ZHENXING
@@ -21,11 +23,7 @@ public class MqttTimeoutException extends MqttRpcException {
 
 	private static final long serialVersionUID = -4541083227944111553L;
 
-	public MqttTimeoutException() {
-		super();
-	}
-
 	public MqttTimeoutException(String message) {
-		super(message);
+		super(ErrorCode.C_TIMEOUT, message);
 	}
 }

@@ -1,14 +1,22 @@
 package com.qjzh.link.mqtt.server;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
 import com.qjzh.link.mqtt.base.AbsMqttFeed;
-import com.qjzh.link.mqtt.base.IOnCallListener;
+import com.qjzh.link.mqtt.base.ErrorCode;
+import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishRequest;
-import com.qjzh.link.mqtt.base.PublishResponse;
-import com.qjzh.link.mqtt.base.QJError;
+import com.qjzh.link.mqtt.channel.ConnectState;
+import com.qjzh.link.mqtt.channel.IOnCallListener;
 import com.qjzh.link.mqtt.exception.BadNetworkException;
+import com.qjzh.link.mqtt.exception.MqttThrowable;
 
 /**
  * @DESC: mqtt发送者
@@ -19,18 +27,19 @@ import com.qjzh.link.mqtt.exception.BadNetworkException;
  */
 public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//请求体
 	private PublishRequest publishRequest;
-	//响应体
-	private volatile PublishResponse publishResponse;
 	 
-	private IOnCallListener callListener;
+	private IOnCallListener callListener = new CallListenerInternal();
 
 	public MqttPublish(MqttNet mqttNet, PublishRequest publishRequest, 
 			IOnCallListener callListener) {
 		super(mqttNet);
 		this.publishRequest = publishRequest;
-		this.callListener = callListener;
+		if (callListener != null) {
+			this.callListener = callListener;
+		}
 		setStatus(MqttStatus.waitingToSend);
 	}
 
@@ -50,13 +59,6 @@ public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 		this.publishRequest = publishRequest;
 	}
 
-	public PublishResponse getPublishResponse() {
-		return publishResponse;
-	}
-
-	public void setPublishResponse(PublishResponse publishResponse) {
-		this.publishResponse = publishResponse;
-	}
 
 	public IOnCallListener getCallListener() {
 		return callListener;
@@ -66,52 +68,96 @@ public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 		this.callListener = callListener;
 	}
 
-	public void onSuccess(IMqttToken asyncActionToken) {
-		if (this.callListener != null) {
-			this.callListener.onSuccess(this.publishRequest, this.publishResponse);
+	public void send() {
+		if (null == this.publishRequest) {
+			logger.error("bad parameters: null");
+			return;
 		}
+		
+		if (!(getNet() instanceof MqttNet)) {
+			logger.error("bad parameter: need MqttNet");
+			return;
+		}
+		MqttNet mqttNet = (MqttNet)getNet();
+		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
+		if (null == mqttAsyncClient) {
+			logger.error("MqttNet::getClient() return null");
+			return;
+		}
+		
+		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
+			logger.error("mqtt not connected!");
+			setStatus(MqttStatus.completed);
+			onFailure(null, new BadNetworkException());
+			return;
+		}
+		
+		Object objPayload = publishRequest.getPayload();
+		String topic = publishRequest.getTopic();
+		int qos = publishRequest.getQos();
+
+		if (StringUtils.isEmpty(topic) || objPayload == null) {
+			logger.error("bad parameters: topic or payload is empty");
+			onFailure(null, new NullPointerException("topic or payload is empty"));
+			return;
+		}
+		try {
+			byte[] payload = null;
+			if (objPayload instanceof String) {
+				payload = objPayload.toString().getBytes("UTF-8");
+			} else if (objPayload instanceof byte[]) {
+				payload = (byte[]) objPayload;
+			} else {
+				payload = JSON.toJSONString(objPayload).getBytes("UTF-8");
+			}
+			
+			MqttMessage message = new MqttMessage(payload);
+			message.setQos(qos);
+			setStatus(MqttStatus.waitingToPublish);
+
+			mqttAsyncClient.publish(topic, message, null, this).waitForCompletion(mqttNet.getTimeToWait());
+			
+		} catch (Exception e) {
+			logger.error("send publish error! ", e);
+			onFailure(null, new MqttThrowable(e.getMessage()));
+		}
+	}
+	
+	
+	public void onSuccess(IMqttToken asyncActionToken) {
+		this.callListener.onSuccess(this.publishRequest);
 	}
 
 	public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 		
-		String msg = (null != exception) ? exception.getMessage() : "Mqtt send failed: unknown error";
-
-		if (this.callListener != null) return;
+		String msg = (null != exception) ? exception.getMessage() : "publish failed: unknown error";
 		
 		if (exception instanceof BadNetworkException) {
-			QJError error = new QJError();
-			error.setCode(4101);
+			MqttError error = new MqttError();
+			error.setCode(ErrorCode.INVOKE_NET);
+			error.setMsg("bad network");
 			this.callListener.onFailed(this.publishRequest, error);
 		} else {
-			QJError error = new QJError();
-			error.setCode(4201);
+			MqttError error = new MqttError();
+			error.setCode(ErrorCode.INVOKE_SERVER);
 			error.setMsg(msg);
 			this.callListener.onFailed(this.publishRequest, error);
 		}
-		
 	}
-
-	/*public void rpcMessageArrived(String topic, MqttMessage message) {
-		logger.info("rpc topic={}, msg={}", topic, message.toString());
-		if (this.request instanceof MqttPublishRequest) {
-
-			MqttPublishRequest publishRequest = (MqttPublishRequest) this.request;
-
-			if (publishRequest.isRPC()
-					&& (this.status == MqttSendStatus.published || this.status == MqttSendStatus.waitingToPublish)
-					&& topic.equals(publishRequest.getReplyTopic())) {
-				logger.info("match succ!,replyTopic={}", topic);
-
-				setStatus(MqttSendStatus.completed);
-
-				if (null == this.response)
-					this.response = new GeneralResponse();
-				this.response.data = message.toString();
-
-				if (this.listener != null)
-					this.listener.onSuccess(this.request, this.response);
-			}
+	
+	class CallListenerInternal implements IOnCallListener {
+		@Override
+		public void onSuccess(PublishRequest publishRequest) {
+			logger.info("publish succ, topic = [{}], qos=[{}], msg = [{}]", publishRequest.getTopic(), 
+					publishRequest.getQos() ,JSON.toJSONString(publishRequest.getPayload()));
 		}
-	}*/
+
+		@Override
+		public void onFailed(PublishRequest publishRequest, MqttError error) {
+			logger.error("publish fail, topic = [{}], error=[{}]", publishRequest.getTopic(), 
+					error.toString());
+		}
+    }
+	
 }
 

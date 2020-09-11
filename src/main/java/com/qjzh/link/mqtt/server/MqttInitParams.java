@@ -20,6 +20,8 @@ public class MqttInitParams {
 	private String username;
 
 	private String password;
+	//客户端标记
+	private String clientMark = "Default";
 
 	private boolean isCheckRootCrt = false;
 
@@ -28,6 +30,9 @@ public class MqttInitParams {
 	private boolean cleanSession = true;
 
 	private int keepAliveInterval = 30;
+	
+	//等待动作完成最大时间	
+	private int timeToWait = 5000;
 
 	public MqttInitParams(String[] serverURIs, String username, String password) {
 		this.serverURIs = serverURIs;
@@ -90,9 +95,26 @@ public class MqttInitParams {
 	public void setKeepAliveInterval(int keepAliveInterval) {
 		this.keepAliveInterval = keepAliveInterval;
 	}
+	
+	public String getClientMark() {
+		return clientMark;
+	}
+
+	public void setClientMark(String clientMark) {
+		this.clientMark = clientMark;
+	}
+	
+	public int getTimeToWait() {
+		return timeToWait;
+	}
+
+	public void setTimeToWait(int timeToWait) {
+		this.timeToWait = timeToWait;
+	}
 
 	public boolean checkValid() {
-		if ((null != this.serverURIs && this.serverURIs.length == 0) || StringUtils.isEmpty(this.username)
+		if ((null == this.serverURIs || this.serverURIs.length == 0)
+				|| StringUtils.isEmpty(this.username)
 				|| StringUtils.isEmpty(this.password)) {
 			return false;
 		}

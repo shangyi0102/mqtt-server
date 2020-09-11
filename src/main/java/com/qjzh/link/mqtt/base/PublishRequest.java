@@ -4,6 +4,8 @@ public interface PublishRequest {
 
 	String getTopic();
 	
+	public String getReplyTopic();
+	
 	int getQos();
 	
 	String getMsgId();

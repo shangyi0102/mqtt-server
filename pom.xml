@@ -157,6 +157,11 @@
 			<systemPath>${basedir}/lib/qjzh-tools-core-1.0.0.jar</systemPath>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 

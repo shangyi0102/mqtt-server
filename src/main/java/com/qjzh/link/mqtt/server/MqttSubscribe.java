@@ -1,15 +1,21 @@
 package com.qjzh.link.mqtt.server;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.qjzh.link.mqtt.base.AbsMqttFeed;
-import com.qjzh.link.mqtt.base.QJError;
+import com.qjzh.link.mqtt.base.ErrorCode;
+import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
+import com.qjzh.link.mqtt.channel.ConnectState;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.exception.BadNetworkException;
+import com.qjzh.link.mqtt.exception.MqttThrowable;
 
 /**
  * @DESC: 订阅器
@@ -23,14 +29,20 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//订阅请求
 	private SubscribeRequest subscribeRequest;
+	//消息监听器
+	private IMqttMessageListener mqttMessageListener;
 	
-	private IOnSubscribeListener subscribeListener;
+	private IOnSubscribeListener subscribeListener = new SubscribeListenerInternal();
 
 	public MqttSubscribe(MqttNet mqttNet, SubscribeRequest subscribeRequest, 
+			IMqttMessageListener mqttMessageListener,
 			IOnSubscribeListener subscribeListener) {
 		super(mqttNet);
+		this.mqttMessageListener = mqttMessageListener;
 		this.subscribeRequest = subscribeRequest;
-		this.subscribeListener = subscribeListener;
+		if (subscribeListener != null) {
+			this.subscribeListener = subscribeListener;
+		}
 		setStatus(MqttStatus.waitingToSend);
 	}
 	
@@ -50,6 +62,52 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 		return subscribeRequest;
 	}
 
+	public void receive(){
+		
+		if (null == subscribeRequest) {
+			logger.error("bad parameters: null");
+			return;
+		}
+		
+		if (!(getNet() instanceof MqttNet)) {
+			logger.error("bad parameter: need MqttNet");
+			return;
+		}
+		MqttNet mqttNet = (MqttNet)getNet();
+		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
+		if (null == mqttAsyncClient) {
+			logger.error("MqttNet::getClient() return null");
+			return;
+		}
+		
+		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
+			logger.error("mqtt not connected!");
+			setStatus(MqttStatus.completed);
+			onFailure(null, new BadNetworkException());
+			return;
+		}
+		
+		String topic = subscribeRequest.getTopic();
+		int qos = subscribeRequest.getQos();
+			
+		if (StringUtils.isEmpty(topic)) {
+			logger.error("bad parameters: subscribe request , topic empty");
+			onFailure(null, new NullPointerException("subscribe request , topic empty"));
+			return;
+		}
+			
+		try {
+			if (subscribeRequest.isSubscribe()) {
+				mqttAsyncClient.subscribe(topic, qos, null, this, mqttMessageListener);
+			} else {
+				mqttAsyncClient.unsubscribe(topic, null, this);
+			}
+		} catch (Exception e) {
+			logger.error("subsribe request error! ", e);
+			onFailure(null, new MqttThrowable(e.getMessage()));
+		}
+	}
+	
 	public void onSuccess(IMqttToken asyncActionToken) {
 		boolean isSucc = true;
 		try {
@@ -60,57 +118,46 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 		}
 		String topic = subscribeRequest.getTopic();
 		
-		if (this.subscribeListener != null) {
-			if (isSucc) {
-				this.subscribeListener.onSuccess(topic);
-			} else {
-				QJError error = new QJError();
-				error.setCode(4103);
-				error.setMsg("subACK Failure");
-				this.subscribeListener.onFailed(topic, error);
-			}
-		} 
+		if (isSucc) {
+			this.subscribeListener.onSuccess(topic);
+		} else {
+			MqttError error = new MqttError();
+			error.setCode(4103);
+			error.setMsg("subACK Failure");
+			this.subscribeListener.onFailed(topic, error);
+		}
 	}
 
 	public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 		
-		String msg = (null != exception) ? exception.getMessage() : "Mqtt Subscribe failed: unknown error";
-		if (this.subscribeListener == null) return;
+		String msg = (null != exception) ? exception.getMessage() : "subscribe failed: unknown error";
 
 		if (exception instanceof BadNetworkException) {
-			QJError error = new QJError();
-			error.setCode(4101);
+			MqttError error = new MqttError();
+			error.setCode(ErrorCode.INVOKE_NET);
+			error.setMsg("bad network");
 			this.subscribeListener.onFailed(subscribeRequest.getTopic(), error);
 		} else {
-			QJError error = new QJError();
-			error.setCode(4201);
+			MqttError error = new MqttError();
+			error.setCode(ErrorCode.INVOKE_SERVER);
 			error.setMsg(msg);
 			this.subscribeListener.onFailed(subscribeRequest.getTopic(), error);
 		}
-
 	}
+	
+	class SubscribeListenerInternal implements IOnSubscribeListener {
 
-	/*public void rpcMessageArrived(String topic, MqttMessage message) {
-		logger.info("rpc topic={}, msg={}", topic, message.toString());
-		if (this.request instanceof MqttPublishRequest) {
-
-			MqttPublishRequest publishRequest = (MqttPublishRequest) this.request;
-
-			if (publishRequest.isRPC()
-					&& (this.status == MqttSendStatus.published || this.status == MqttSendStatus.waitingToPublish)
-					&& topic.equals(publishRequest.getReplyTopic())) {
-				logger.info("match succ!,replyTopic={}", topic);
-
-				setStatus(MqttSendStatus.completed);
-
-				if (null == this.response)
-					this.response = new GeneralResponse();
-				this.response.data = message.toString();
-
-				if (this.listener != null)
-					this.listener.onSuccess(this.request, this.response);
-			}
+		@Override
+		public void onSuccess(String topic) {
+			logger.info("subscribe succ, topic = [{}]", topic);
 		}
-	}*/
+
+		@Override
+		public void onFailed(String topic, MqttError error) {
+			logger.error("subscribe fail, topic = [{}], error=[{}]", topic, error.toString());
+		}
+
+    }
+
 }
 

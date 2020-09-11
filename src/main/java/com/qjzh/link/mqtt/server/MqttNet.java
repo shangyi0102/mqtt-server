@@ -16,17 +16,20 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.qjzh.link.mqtt.base.INet;
-import com.qjzh.link.mqtt.base.IOnCallListener;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
 import com.qjzh.link.mqtt.channel.ConnectState;
+import com.qjzh.link.mqtt.channel.IOnCallListener;
+import com.qjzh.link.mqtt.channel.IOnCallReplyListener;
 import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
-import com.qjzh.link.mqtt.server.callback.DefaulMsgCallback;
-import com.qjzh.link.mqtt.server.request.GeneralSubscribeRequest;
+import com.qjzh.link.mqtt.server.callback.DefaulMessageCallback;
+import com.qjzh.link.mqtt.server.callback.ReplyMessageListener;
+import com.qjzh.link.mqtt.server.callback.RequestMessageListener;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 
 /**
@@ -51,12 +54,24 @@ public class MqttNet implements INet{
 	private InputStream mqttRootCrtFile;
 	//是否初始化连接
 	private boolean isInitConnect = false;
+	//等待动作完成最大时间
+	private int timeToWait = 5000;
 	//连接状态
 	private ConnectState connectState = ConnectState.DISCONNECTED;
 	//回调类
-	private DefaulMsgCallback defaulCallback = null;
+	private DefaulMessageCallback defaulCallback = null;
 	//mqtt初始化连接配置
 	private MqttInitParams mqttInitParams;
+	
+	private IOnCallListener callListener;
+	
+	private IOnCallReplyListener callReplyListener;
+	
+	private IOnSubscribeListener subscribeListener;
+	@Autowired
+	private RequestMessageListener requestMessageListener;
+	@Autowired
+	private ReplyMessageListener replyMessageListener;
 
 	public MqttNet(MqttInitParams initParams) {
 		this.mqttInitParams = initParams;
@@ -102,64 +117,31 @@ public class MqttNet implements INet{
 	public ConnectState getConnectState() {
 		return this.connectState;
 	}
-
-	/*public void subscribe(String topic, IMqttMessageListener mqttMessageListener, 
-			IOnSubscribeListener listener) {
-		if (StringUtils.isEmpty(topic) || null == mqttMessageListener) {
-			logger.info("topic or MessageListener is null");
-			return;
-		}
-		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
-		subscribeRequest.setTopic(topic);
-		subscribeRequest.setSubscribe(true);
-		subscribeRequest.setMqttMessageListener(mqttMessageListener);
-		
-		MqttPublish mqttPublish = new MqttPublish(this, subscribeRequest, listener);
-		MqttSendExecutor.send(mqttPublish);
+	
+	public int getTimeToWait() {
+		return timeToWait;
 	}
 
-	public void unSubscribe(String topic, IOnSubscribeListener listener) {
-		if (StringUtils.isEmpty(topic)) {
-			logger.info("topic is empty");
-			return;
-		}
-		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
-		subscribeRequest.setTopic(topic);
-		subscribeRequest.setSubscribe(false);
-		MqttPublish mqttPublish = new MqttPublish(this, subscribeRequest, listener);
-		MqttSendExecutor.send(mqttPublish);
-	}*/
+	public void setCallListener(IOnCallListener callListener) {
+		this.callListener = callListener;
+	}
 
-	/*public void subscribeRpc(String topic, final IOnSubscribeRpcListener listener) {
-		logger.debug("topic = " + topic);
+	public void setCallReplyListener(IOnCallReplyListener callReplyListener) {
+		this.callReplyListener = callReplyListener;
+	}
 
-		if (StringUtils.isEmpty(topic) || listener == null) {
-			logger.info("params error");
-			return;
-		}
-		subscribe(topic, new IOnSubscribeListener() {
-			public void onSuccess(String topic) {
-				listener.onSubscribeSuccess(topic);
-			}
+	public void setSubscribeListener(IOnSubscribeListener subscribeListener) {
+		this.subscribeListener = subscribeListener;
+	}
 
-			public void onFailed(String topic, QJError error) {
-				listener.onSubscribeFailed(topic, error);
-			}
+	public void setRequestMessageListener(RequestMessageListener requestMessageListener) {
+		this.requestMessageListener = requestMessageListener;
+	}
 
-			public boolean needUISafety() {
-				return listener.needUISafety();
-			}
-		});
-		if (this.defaulCallback != null) {
-			logger.info("registerRrpcListener");
-			this.defaulCallback.registerRrpcListener(topic, listener);
-		}
-	}*/
-	
-	/*public void retry(AbsQJSend mqttSend) {
-		MqttSendExecutor.send((MqttPublish) mqttSend);
-	}*/
-	
+	public void setReplyMessageListener(ReplyMessageListener replyMessageListener) {
+		this.replyMessageListener = replyMessageListener;
+	}
+
 	public IMqttAsyncClient getClient() {
 		return (IMqttAsyncClient) this.mqttAsyncClient;
 	}
@@ -169,14 +151,16 @@ public class MqttNet implements INet{
 		String timestamp = System.currentTimeMillis() + "";
 
 		String[] serverURIs = mqttInitParams.getServerURIs();
-		String serverURI = serverURIs[0];
-		String mqttClientId = "clientId" + ",timestamp=" + timestamp + "|";
+		String clientMark = mqttInitParams.getClientMark();
+		
+		String mqttClientId = "clientId=" + clientMark + ",timestamp=" + timestamp + "|";
 
+		this.timeToWait = mqttInitParams.getTimeToWait();
 		String username = mqttInitParams.getUsername();
 		String password = mqttInitParams.getPassword();
 
 		try {
-			this.mqttAsyncClient = new MqttAsyncClient(serverURI, mqttClientId, this.persistence);
+			this.mqttAsyncClient = new MqttAsyncClient(serverURIs[0], mqttClientId, this.persistence);
 		} catch (Exception e) {
 			logger.error("create mqtt client error", e);
 			this.connectState = ConnectState.CONNECTFAIL;
@@ -197,13 +181,12 @@ public class MqttNet implements INet{
 		}
 
 		this.connOpts.setAutomaticReconnect(true);
-
 		this.connOpts.setCleanSession(mqttInitParams.getCleanSession());
 		this.connOpts.setUserName(username);
 		this.connOpts.setPassword(password.toCharArray());
 		this.connOpts.setKeepAliveInterval(mqttInitParams.getKeepAliveInterval());
 
-		this.defaulCallback = new DefaulMsgCallback(this);
+		this.defaulCallback = new DefaulMessageCallback(this);
 		this.mqttAsyncClient.setCallback(this.defaulCallback);
 		try {
 			this.connectState = ConnectState.CONNECTING;
@@ -219,7 +202,7 @@ public class MqttNet implements INet{
 					MqttNet.this.connectState = ConnectState.CONNECTFAIL;
 					MqttEventDispatcher.getInstance().broadcastMessage(7, null, null, exception.toString());
 				}
-			});
+			}).waitForCompletion(timeToWait);
 			logger.debug("mqtt client connect..." + String.join(",", serverURIs));
 		} catch (Exception e) {
 			logger.error("mqtt client connect error, {}", e);
@@ -263,38 +246,42 @@ public class MqttNet implements INet{
 	}
 
 	@Override
-	public void publish(PublishRequest publishRequest, IOnCallListener listener) {
-		MqttPublish mqttPublish = new MqttPublish(this, publishRequest, listener);
-		MqttExecutor.publish(mqttPublish);
+	public void publish(PublishRequest publishRequest) {
+		MqttPublish publish = new MqttPublish(this, publishRequest, callListener);
+		publish.send();
 	}
 
 	@Override
-	public PublishResponse publishRpc(PublishRequest publishRequest,
-			IOnCallListener listener) {
-		MqttPublishRpc mqttPublish = new MqttPublishRpc(this, publishRequest, listener);
-		return MqttExecutor.publishRpc(mqttPublish);
+	public PublishResponse publishRpc(PublishRequest publishRequest) {
+		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, callListener);
+		return publishRpc.sendRpc();
 	}
 	
 	@Override
-	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout,
-			IOnCallListener listener) {
-		MqttPublishRpc mqttPublish = new MqttPublishRpc(this, publishRequest, timeout, listener);
-		return MqttExecutor.publishRpc(mqttPublish);
+	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout) {
+		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, timeout, callListener);
+		return publishRpc.sendRpc();
 	}
 
-	
 	@Override
-	public void subscribe(SubscribeRequest subscribeRequest, IOnSubscribeListener onSubscribeListener) {
-		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, onSubscribeListener);
-		MqttExecutor.subscribe(mqttSubscribe);
+	public void publishReply(PublishResponse publishResponse) {
+		MqttPublishReply publishReply = new MqttPublishReply(this, publishResponse, callReplyListener);
+		publishReply.send();
 	}
 	
 	@Override
-	public void unSubscribe(String topic, IOnSubscribeListener onSubscribeListener) {
-		GeneralSubscribeRequest subscribeRequest = new GeneralSubscribeRequest();
-		subscribeRequest.setTopic(topic);
-		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, onSubscribeListener);
-		MqttExecutor.subscribe(mqttSubscribe);
+	public void subscribe(SubscribeRequest subscribeRequest) {
+		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
+				requestMessageListener, subscribeListener);
+		mqttSubscribe.receive();
 	}
+	
+	@Override
+	public void subscribeReply(SubscribeRequest subscribeRequest) {
+		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
+				replyMessageListener, subscribeListener);
+		mqttSubscribe.receive();
+	}
+	
 	
 }

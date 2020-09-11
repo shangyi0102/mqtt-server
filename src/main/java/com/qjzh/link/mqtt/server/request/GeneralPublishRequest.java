@@ -15,8 +15,6 @@ public class GeneralPublishRequest implements PublishRequest {
 	
 	private String topic;
 	
-	private boolean isRPC = true;
-	
 	private String replyTopic;
 	
 	private int qos = 0;
@@ -37,23 +35,13 @@ public class GeneralPublishRequest implements PublishRequest {
 
 	public void setTopic(String topic) {
 		this.topic = topic;
-	}
-
-	public boolean isRPC() {
-		return isRPC;
-	}
-
-	public void setRPC(boolean isRPC) {
-		this.isRPC = isRPC;
+		this.replyTopic = topic + "_reply";
 	}
 
 	public String getReplyTopic() {
 		return replyTopic;
 	}
 
-	public void setReplyTopic(String replyTopic) {
-		this.replyTopic = replyTopic;
-	}
 
 	public int getQos() {
 		return qos;

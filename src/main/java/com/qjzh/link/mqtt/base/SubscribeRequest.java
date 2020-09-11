@@ -1,6 +1,5 @@
 package com.qjzh.link.mqtt.base;
 
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 
 public interface SubscribeRequest {
 
@@ -10,6 +9,5 @@ public interface SubscribeRequest {
 	
 	public boolean isSubscribe();
 	
-	public IMqttMessageListener getMqttMessageListener();
-	
+	void check() throws IllegalStateException;
 }

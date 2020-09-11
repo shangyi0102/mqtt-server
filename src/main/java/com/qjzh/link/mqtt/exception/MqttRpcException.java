@@ -9,16 +9,17 @@ package com.qjzh.link.mqtt.exception;
  */
 public class MqttRpcException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6796752866447893520L;
 
-	public MqttRpcException() {
-		super();
+	private Integer code;
+	
+	public MqttRpcException(int code, String message) {
+		super(message);
+		this.code = code;
 	}
 
-	public MqttRpcException(String message) {
-		super(message);
+	public Integer getCode() {
+		return code;
 	}
+
 }
