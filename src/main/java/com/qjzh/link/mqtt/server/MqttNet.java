@@ -2,7 +2,6 @@ package com.qjzh.link.mqtt.server;
 
 import java.io.InputStream;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -22,14 +21,13 @@ import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
-import com.qjzh.link.mqtt.channel.ConnectState;
-import com.qjzh.link.mqtt.channel.IOnCallListener;
-import com.qjzh.link.mqtt.channel.IOnCallReplyListener;
-import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
-import com.qjzh.link.mqtt.channel.MqttEventDispatcher;
 import com.qjzh.link.mqtt.server.callback.DefaulMessageCallback;
 import com.qjzh.link.mqtt.server.callback.ReplyMessageListener;
 import com.qjzh.link.mqtt.server.callback.RequestMessageListener;
+import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.server.channel.IOnCallListener;
+import com.qjzh.link.mqtt.server.channel.IOnCallReplyListener;
+import com.qjzh.link.mqtt.server.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 
 /**
@@ -77,7 +75,7 @@ public class MqttNet implements INet{
 		this.mqttInitParams = initParams;
 	}
 	
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		logger.debug("init");
 
@@ -164,8 +162,6 @@ public class MqttNet implements INet{
 		} catch (Exception e) {
 			logger.error("create mqtt client error", e);
 			this.connectState = ConnectState.CONNECTFAIL;
-			MqttEventDispatcher.getInstance().broadcastMessage(7, null, null,
-					"create mqtt client error,e=" + e.toString());
 			return;
 		}
 		this.connOpts = new MqttConnectOptions();
@@ -200,14 +196,12 @@ public class MqttNet implements INet{
 				public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 					logger.info("connect onFailure, exce = " + exception.toString());
 					MqttNet.this.connectState = ConnectState.CONNECTFAIL;
-					MqttEventDispatcher.getInstance().broadcastMessage(7, null, null, exception.toString());
 				}
 			}).waitForCompletion(timeToWait);
 			logger.debug("mqtt client connect..." + String.join(",", serverURIs));
 		} catch (Exception e) {
 			logger.error("mqtt client connect error, {}", e);
 			this.connectState = ConnectState.CONNECTFAIL;
-			MqttEventDispatcher.getInstance().broadcastMessage(7, null, null, e.toString());
 		}
 	}
 
@@ -230,8 +224,6 @@ public class MqttNet implements INet{
 			this.mqttAsyncClient.disconnect();
 			logger.info("disconnect....");
 			this.connectState = ConnectState.DISCONNECTED;
-			MqttEventDispatcher.getInstance().broadcastMessage(2, null, null, "disconnect success");
-
 			this.persistence.close();
 			this.persistence = null;
 			this.mqttAsyncClient = null;

@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.channel;
+package com.qjzh.link.mqtt.server.channel;
 
 public interface INetSessionStateListener {
 	

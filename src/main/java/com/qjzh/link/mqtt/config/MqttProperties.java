@@ -29,6 +29,9 @@ public class MqttProperties {
 	 * 服务质量 0=最多一次，有可能重复或丢失; 1=至少一次，有可能重复; 2=只有一次确保消息只到达一次
 	 */
 	private int qos = 1;
+	
+	//等待超时时间(ms)
+	private int timeToWait = 5000;
 
 	/**
 	 * the default max inflight
@@ -80,4 +83,13 @@ public class MqttProperties {
 	public void setMaxInflight(int maxInflight) {
 		this.maxInflight = maxInflight;
 	}
+
+	public int getTimeToWait() {
+		return timeToWait;
+	}
+
+	public void setTimeToWait(int timeToWait) {
+		this.timeToWait = timeToWait;
+	}
+	
 }

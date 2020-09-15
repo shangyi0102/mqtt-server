@@ -1,233 +1,141 @@
 package com.qjzh.link.mqtt.model.product;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-import com.qjzh.tools.core.bean.BeanUtil;
-import com.qjzh.tools.core.collection.CollectionUtil;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import com.qjzh.link.mqtt.jsonschema.ProductJsonSchemaParser;
+import com.qjzh.link.mqtt.jsonschema.validator.DateTimeValidator;
 
 /**
- * @DESC: 产品结构定义类
+ * @DESC: 应用-产品信息
  * @author LIU.ZHENXING
- * @date 2020年2月20日下午4:20:27
+ * @date 2020年2月3日下午4:56:17
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-public class Product {
-
-	private Long id;
-
-	private String productIdentifier;
-
-	private String productName;
-
-	private String productType;
+public class Product implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7865490790725860476L;
 	
-	private Long parentProduct;
+	//租户唯一编码
+	private String tenantCode;
+	//应用唯一编码
+	private String appCode;
+	//产品唯一编码
+	private String prodCode;
+	// String JSON Schema
+	private String jsonSchema;
+	// JSON Schema 
+	private Schema schema;
 	
-	private String parentProductIdentifier;
+	//产品SN 自定义Key
+	private String devSnKey;
+	//必填字段数组
+	private List<String> requiredFields;
 	
-	private List<Vendor> productModels;
-
-	private List<Attribute> staticAttrs;
-
-	private List<Attribute> dynamicAttrs;
+	//必填字段个数(包括用户自定义字段,系统内置字段)
+	private Integer requiredFieldsCount = 0;
 	
-	private List<Event> events;
-
-	private List<Service> services;
+	//产品数据结构
+	private ProductMeta struct;
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setProductIdentifier(String productIdentifier) {
-		this.productIdentifier = productIdentifier;
-	}
-
-	public String getProductIdentifier() {
-		return productIdentifier;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductType(String productType) {
-		this.productType = productType;
-	}
-
-	public String getProductType() {
-		return productType;
-	}
-
-	public Long getParentProduct() {
-		return parentProduct;
-	}
-
-	public void setParentProduct(Long parentProduct) {
-		this.parentProduct = parentProduct;
-	}
-
-	public String getParentProductIdentifier() {
-		return parentProductIdentifier;
-	}
-
-	public void setParentProductIdentifier(String parentProductIdentifier) {
-		this.parentProductIdentifier = parentProductIdentifier;
-	}
-
-	public List<Vendor> getProductModels() {
-		return productModels;
-	}
-
-	public void setProductModels(List<Vendor> productModels) {
-		this.productModels = productModels;
-	}
-
-	public List<Attribute> getStaticAttrs() {
-		return staticAttrs;
-	}
-
-	public void setStaticAttrs(List<Attribute> staticAttrs) {
-		this.staticAttrs = staticAttrs;
-	}
-
-	public List<Attribute> getDynamicAttrs() {
-		return dynamicAttrs;
-	}
-
-	public void setDynamicAttrs(List<Attribute> dynamicAttrs) {
-		this.dynamicAttrs = dynamicAttrs;
-	}
-
-	public List<Service> getProdServices() {
-		return services;
-	}
-
-	public void setProdServices(List<Service> services) {
-		this.services = services;
-	}
-	
-	public List<Event> getProdEvents() {
-		return events;
-	}
-
-	public void setProdEvents(List<Event> events) {
-		this.events = events;
-	}
-
-	
-	public EventParam getEventByTag(String eventIdent, String attrTag){
-		Event event = null;
-		if (!CollectionUtil.isEmpty(events)) {
-			for (Event objEvent : events) {
-				if (eventIdent.equals(objEvent.getEventIdentifier())) {
-					event = objEvent;
-					break;
-				}
-			}
-		}
-		if (null != event) {
-			return getEventParamByTag(attrTag, event.getEventParams(), null);
-		}
+	public Product(String tenantCode, String appCode, String prodCode, ProductMeta struct){
+		this.tenantCode = tenantCode;
+		this.appCode = appCode;
+		this.prodCode = prodCode;
+		this.struct = struct;
+		ProductJsonSchemaParser prodJsonSchema = ProductJsonSchemaParser.builder(this.struct);
+		this.jsonSchema = prodJsonSchema.getStrSchema();
+		this.devSnKey = prodJsonSchema.getDevSNKey();
+		this.requiredFieldsCount = prodJsonSchema.getRequiredFieldCount();
+		//初始化 JSON Schema
+		JSONObject rawSchema = new JSONObject(new JSONTokener(this.jsonSchema));
+		SchemaLoader schemaLoader = SchemaLoader.builder()
+    			.schemaJson(rawSchema) 
+    			.addFormatValidator(new DateTimeValidator())
+    			.build();
+		this.schema = schemaLoader.load().build();
 		
-		return null;
 	}
-	
-	private EventParam getEventParamByTag(String attrTag, 
-			List<EventParam> lstEventParam, EventParam parentEventParam){
-		
-		String[] attrTags = attrTag.split("\\.");
-		for (EventParam eventParam : lstEventParam) {
-			String paramIdentifier = eventParam.getParamIdentifier();
-			DataType paramType = DataType.valueOf(eventParam.getParamType());
-			if (paramIdentifier.equals(attrTags[0])) {
-				eventParam.setParentParam(parentEventParam);
-				if (paramType == DataType.STRUCT) {
-					return getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), eventParam.getSubParams(), eventParam);
-				}else if(paramType == DataType.ARRAY) {
-					DataType arrayParamType = DataType.valueOf(eventParam.getArrayParamType());
-					if (arrayParamType == DataType.STRUCT) {
-						EventParam subParam = getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), 
-								eventParam.getSubParams(), eventParam);
-						if (subParam == null) {
-							return null;
-						}
-						//ProdParamType aItemType = ProdParamType.getArrayInParamType(ProdParamType.valueOf(subParam.getParamType()));
-						EventParam aItemEventParam = new EventParam();
-						BeanUtil.copyProperties(subParam, aItemEventParam);
-						aItemEventParam.setParamType(subParam.getParamType());
-						return aItemEventParam;
-					}
-					
-					//ProdParamType arrayType = ProdParamType.getArrayInParamType(ProdParamType.valueOf(eventParam.getArrayParamType()));
-					
-					EventParam arrayEventParam = new EventParam();
-					BeanUtil.copyProperties(eventParam, arrayEventParam);
-					arrayEventParam.setParamType(eventParam.getArrayParamType());
-					
-					return arrayEventParam;
-				}
-				return eventParam;
-			}
-		}
-		
-		return null;
-	}
-	
-	
-	public Attribute getAttrByTag(String attrTag){
-		Attribute attribute = null;
-		if (!CollectionUtil.isEmpty(staticAttrs)) {
-			attribute = getAttrByTag(attrTag, staticAttrs, null);
-		}
 
-		if (attribute == null && !CollectionUtil.isEmpty(dynamicAttrs)) {
-			attribute = getAttrByTag(attrTag, dynamicAttrs, null);
-		}
-		
-		return attribute;
+	public String getTenantCode() {
+		return tenantCode;
 	}
-	
-	
-	private Attribute getAttrByTag(String attrTag, List<Attribute> lstAttrs, Attribute parentAttr){
-		
-		String[] attrTags = attrTag.split("\\.");
-		for (Attribute attribute : lstAttrs) {
-			String attrIdentifier = attribute.getAttrIdentifier();
-			if (attrIdentifier.equals(attrTags[0])) {
-				DataType attrType = DataType.valueOf(attribute.getAttrType());
-				attribute.setParentAttr(parentAttr);
-				if (attrType == DataType.STRUCT) {
-					return getAttrByTag(attrTag.substring(attrTag.indexOf(".")+1), attribute.getSubAttrs(), attribute);
-				}
-				return attribute;
-			}
-		}
-		
-		return null;
+
+	public void setTenantCode(String tenantCode) {
+		this.tenantCode = tenantCode;
 	}
-	
-	public String getSerCodeBySerId(Long serId){
-		
-		if (!CollectionUtil.isEmpty(services)) {
-			for (Service service : services) {
-				Long serIdentifier = service.getId();
-				if (serIdentifier == serId) {
-					return service.getServiceIdentifier();
-				}
-			}
-		}
-		return null;
-	} 
-	
+
+	public String getAppCode() {
+		return appCode;
+	}
+
+	public void setAppCode(String appCode) {
+		this.appCode = appCode;
+	}
+
+	public String getProdCode() {
+		return prodCode;
+	}
+
+	public void setProdCode(String prodCode) {
+		this.prodCode = prodCode;
+	}
+
+	public ProductMeta getStruct() {
+		return struct;
+	}
+
+	public void setStruct(ProductMeta struct) {
+		this.struct = struct;
+	}
+
+	public String getJsonSchema() {
+		return jsonSchema;
+	}
+
+	public void setJsonSchema(String jsonSchema) {
+		this.jsonSchema = jsonSchema;
+	}
+
+	public String getDevSnKey() {
+		return devSnKey;
+	}
+
+	public void setDevSnKey(String devSnKey) {
+		this.devSnKey = devSnKey;
+	}
+
+	public String getMIMEKey() {
+		return devSnKey;
+	}
+
+	public Schema getSchema() {
+		return schema;
+	}
+
+	public void setSchema(Schema schema) {
+		this.schema = schema;
+	}
+
+	public List<String> getRequiredFields() {
+		return requiredFields;
+	}
+
+	public void setRequiredFields(List<String> requiredFields) {
+		this.requiredFields = requiredFields;
+	}
+
+	public Integer getRequiredFieldsCount() {
+		return requiredFieldsCount;
+	}
+
 }

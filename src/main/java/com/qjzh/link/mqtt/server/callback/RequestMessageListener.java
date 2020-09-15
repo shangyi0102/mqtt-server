@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.qjzh.link.mqtt.base.INet;
-import com.qjzh.link.mqtt.channel.IOnPushRequestHandle;
 import com.qjzh.link.mqtt.model.RequestModel;
+import com.qjzh.link.mqtt.server.channel.IPushRequestHandler;
 import com.qjzh.link.mqtt.server.request.GeneralPublishRequest;
 import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 
@@ -31,11 +31,11 @@ public class RequestMessageListener implements IMqttMessageListener {
 	@Autowired
 	private INet mqttNet;
 	@Autowired
-	private IOnPushRequestHandle onPushRequestHandle;
+	private IPushRequestHandler pushRequestHandler;
 	
-	public RequestMessageListener(INet mqttNet, IOnPushRequestHandle onPushRequestHandle) {
+	public RequestMessageListener(INet mqttNet, IPushRequestHandler pushRequestHandler) {
 		this.mqttNet = mqttNet;
-		this.onPushRequestHandle = onPushRequestHandle;
+		this.pushRequestHandler = pushRequestHandler;
 	}
 	
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -62,7 +62,7 @@ public class RequestMessageListener implements IMqttMessageListener {
 		publishRequest.setQos(qos);
 		
 		try {
-			Object data = onPushRequestHandle.onCommand(publishRequest);
+			Object data = pushRequestHandler.onCommand(publishRequest);
 			if (data == null) {
 				return;
 			}

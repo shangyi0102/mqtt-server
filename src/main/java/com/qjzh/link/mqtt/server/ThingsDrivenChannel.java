@@ -7,14 +7,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.qjzh.link.mqtt.base.Constants;
 import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
 import com.qjzh.link.mqtt.server.request.ReplySubscribeRequest;
 import com.qjzh.link.mqtt.server.request.ReportSubscribeRequest;
 
 @Component
-public class ThingsDriven {
+public class ThingsDrivenChannel {
 
 	@Autowired
 	private INet mqttNet;

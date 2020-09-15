@@ -9,11 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import com.qjzh.link.mqtt.base.Constants;
 import com.qjzh.link.mqtt.server.MqttInitParams;
 import com.qjzh.link.mqtt.server.MqttNet;
 import com.qjzh.link.mqtt.server.ThingsInitData;
-import com.qjzh.link.mqtt.server.request.ReportSubscribeRequest;
 
 /**
  * @DESC: MQTT 启动 配置类
@@ -44,12 +42,16 @@ public class MqttConfig {
 		MqttInitParams mqttConfig = new MqttInitParams(mqttProperties.getUrls(), 
 				mqttProperties.getUsername(), mqttProperties.getPassword());
 		mqttConfig.setClientMark("things");
+		mqttConfig.setTimeToWait(mqttProperties.getTimeToWait());
+		mqttConfig.setMaxInflight(mqttProperties.getMaxInflight());
 		return mqttConfig;
 	}
 	
 	@Bean
 	public MqttNet mqttNet(MqttInitParams mqttInitParams) {
-		return new MqttNet(mqttInitParams);
+		MqttNet mqttNet = new MqttNet(mqttInitParams);
+		mqttNet.init();
+		return mqttNet;
 	}
 	
 	@Bean

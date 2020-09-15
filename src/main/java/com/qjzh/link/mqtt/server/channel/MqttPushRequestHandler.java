@@ -1,11 +1,11 @@
-package com.qjzh.link.mqtt.channel;
+package com.qjzh.link.mqtt.server.channel;
 
 import org.springframework.stereotype.Component;
 
 import com.qjzh.link.mqtt.base.PublishRequest;
 
 @Component
-public class MqttPushRequestHandle implements IOnPushRequestHandle{
+public class MqttPushRequestHandler implements IPushRequestHandler{
 
 	@Override
 	public Object onCommand(PublishRequest publishRequest) throws Exception {

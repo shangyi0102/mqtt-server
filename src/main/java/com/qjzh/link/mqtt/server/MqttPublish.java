@@ -9,14 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.base.AbsMqttFeed;
+import com.qjzh.link.mqtt.base.AbsMqtt;
 import com.qjzh.link.mqtt.base.ErrorCode;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishRequest;
-import com.qjzh.link.mqtt.channel.ConnectState;
-import com.qjzh.link.mqtt.channel.IOnCallListener;
 import com.qjzh.link.mqtt.exception.BadNetworkException;
 import com.qjzh.link.mqtt.exception.MqttThrowable;
+import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 
 /**
  * @DESC: mqtt发送者
@@ -25,7 +25,7 @@ import com.qjzh.link.mqtt.exception.MqttThrowable;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
+public class MqttPublish extends AbsMqtt implements IMqttActionListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//请求体
@@ -40,15 +40,6 @@ public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 		if (callListener != null) {
 			this.callListener = callListener;
 		}
-		setStatus(MqttStatus.waitingToSend);
-	}
-
-	public void setStatus(MqttStatus status) {
-		this.status = status;
-	}
-
-	public MqttStatus getStatus() {
-		return (MqttStatus)status;
 	}
 
 	public PublishRequest getPublishRequest() {
@@ -87,7 +78,6 @@ public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 		
 		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
 			logger.error("mqtt not connected!");
-			setStatus(MqttStatus.completed);
 			onFailure(null, new BadNetworkException());
 			return;
 		}
@@ -113,7 +103,6 @@ public class MqttPublish extends AbsMqttFeed implements IMqttActionListener {
 			
 			MqttMessage message = new MqttMessage(payload);
 			message.setQos(qos);
-			setStatus(MqttStatus.waitingToPublish);
 
 			mqttAsyncClient.publish(topic, message, null, this).waitForCompletion(mqttNet.getTimeToWait());
 			

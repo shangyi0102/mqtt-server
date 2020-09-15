@@ -8,14 +8,14 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.qjzh.link.mqtt.base.AbsMqttFeed;
+import com.qjzh.link.mqtt.base.AbsMqtt;
 import com.qjzh.link.mqtt.base.ErrorCode;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
-import com.qjzh.link.mqtt.channel.ConnectState;
-import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.exception.BadNetworkException;
 import com.qjzh.link.mqtt.exception.MqttThrowable;
+import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.server.channel.IOnSubscribeListener;
 
 /**
  * @DESC: 订阅器
@@ -24,7 +24,7 @@ import com.qjzh.link.mqtt.exception.MqttThrowable;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
+public class MqttSubscribe extends AbsMqtt implements IMqttActionListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//订阅请求
@@ -43,17 +43,8 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 		if (subscribeListener != null) {
 			this.subscribeListener = subscribeListener;
 		}
-		setStatus(MqttStatus.waitingToSend);
 	}
 	
-	public void setStatus(MqttStatus status) {
-		this.status = status;
-	}
-
-	public MqttStatus getStatus() {
-		return (MqttStatus)status;
-	}
-
 	public IOnSubscribeListener getSubscribeListener() {
 		return subscribeListener;
 	}
@@ -82,7 +73,6 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 		
 		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
 			logger.error("mqtt not connected!");
-			setStatus(MqttStatus.completed);
 			onFailure(null, new BadNetworkException());
 			return;
 		}
@@ -98,7 +88,8 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 			
 		try {
 			if (subscribeRequest.isSubscribe()) {
-				mqttAsyncClient.subscribe(topic, qos, null, this, mqttMessageListener);
+				IMqttToken tok = mqttAsyncClient.subscribe(topic, qos, null, this, mqttMessageListener);
+				tok.waitForCompletion(mqttNet.getTimeToWait());
 			} else {
 				mqttAsyncClient.unsubscribe(topic, null, this);
 			}
@@ -130,7 +121,8 @@ public class MqttSubscribe extends AbsMqttFeed implements IMqttActionListener {
 
 	public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 		
-		String msg = (null != exception) ? exception.getMessage() : "subscribe failed: unknown error";
+		String msg = (null != exception && StringUtils.isEmpty(exception.getMessage())) 
+				? exception.getMessage() : "subscribe failed: unknown error";
 
 		if (exception instanceof BadNetworkException) {
 			MqttError error = new MqttError();

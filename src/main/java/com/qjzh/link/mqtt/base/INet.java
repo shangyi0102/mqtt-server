@@ -1,11 +1,11 @@
 package com.qjzh.link.mqtt.base;
 
-import com.qjzh.link.mqtt.channel.ConnectState;
-import com.qjzh.link.mqtt.channel.IOnCallListener;
-import com.qjzh.link.mqtt.channel.IOnCallReplyListener;
-import com.qjzh.link.mqtt.channel.IOnSubscribeListener;
 import com.qjzh.link.mqtt.server.callback.ReplyMessageListener;
 import com.qjzh.link.mqtt.server.callback.RequestMessageListener;
+import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.server.channel.IOnCallListener;
+import com.qjzh.link.mqtt.server.channel.IOnCallReplyListener;
+import com.qjzh.link.mqtt.server.channel.IOnSubscribeListener;
 
 /**
  * @DESC: 连接接口

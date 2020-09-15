@@ -1,7 +1,6 @@
 package com.qjzh.link.mqtt.server.callback;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
@@ -12,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.channel.IOnRpcResponseHandle;
 import com.qjzh.link.mqtt.model.ResponseModel;
 import com.qjzh.link.mqtt.server.MqttPublishRpc;
+import com.qjzh.link.mqtt.server.MqttRpcActuator;
+import com.qjzh.link.mqtt.server.channel.IReplyResponseHandler;
 import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 import com.qjzh.link.mqtt.utils.MqttUtils;
+import com.qjzh.tools.core.map.MapUtil;
 
 /**
  * @DESC: mqtt Reply回调监听
@@ -30,17 +31,15 @@ public class ReplyMessageListener implements IMqttMessageListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	
-	private static Map<String, MqttPublishRpc> RPC_REPLY = new ConcurrentHashMap<>(64);
 	@Autowired
-	private IOnRpcResponseHandle onRpcResponseHandle;
+	private IReplyResponseHandler replyResponseHandler;
 	
-	public ReplyMessageListener(IOnRpcResponseHandle onRpcResponseHandle) {
-		this.onRpcResponseHandle = onRpcResponseHandle;
+	public ReplyMessageListener(IReplyResponseHandler replyResponseHandler) {
+		this.replyResponseHandler = replyResponseHandler;
 	}
 	
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		//logger.debug("response reply topic:{}", replyTopic);
+		//logger.debug("response reply topic:{}", topic);
 		int qos = message.getQos();
 		String payload = new String(message.getPayload(), "UTF-8");
 		payload = StringUtils.trim(payload);
@@ -52,8 +51,18 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		
 		ResponseModel response = JSON.parseObject(payload, ResponseModel.class);
 		String msgId = response.getMsgId();
-		if (StringUtils.isEmpty(msgId)) {
+		Map<String, Object> mapData = response.getData();
+		if (StringUtils.isEmpty(msgId) || MapUtil.isEmpty(mapData)) {
 			return;
+		}
+		
+		String [] split = topic.split("/");
+		String productId = split[1];
+		String deviceId = split[2];
+		String channel = split[3];
+		String serviceId = split[4];
+		if (channel.equals("service")) {
+			
 		}
 		
 		GeneralPublishResponse publishResponse = new GeneralPublishResponse();
@@ -64,16 +73,16 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		
 		String matchId = MqttUtils.getMatchId(topic, msgId);
 		//RPC同步应答则通知同步调用器
-		if (RPC_REPLY.remove(matchId) != null) {
+		if (MqttRpcActuator.get(matchId) != null) {
 			MqttPublishRpc.received(publishResponse);
 		}
 		
-		onRpcResponseHandle.onResponse(publishResponse);
+		replyResponseHandler.onResponse(publishResponse);
 		
 	}
 	
-	public static void putPublishRpc(MqttPublishRpc publishRpc){
-		RPC_REPLY.put(publishRpc.getMatchId(), publishRpc);
-	}
+	
+	
+	
 }
 

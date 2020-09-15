@@ -14,7 +14,7 @@ public class MqttRpcActuator implements Runnable{
 
 	private static final Logger logger = LoggerFactory.getLogger(MqttRpcActuator.class);
 	
-	public static final Map<String, MqttPublishRpc> FUTURES = new ConcurrentHashMap<>(64);
+	private static final Map<String, MqttPublishRpc> FUTURES = new ConcurrentHashMap<>(64);
 	// 锁
     private static final Lock lock = new ReentrantLock();
     // 空
@@ -51,4 +51,22 @@ public class MqttRpcActuator implements Runnable{
 		scan();
 	}
     
+	public static void put(MqttPublishRpc publishRpc){
+		FUTURES.put(publishRpc.getMatchId(), publishRpc);
+	}
+	
+	public static MqttPublishRpc get(String matchId){
+		return FUTURES.get(matchId);
+	}
+	
+	public static MqttPublishRpc remove(String matchId){
+		return FUTURES.remove(matchId);
+	}
+	
+	static {
+		Thread scanner = new Thread(new MqttRpcActuator(), "MqttRpcActuatorTimeoutScanTimer");
+		scanner.setDaemon(true);
+		scanner.start();
+	}
+	
 }

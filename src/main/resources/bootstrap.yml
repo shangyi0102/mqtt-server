@@ -1,4 +1,16 @@
 spring:
+  application:
+    name: iots-hub-mqtt
+  cloud:
+    nacos:
+      discovery:
+        #注册发现 nacos服务器地址
+        server-addr: 192.168.49.91:8848
+      config:
+        server-addr: 192.168.49.91:8848
+        file-extension: .yaml
+        
+        
   #redis配置  
   redis:
     #IP地址

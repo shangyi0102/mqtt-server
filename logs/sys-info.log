@@ -1,0 +1,134 @@
+2020-09-15 09:39:06.926 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 15772 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-15 09:39:06.943 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 09:39:07.729 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 09:39:07.733 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 09:39:07.792 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 33ms. Found 0 Redis repository interfaces.
+2020-09-15 09:39:08.154 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 09:39:08.537 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 09:39:08.538 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 09:39:16.541 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 09:39:16.574 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 09:39:16.586 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 09:39:16.595 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 09:39:16.601 [MQTT Call: clientId=things,timestamp=1600133948157|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 09:39:16.609 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 09:39:17.466 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 11.018 seconds (JVM running for 12.756)
+2020-09-15 09:44:55.232 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 15420 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-15 09:44:55.240 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 09:44:55.914 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 09:44:55.917 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 09:44:55.965 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 32ms. Found 0 Redis repository interfaces.
+2020-09-15 09:44:56.271 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 09:44:56.690 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 09:44:56.690 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.91:1883
+2020-09-15 09:45:03.726 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 09:45:10.740 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 09:45:17.750 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 09:45:24.763 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 09:45:31.775 [MQTT Call: clientId=things,timestamp=1600134296273|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 09:45:31.791 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 09:45:32.366 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 37.561 seconds (JVM running for 38.685)
+2020-09-15 10:43:53.156 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 13612 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-15 10:43:53.164 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 10:43:53.853 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 10:43:53.856 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 10:43:53.904 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 33ms. Found 0 Redis repository interfaces.
+2020-09-15 10:43:54.211 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 10:43:54.643 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 10:43:54.645 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 10:43:54.742 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 10:43:54.845 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 10:43:54.946 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 10:43:54.951 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 10:43:54.970 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 10:43:54.974 [MQTT Call: clientId=things,timestamp=1600137834213|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 10:43:55.617 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 2.925 seconds (JVM running for 4.196)
+2020-09-15 10:45:47.176 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 10584 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-15 10:45:47.182 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 10:45:47.866 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 10:45:47.869 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 10:45:47.913 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 30ms. Found 0 Redis repository interfaces.
+2020-09-15 10:45:48.226 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 10:45:48.608 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 10:45:48.610 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 10:45:53.871 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 10:45:54.534 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 10:45:55.104 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 10:45:58.119 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 10:45:58.139 [MQTT Call: clientId=things,timestamp=1600137948228|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 10:45:58.148 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 10:45:58.717 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 11.949 seconds (JVM running for 13.104)
+2020-09-15 10:47:04.219 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarting: Starting Main on LIUZHENXING-PC with PID 13304 (E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool\target\classes started by LIUZHENXING in E:\WORKSPACE-STS\Test2\qjzh-mqtt-tool)
+2020-09-15 10:47:04.225 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 10:47:04.839 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 10:47:04.842 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 10:47:04.892 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 33ms. Found 0 Redis repository interfaces.
+2020-09-15 10:47:05.198 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 10:47:05.569 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 10:47:05.570 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 10:47:05.612 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 10:47:05.617 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 10:47:05.634 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 10:47:05.640 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 10:47:05.647 [MQTT Call: clientId=things,timestamp=1600138025200|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 10:47:05.652 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 10:47:06.218 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 2.439 seconds (JVM running for 3.842)
+2020-09-15 11:35:25.541 [main] [WARN]--com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder.loadNacosData: Ignore the empty nacos configuration and get it based on dataId[iots-hub-mqtt] & group[DEFAULT_GROUP]
+2020-09-15 11:35:25.552 [main] [WARN]--com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder.loadNacosData: Ignore the empty nacos configuration and get it based on dataId[iots-hub-mqtt..yaml] & group[DEFAULT_GROUP]
+2020-09-15 11:35:25.553 [main] [INFO]--org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration.initialize: Located property source: [BootstrapPropertySource {name='bootstrapProperties-iots-hub-mqtt..yaml'}, BootstrapPropertySource {name='bootstrapProperties-iots-hub-mqtt'}]
+2020-09-15 11:35:25.559 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 11:35:26.189 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 11:35:26.192 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 11:35:26.236 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 29ms. Found 0 Redis repository interfaces.
+2020-09-15 11:35:26.363 [main] [INFO]--org.springframework.cloud.context.scope.GenericScope.setSerializationId: BeanFactory id=f0f2ee15-8409-3725-b419-daac26ed33df
+2020-09-15 11:35:26.412 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 11:35:26.782 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 11:35:26.783 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 11:35:26.810 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 11:35:26.819 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 11:35:26.824 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 11:35:26.828 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 11:35:26.832 [MQTT Call: clientId=things,timestamp=1600140926415|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 11:35:26.836 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 11:35:27.193 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-15 11:35:27.194 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-15 11:35:27.200 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-15 11:35:27.201 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-15 11:35:27.500 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService
+2020-09-15 11:35:28.101 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 4.22 seconds (JVM running for 5.826)
+2020-09-15 11:36:51.846 [main] [WARN]--com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder.loadNacosData: Ignore the empty nacos configuration and get it based on dataId[iots-hub-mqtt] & group[DEFAULT_GROUP]
+2020-09-15 11:36:51.862 [main] [WARN]--com.alibaba.cloud.nacos.client.NacosPropertySourceBuilder.loadNacosData: Ignore the empty nacos configuration and get it based on dataId[iots-hub-mqtt..yaml] & group[DEFAULT_GROUP]
+2020-09-15 11:36:51.864 [main] [INFO]--org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration.initialize: Located property source: [BootstrapPropertySource {name='bootstrapProperties-iots-hub-mqtt..yaml'}, BootstrapPropertySource {name='bootstrapProperties-iots-hub-mqtt'}]
+2020-09-15 11:36:51.871 [main] [INFO]--com.qjzh.link.mqtt.Main.logStartupProfileInfo: No active profile set, falling back to default profiles: default
+2020-09-15 11:36:52.604 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.multipleStoresDetected: Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-15 11:36:52.608 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-15 11:36:52.651 [main] [INFO]--org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn: Finished Spring Data repository scanning in 27ms. Found 0 Redis repository interfaces.
+2020-09-15 11:36:52.897 [main] [INFO]--org.springframework.cloud.context.scope.GenericScope.setSerializationId: BeanFactory id=ddad9e19-bca6-34dd-8d3f-e70606efe42e
+2020-09-15 11:36:53.278 [main] [INFO]--org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize: Tomcat initialized with port(s): 8080 (http)
+2020-09-15 11:36:53.303 [main] [INFO]--org.apache.coyote.http11.Http11NioProtocol.log: Initializing ProtocolHandler ["http-nio-8080"]
+2020-09-15 11:36:53.322 [main] [INFO]--org.apache.catalina.core.StandardService.log: Starting service [Tomcat]
+2020-09-15 11:36:53.323 [main] [INFO]--org.apache.catalina.core.StandardEngine.log: Starting Servlet engine: [Apache Tomcat/9.0.30]
+2020-09-15 11:36:53.503 [main] [INFO]--org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log: Initializing Spring embedded WebApplicationContext
+2020-09-15 11:36:53.504 [main] [INFO]--org.springframework.web.context.ContextLoader.prepareWebApplicationContext: Root WebApplicationContext: initialization completed in 1616 ms
+2020-09-15 11:36:53.601 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 11:36:53.982 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 11:36:53.983 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 11:36:54.022 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/report]
+2020-09-15 11:36:54.027 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/event/+/report]
+2020-09-15 11:36:54.033 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/set_reply]
+2020-09-15 11:36:54.037 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/property/read_reply]
+2020-09-15 11:36:54.041 [MQTT Call: clientId=things,timestamp=1600141013603|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/+/+/service/+/invoke_reply]
+2020-09-15 11:36:54.044 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService 'taskScheduler'
+2020-09-15 11:36:54.425 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-15 11:36:54.425 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-15 11:36:54.431 [main] [WARN]--com.netflix.config.sources.URLConfigurationSource.<init>: No URLs will be polled as dynamic configuration sources.
+2020-09-15 11:36:54.431 [main] [INFO]--com.netflix.config.sources.URLConfigurationSource.<init>: To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2020-09-15 11:36:55.171 [main] [INFO]--org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.initialize: Initializing ExecutorService
+2020-09-15 11:36:55.809 [main] [INFO]--org.apache.coyote.http11.Http11NioProtocol.log: Starting ProtocolHandler ["http-nio-8080"]
+2020-09-15 11:36:55.873 [main] [INFO]--org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start: Tomcat started on port(s): 8080 (http) with context path ''
+2020-09-15 11:36:56.084 [main] [INFO]--com.alibaba.cloud.nacos.registry.NacosServiceRegistry.register: nacos registry, DEFAULT_GROUP iots-hub-mqtt 192.168.50.61:8080 register finished
+2020-09-15 11:36:56.312 [main] [INFO]--com.qjzh.link.mqtt.Main.logStarted: Started Main in 6.125 seconds (JVM running for 7.33)
+2020-09-15 19:44:48.812 [main] [INFO]--com.qjzh.link.mqtt.server.MqttNet.init: default cert file
+2020-09-15 19:44:49.347 [MQTT Call: clientId=Default,timestamp=1600170288827|] [INFO]--com.qjzh.link.mqtt.server.MqttNet.onSuccess: connect onSuccess
+2020-09-15 19:44:49.349 [MQTT Call: clientId=Default,timestamp=1600170288827|] [INFO]--com.qjzh.link.mqtt.server.callback.DefaulMessageCallback.connectComplete: connect complete ----> tcp://192.168.49.10:1883
+2020-09-15 19:44:49.367 [MQTT Call: clientId=Default,timestamp=1600170288827|] [INFO]--com.qjzh.link.mqtt.server.MqttSubscribe.onSuccess: subscribe succ, topic = [/device/A0002/0002/property/report]

@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.channel;
+package com.qjzh.link.mqtt.server.channel;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -31,7 +31,7 @@ public class MqttEventDispatcher {
 	
 	public static final byte MSG_SESSION_INVALID = 6;
 	
-	protected HashMap<IOnPushRequestHandle, Boolean> onPushRequestHandles = null;
+	protected HashMap<IPushRequestHandler, Boolean> pushRequestHandlers = null;
 	
 	protected HashMap<IConnectionStateListener, Boolean> tunnelListeners = null;
 	
@@ -53,26 +53,26 @@ public class MqttEventDispatcher {
 		
 	}
 
-	public void registerOnPushListener(IOnPushRequestHandle listener, boolean needUISafety) {
+	public void registerOnPushListener(IPushRequestHandler listener, boolean needUISafety) {
 		logger.debug("注册推送监听类");
 		synchronized (this) {
 			if (null == listener) {
 				return;
 			}
-			if (null == this.onPushRequestHandles) {
-				this.onPushRequestHandles = new HashMap<>();
+			if (null == this.pushRequestHandlers) {
+				this.pushRequestHandlers = new HashMap<>();
 			}
-			this.onPushRequestHandles.put(listener, Boolean.valueOf(needUISafety));
+			this.pushRequestHandlers.put(listener, Boolean.valueOf(needUISafety));
 		}
 	}
 
-	public void unregisterOnPushListener(IOnPushRequestHandle listener) {
+	public void unregisterOnPushListener(IPushRequestHandler listener) {
 		logger.debug("注销推送监听类");
 		synchronized (this) {
-			if (null == listener || null == this.onPushRequestHandles || 0 >= this.onPushRequestHandles.size()) {
+			if (null == listener || null == this.pushRequestHandlers || 0 >= this.pushRequestHandlers.size()) {
 				return;
 			}
-			this.onPushRequestHandles.remove(listener);
+			this.pushRequestHandlers.remove(listener);
 		}
 	}
 
@@ -125,13 +125,13 @@ public class MqttEventDispatcher {
 	public void broadcastMessage(int what, String method, byte[] content, String message) {
 		logger.debug("广播消息----->>>>>");
 		synchronized (this) {
-			if (what == 3 && this.onPushRequestHandles != null) {
-				for (IOnPushRequestHandle listener : this.onPushRequestHandles.keySet()) {
+			if (what == 3 && this.pushRequestHandlers != null) {
+				for (IPushRequestHandler listener : this.pushRequestHandlers.keySet()) {
 					/*if (false == listener.shouldHandle(method)) {
 						logger.warn("shouldHandle return false");
 						continue;
 					}*/
-					if (((Boolean) this.onPushRequestHandles.get(listener)).booleanValue()) {
+					if (((Boolean) this.pushRequestHandlers.get(listener)).booleanValue()) {
 						doNotify(3, listener, method, content);
 						continue;
 					}
@@ -171,8 +171,8 @@ public class MqttEventDispatcher {
 	private static void doNotify(int what, Object listener, String method, byte[] payload) {
 		logger.debug("enter doNotify");
 		
-		if (listener instanceof IOnPushRequestHandle) {
-			IOnPushRequestHandle cb = (IOnPushRequestHandle) listener;
+		if (listener instanceof IPushRequestHandler) {
+			IPushRequestHandler cb = (IPushRequestHandler) listener;
 			if (what == 3) {
 				logger.debug("call onCommand");
 				//cb.onCommand(method, payload);

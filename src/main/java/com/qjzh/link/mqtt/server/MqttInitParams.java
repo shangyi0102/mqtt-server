@@ -33,6 +33,8 @@ public class MqttInitParams {
 	
 	//等待动作完成最大时间	
 	private int timeToWait = 5000;
+	
+	private int maxInflight = 100;
 
 	public MqttInitParams(String[] serverURIs, String username, String password) {
 		this.serverURIs = serverURIs;
@@ -110,6 +112,14 @@ public class MqttInitParams {
 
 	public void setTimeToWait(int timeToWait) {
 		this.timeToWait = timeToWait;
+	}
+
+	public int getMaxInflight() {
+		return maxInflight;
+	}
+
+	public void setMaxInflight(int maxInflight) {
+		this.maxInflight = maxInflight;
 	}
 
 	public boolean checkValid() {

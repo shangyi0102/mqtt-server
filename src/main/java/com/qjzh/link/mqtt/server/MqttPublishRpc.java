@@ -11,10 +11,9 @@ import org.slf4j.LoggerFactory;
 import com.qjzh.link.mqtt.base.ErrorCode;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
-import com.qjzh.link.mqtt.channel.IOnCallListener;
 import com.qjzh.link.mqtt.exception.MqttRpcException;
 import com.qjzh.link.mqtt.exception.MqttTimeoutException;
-import com.qjzh.link.mqtt.server.callback.ReplyMessageListener;
+import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 import com.qjzh.link.mqtt.utils.MqttUtils;
 
@@ -54,10 +53,9 @@ public class MqttPublishRpc extends MqttPublish {
 		super(mqttNet, publishRequest, listener);
 		this.timeout = timeout;
 		this.start = System.currentTimeMillis();
-		matchId = MqttUtils.getMatchId(publishRequest.getReplyTopic(), publishRequest.getMsgId());
-		MqttRpcActuator.FUTURES.put(matchId, this);
+		this.matchId = MqttUtils.getMatchId(publishRequest.getReplyTopic(), publishRequest.getMsgId());
+		MqttRpcActuator.put(this);
 		MqttRpcActuator.signal();
-		ReplyMessageListener.putPublishRpc(this);
 	}
 
 	public String getMatchId() {
@@ -66,14 +64,6 @@ public class MqttPublishRpc extends MqttPublish {
 
 	public boolean isTimeout(){
 		return (System.currentTimeMillis() - start > timeout);
-	}
-	
-	public void setStatus(MqttStatus status) {
-		this.status = status;
-	}
-
-	public MqttStatus getStatus() {
-		return (MqttStatus)status;
 	}
 	
 	public PublishResponse sendRpc() {
@@ -108,13 +98,13 @@ public class MqttPublishRpc extends MqttPublish {
 			publishResponse = new GeneralPublishResponse();
 			publishResponse.setStatus(ex.getCode());
 			publishResponse.setErrorMsg(ex.getMessage());
-			MqttRpcActuator.FUTURES.remove(matchId);
+			MqttRpcActuator.remove(matchId);
 		}
 		
 		return publishResponse;
 	}
 
-	public void cancel() {
+	public PublishResponse cancel() {
 		lock.lock();
 		try {
 			publishResponse = new GeneralPublishResponse();
@@ -123,10 +113,11 @@ public class MqttPublishRpc extends MqttPublish {
 			
 			done.signal();
 			
-			MqttRpcActuator.FUTURES.remove(matchId);
+			MqttRpcActuator.remove(matchId);
 		} finally {
 			lock.unlock();
 		}
+		return publishResponse;
 	}
 	
 	private void doReceived(PublishResponse publishResponse) {
@@ -145,7 +136,7 @@ public class MqttPublishRpc extends MqttPublish {
 	
 	public static void received(PublishResponse publishResponse) {
 		String matchId = MqttUtils.getMatchId(publishResponse.getReplyTopic(), publishResponse.getMsgId());
-		MqttPublishRpc publishRpc = MqttRpcActuator.FUTURES.remove(matchId);
+		MqttPublishRpc publishRpc = MqttRpcActuator.remove(matchId);
 		if (publishRpc == null) {
 			logger.warn("match fali!, matchId = <{}>, The timeout response finally, response={}", matchId, publishResponse.getData());
 			return;
@@ -155,10 +146,5 @@ public class MqttPublishRpc extends MqttPublish {
 		publishRpc.doReceived(publishResponse);
 	}
 	
-	static {
-		Thread scanner = new Thread(new MqttRpcActuator(), "MqttResponseRpcTimeoutScanTimer");
-		scanner.setDaemon(true);
-		scanner.start();
-	}
 }
 
