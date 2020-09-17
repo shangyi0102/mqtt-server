@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MqttRpcActuator implements Runnable{
+public class MqttRpcExtractor implements Runnable{
 
-	private static final Logger logger = LoggerFactory.getLogger(MqttRpcActuator.class);
+	private static final Logger logger = LoggerFactory.getLogger(MqttRpcExtractor.class);
 	
 	private static final Map<String, MqttPublishRpc> FUTURES = new ConcurrentHashMap<>(64);
 	// 锁
@@ -64,7 +64,7 @@ public class MqttRpcActuator implements Runnable{
 	}
 	
 	static {
-		Thread scanner = new Thread(new MqttRpcActuator(), "MqttRpcActuatorTimeoutScanTimer");
+		Thread scanner = new Thread(new MqttRpcExtractor(), "MqttRpcActuatorTimeoutScanTimer");
 		scanner.setDaemon(true);
 		scanner.start();
 	}

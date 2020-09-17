@@ -18,10 +18,10 @@ import com.qjzh.link.mqtt.jsonschema.type.IntegerSchema;
 import com.qjzh.link.mqtt.jsonschema.type.NumberSchema;
 import com.qjzh.link.mqtt.jsonschema.type.ObjectSchema;
 import com.qjzh.link.mqtt.jsonschema.type.StringSchema;
-import com.qjzh.link.mqtt.model.product.Attribute;
+import com.qjzh.link.mqtt.model.product.PAttribute;
 import com.qjzh.link.mqtt.model.product.DataType;
-import com.qjzh.link.mqtt.model.product.Event;
-import com.qjzh.link.mqtt.model.product.EventParam;
+import com.qjzh.link.mqtt.model.product.PEvent;
+import com.qjzh.link.mqtt.model.product.PEventParam;
 import com.qjzh.link.mqtt.model.product.ParamEnum;
 import com.qjzh.link.mqtt.model.product.ProductMeta;
 import com.qjzh.tools.core.collection.CollectionUtil;
@@ -84,10 +84,10 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			ObjectSchema objectSchemaAttrs = new ObjectSchema("属性列表项");
 			objectSchemaAttrs.setAdditionalProperties(false);
 			//静态属性
-			List<Attribute> staticAttrs = prodMeta.getStaticAttrs();
+			List<PAttribute> staticAttrs = prodMeta.getStaticAttrs();
 			patternProperty(objectSchemaAttrs, staticAttrs);
 			//动态属性
-			List<Attribute> dynamicAttrs = prodMeta.getDynamicAttrs();
+			List<PAttribute> dynamicAttrs = prodMeta.getDynamicAttrs();
 			patternProperty(objectSchemaAttrs, dynamicAttrs);
 			
 			objectSchema.addProperties(ATTRIBUTE_KEY, objectSchemaAttrs, false);
@@ -95,7 +95,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			/*
 			 * 2. 解析事件JSON数据格式
 			 */
-			List<Event> lstProdEvents = prodMeta.getProdEvents();
+			List<PEvent> lstProdEvents = prodMeta.getProdEvents();
 			if (!CollectionUtil.isEmpty(lstProdEvents)) {
 				//事件
 				ObjectSchema objectSchemaEvents = new ObjectSchema("事件列表项");
@@ -104,7 +104,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 				lstProdEvents.forEach(prodEvent ->{
 					//事件单项
 					String eventField = prodEvent.getEventIdentifier();
-					List<EventParam> lstEventParams = prodEvent.getEventParams();
+					List<PEventParam> lstEventParams = prodEvent.getEventParams();
 					if (StringUtils.isEmpty(eventField) 
 							|| CollectionUtil.isEmpty(lstEventParams)) {
 						return ;
@@ -157,7 +157,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 	 * DESC: 属性格式化
 	 * @return
 	 */
-	private void patternProperty(ObjectSchema objectSchema, List<Attribute> lstProdAttrs){
+	private void patternProperty(ObjectSchema objectSchema, List<PAttribute> lstProdAttrs){
 		
 		if (CollectionUtil.isEmpty(lstProdAttrs)) {
 			return;
@@ -190,7 +190,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 	 * DESC: 事件格式化
 	 * @return
 	 */
-	private void patternEvent(ObjectSchema objectSchema, List<EventParam> lstEventParams){
+	private void patternEvent(ObjectSchema objectSchema, List<PEventParam> lstEventParams){
 		
 		if (CollectionUtil.isEmpty(lstEventParams)) {
 			return;
@@ -232,7 +232,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 	 * @param prodAttr 属性定义信息
 	 * @return
 	 */
-	private AbsSchema getSchema(Attribute prodAttr) {
+	private AbsSchema getSchema(PAttribute prodAttr) {
 		AbsSchema attrSchema = null;
 		String attrType = prodAttr.getAttrType();
 		if (attrType.equalsIgnoreCase(DataType.INT.getCode())){
@@ -295,7 +295,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			strSchema.setFormat(JsonFormat.DATETIME_C);
 			attrSchema = strSchema;
 		} else if (attrType.equalsIgnoreCase(DataType.STRUCT.getCode())){
-			List<Attribute> lstSubAttrs = prodAttr.getSubAttrs();
+			List<PAttribute> lstSubAttrs = prodAttr.getSubAttrs();
 			ObjectSchema objectSchema = new ObjectSchema(prodAttr.getAttrIdentifier());
 			objectSchema.setAdditionalProperties(false);
 			
@@ -309,15 +309,15 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 
 	/**
 	 * DESC: 根据事件信息格式化 Json Schema
-	 * @param eventParam 事件定义信息
+	 * @param pEventParam 事件定义信息
 	 * @return
 	 */
-	private AbsSchema getSchema(EventParam eventParam) {
+	private AbsSchema getSchema(PEventParam pEventParam) {
 		AbsSchema eventSchema = null;
-		String paramType = eventParam.getParamType();
+		String paramType = pEventParam.getParamType();
 		if (paramType.equalsIgnoreCase(DataType.INT.getCode())){
-			BigDecimal min = eventParam.getMin();
-			BigDecimal max = eventParam.getMax();
+			BigDecimal min = pEventParam.getMin();
+			BigDecimal max = pEventParam.getMax();
 			IntegerSchema intSchema = new IntegerSchema();
 			if (null != min) {
 				intSchema.setMinimum(min.intValue());
@@ -329,8 +329,8 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			
 		} else if (paramType.equalsIgnoreCase(DataType.FLOAT.getCode())
 				|| paramType.equalsIgnoreCase(DataType.DOUBLE.getCode())){
-			BigDecimal min = eventParam.getMin();
-			BigDecimal max = eventParam.getMax();
+			BigDecimal min = pEventParam.getMin();
+			BigDecimal max = pEventParam.getMax();
 			NumberSchema numberSchema = new NumberSchema();
 			if (null != min) {
 				numberSchema.setMinimum(min);
@@ -342,7 +342,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			
 		} else if (paramType.equalsIgnoreCase(DataType.ENUM.getCode())){
 			EnumSchema<String> enumSchema = null;
-			List<ParamEnum> lstEnum = eventParam.getEnumItems();
+			List<ParamEnum> lstEnum = pEventParam.getEnumItems();
 			if (!CollectionUtil.isEmpty(lstEnum)) {
 				String[] astrValue = new String[lstEnum.size()];
 				for (int i = 0; i < lstEnum.size(); i++) {
@@ -360,7 +360,7 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			eventSchema = enumSchema;
 		} else if (paramType.equalsIgnoreCase(DataType.TEXT.getCode())){
 			StringSchema strSchema = new StringSchema();
-			BigDecimal maxLength = eventParam.getMax();
+			BigDecimal maxLength = pEventParam.getMax();
 			if (null != maxLength) {
 				strSchema.setMaxLength(maxLength.intValue());
 			}
@@ -375,8 +375,8 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 			strSchema.setFormat(JsonFormat.DATETIME_C);
 			eventSchema = strSchema;
 		} else if (paramType.equalsIgnoreCase(DataType.STRUCT.getCode())){
-			List<EventParam> lstEventParams = eventParam.getSubParams();
-			ObjectSchema objectSchema = new ObjectSchema(eventParam.getParamIdentifier());
+			List<PEventParam> lstEventParams = pEventParam.getSubParams();
+			ObjectSchema objectSchema = new ObjectSchema(pEventParam.getParamIdentifier());
 			objectSchema.setAdditionalProperties(false);
 			
 			patternEvent(objectSchema, lstEventParams);
@@ -385,21 +385,21 @@ public class ProductJsonSchemaParser extends AbsJsonSchemaParser{
 		} else if (paramType.equalsIgnoreCase(DataType.ARRAY.getCode())){
 			ArraySchema arraySchema = new ArraySchema();
 			arraySchema.setAdditionalItems(false);
-			Integer arrayLength = eventParam.getArrayLength();
+			Integer arrayLength = pEventParam.getArrayLength();
 			if (null != arrayLength) {
-				arraySchema.setMaxItems(eventParam.getArrayLength());
+				arraySchema.setMaxItems(pEventParam.getArrayLength());
 			}
 			
 			AbsSchema itemSchema = null;
-			String arrayParamType = eventParam.getArrayParamType();
+			String arrayParamType = pEventParam.getArrayParamType();
 			if (arrayParamType.equalsIgnoreCase(DataType.STRUCT.getCode())){
-				ObjectSchema objItemSchema = new ObjectSchema(eventParam.getParamIdentifier());
+				ObjectSchema objItemSchema = new ObjectSchema(pEventParam.getParamIdentifier());
 				objItemSchema.setAdditionalProperties(false);
-				patternEvent(objItemSchema, eventParam.getSubParams());
+				patternEvent(objItemSchema, pEventParam.getSubParams());
 				itemSchema = objItemSchema;
 			} else{
-				eventParam.setParamType(arrayParamType);
-				itemSchema = getSchema(eventParam);
+				pEventParam.setParamType(arrayParamType);
+				itemSchema = getSchema(pEventParam);
 			}
 			arraySchema.setItem(itemSchema);
 			eventSchema = arraySchema;

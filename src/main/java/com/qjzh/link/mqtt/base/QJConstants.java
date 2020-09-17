@@ -74,10 +74,20 @@ public class QJConstants {
 	 * @param prodCode
 	 * @return
 	 */
-	public static String genKeyPath(String tenantCode, 
+	public static String getPordKeyPath(String tenantCode, 
 			String appCode, String prodCode){
-		
 		return tenantCode + "&" + appCode + "&" + prodCode;
+	}
+	
+	/**
+	 * DESC: 生成产品关键路径
+	 * @param tenantCode
+	 * @param appCode
+	 * @param prodCode
+	 * @return
+	 */
+	public static String getDevKeyPath(String prodCode, String devSn){
+		return prodCode + "&" + devSn ;
 	}
   
 }

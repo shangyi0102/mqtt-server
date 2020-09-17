@@ -1,6 +1,17 @@
 #web服务器启动端口
 server:
   port: 8080
+  
+spring:
+  redis:
+    #IP地址
+    host: 192.168.49.91
+    #端口
+    port: 6379 
+    #密码
+    password: 5vwJ4AghYNH&W4RWejfieo69C2ZPp%r@
+    ssl: false 
+  
    
 mqtt:
   urls:

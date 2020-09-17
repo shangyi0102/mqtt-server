@@ -8,7 +8,7 @@
  * *****************************************************
  * *****************************************************
  */
-package com.qjzh.link.mqtt.exception;
+package com.qjzh.link.mqtt.base.exception;
 
 import com.qjzh.link.mqtt.base.ErrorCode;
 

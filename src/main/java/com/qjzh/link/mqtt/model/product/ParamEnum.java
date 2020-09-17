@@ -16,7 +16,7 @@ public class ParamEnum {
 
 	public String getItemCode() {
 		return itemCode;
-	}
+	} 
 
 	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;

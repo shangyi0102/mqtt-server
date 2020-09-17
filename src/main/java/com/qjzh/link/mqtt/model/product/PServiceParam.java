@@ -10,7 +10,7 @@ import java.util.List;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-public class ServiceParam {
+public class PServiceParam {
 
 	private Long id;
 	
@@ -44,7 +44,7 @@ public class ServiceParam {
     
     private String unit;
     
-    private List<ServiceParam> subParams;
+    private List<PServiceParam> subParams;
 
 	public Long getId() {
 		return id;
@@ -174,11 +174,11 @@ public class ServiceParam {
 		this.unit = unit;
 	}
 
-	public List<ServiceParam> getSubParams() {
+	public List<PServiceParam> getSubParams() {
 		return subParams;
 	}
 
-	public void setSubParams(List<ServiceParam> subParams) {
+	public void setSubParams(List<PServiceParam> subParams) {
 		this.subParams = subParams;
 	}
 

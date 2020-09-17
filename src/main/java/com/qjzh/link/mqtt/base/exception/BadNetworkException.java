@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.exception;
+package com.qjzh.link.mqtt.base.exception;
 
 public class BadNetworkException extends Exception {
 

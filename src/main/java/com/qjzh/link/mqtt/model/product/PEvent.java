@@ -9,7 +9,7 @@ import java.util.List;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-public class Event {
+public class PEvent {
 	
 	private Long productId;
 
@@ -23,7 +23,7 @@ public class Event {
 
 	private String eventName;
 	
-	private List<EventParam> eventParams;
+	private List<PEventParam> pEventParams;
 
 	public Long getId() {
 		return id;
@@ -73,12 +73,12 @@ public class Event {
 		this.eventName = eventName;
 	}
 
-	public List<EventParam> getEventParams() {
-		return eventParams;
+	public List<PEventParam> getEventParams() {
+		return pEventParams;
 	}
 
-	public void setEventParams(List<EventParam> eventParams) {
-		this.eventParams = eventParams;
+	public void setEventParams(List<PEventParam> pEventParams) {
+		this.pEventParams = pEventParams;
 	}
 	
 }

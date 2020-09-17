@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-public class Attribute {
+public class PAttribute {
 	
 	private Long id;
 
@@ -49,11 +49,11 @@ public class Attribute {
 
 	private String rwType;
 
-	private List<Attribute> subAttrs;
+	private List<PAttribute> subAttrs;
 
 	private String unit;
 
-	private Attribute parentAttr;
+	private PAttribute parentAttr;
 
 	public Long getId() {
 		return id;
@@ -193,11 +193,11 @@ public class Attribute {
 		this.dateFormat = dateFormat;
 	}
 
-	public List<Attribute> getSubAttrs() {
+	public List<PAttribute> getSubAttrs() {
 		return subAttrs;
 	}
 
-	public void setSubAttrs(List<Attribute> subAttrs) {
+	public void setSubAttrs(List<PAttribute> subAttrs) {
 		this.subAttrs = subAttrs;
 	}
 
@@ -217,11 +217,11 @@ public class Attribute {
 		this.enumItems = enumItems;
 	}
 
-	public Attribute getParentAttr() {
+	public PAttribute getParentAttr() {
 		return parentAttr;
 	}
 
-	public void setParentAttr(Attribute parentAttr) {
+	public void setParentAttr(PAttribute parentAttr) {
 		this.parentAttr = parentAttr;
 	}
 

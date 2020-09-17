@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.exception;
+package com.qjzh.link.mqtt.base.exception;
 
 /**
  * @DESC: mqtt自定义异常

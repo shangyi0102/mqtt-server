@@ -1,7 +1,7 @@
 package com.qjzh.link.mqtt.model.product;
 
 
-public class Vendor {
+public class PVendor {
 
 	private String accessType;
 	

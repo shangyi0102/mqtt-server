@@ -13,8 +13,8 @@ import com.qjzh.link.mqtt.base.AbsMqtt;
 import com.qjzh.link.mqtt.base.ErrorCode;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishRequest;
-import com.qjzh.link.mqtt.exception.BadNetworkException;
-import com.qjzh.link.mqtt.exception.MqttThrowable;
+import com.qjzh.link.mqtt.base.exception.BadNetworkException;
+import com.qjzh.link.mqtt.base.exception.MqttThrowable;
 import com.qjzh.link.mqtt.server.channel.ConnectState;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 

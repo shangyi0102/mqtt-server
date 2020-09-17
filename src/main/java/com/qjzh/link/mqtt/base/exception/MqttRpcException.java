@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.exception;
+package com.qjzh.link.mqtt.base.exception;
 
 /**
  * @DESC: 同步调用异常

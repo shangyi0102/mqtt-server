@@ -27,15 +27,15 @@ public class ProductMeta {
 	
 	private String parentProductIdentifier;
 	
-	private List<Vendor> productModels;
+	private List<PVendor> productModels;
 
-	private List<Attribute> staticAttrs;
+	private List<PAttribute> staticAttrs;
 
-	private List<Attribute> dynamicAttrs;
+	private List<PAttribute> dynamicAttrs;
 	
-	private List<Event> events;
+	private List<PEvent> pEvents;
 
-	private List<Service> services;
+	private List<PService> pServices;
 	
 	public Long getId() {
 		return id;
@@ -85,85 +85,85 @@ public class ProductMeta {
 		this.parentProductIdentifier = parentProductIdentifier;
 	}
 
-	public List<Vendor> getProductModels() {
+	public List<PVendor> getProductModels() {
 		return productModels;
 	}
 
-	public void setProductModels(List<Vendor> productModels) {
+	public void setProductModels(List<PVendor> productModels) {
 		this.productModels = productModels;
 	}
 
-	public List<Attribute> getStaticAttrs() {
+	public List<PAttribute> getStaticAttrs() {
 		return staticAttrs;
 	}
 
-	public void setStaticAttrs(List<Attribute> staticAttrs) {
+	public void setStaticAttrs(List<PAttribute> staticAttrs) {
 		this.staticAttrs = staticAttrs;
 	}
 
-	public List<Attribute> getDynamicAttrs() {
+	public List<PAttribute> getDynamicAttrs() {
 		return dynamicAttrs;
 	}
 
-	public void setDynamicAttrs(List<Attribute> dynamicAttrs) {
+	public void setDynamicAttrs(List<PAttribute> dynamicAttrs) {
 		this.dynamicAttrs = dynamicAttrs;
 	}
 
-	public List<Service> getProdServices() {
-		return services;
+	public List<PService> getProdServices() {
+		return pServices;
 	}
 
-	public void setProdServices(List<Service> services) {
-		this.services = services;
+	public void setProdServices(List<PService> pServices) {
+		this.pServices = pServices;
 	}
 	
-	public List<Event> getProdEvents() {
-		return events;
+	public List<PEvent> getProdEvents() {
+		return pEvents;
 	}
 
-	public void setProdEvents(List<Event> events) {
-		this.events = events;
+	public void setProdEvents(List<PEvent> pEvents) {
+		this.pEvents = pEvents;
 	}
 
 	
-	public EventParam getEventByTag(String eventIdent, String attrTag){
-		Event event = null;
-		if (!CollectionUtil.isEmpty(events)) {
-			for (Event objEvent : events) {
+	public PEventParam getEventByTag(String eventIdent, String attrTag){
+		PEvent pEvent = null;
+		if (!CollectionUtil.isEmpty(pEvents)) {
+			for (PEvent objEvent : pEvents) {
 				if (eventIdent.equals(objEvent.getEventIdentifier())) {
-					event = objEvent;
+					pEvent = objEvent;
 					break;
 				}
 			}
 		}
-		if (null != event) {
-			return getEventParamByTag(attrTag, event.getEventParams(), null);
+		if (null != pEvent) {
+			return getEventParamByTag(attrTag, pEvent.getEventParams(), null);
 		}
 		
 		return null;
 	}
 	
-	private EventParam getEventParamByTag(String attrTag, 
-			List<EventParam> lstEventParam, EventParam parentEventParam){
+	private PEventParam getEventParamByTag(String attrTag, 
+			List<PEventParam> lstEventParam, PEventParam parentEventParam){
 		
 		String[] attrTags = attrTag.split("\\.");
-		for (EventParam eventParam : lstEventParam) {
-			String paramIdentifier = eventParam.getParamIdentifier();
-			DataType paramType = DataType.valueOf(eventParam.getParamType());
+		for (PEventParam pEventParam : lstEventParam) {
+			String paramIdentifier = pEventParam.getParamIdentifier();
+			DataType paramType = DataType.valueOf(pEventParam.getParamType());
 			if (paramIdentifier.equals(attrTags[0])) {
-				eventParam.setParentParam(parentEventParam);
+				pEventParam.setParentParam(parentEventParam);
 				if (paramType == DataType.STRUCT) {
-					return getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), eventParam.getSubParams(), eventParam);
+					return getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), pEventParam.getSubParams(), pEventParam);
 				}else if(paramType == DataType.ARRAY) {
-					DataType arrayParamType = DataType.valueOf(eventParam.getArrayParamType());
+					DataType arrayParamType = DataType.valueOf(pEventParam.getArrayParamType());
 					if (arrayParamType == DataType.STRUCT) {
-						EventParam subParam = getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), 
-								eventParam.getSubParams(), eventParam);
+						PEventParam subParam = getEventParamByTag(attrTag.substring(attrTag.indexOf(".")+1), 
+								pEventParam.getSubParams(), pEventParam);
 						if (subParam == null) {
 							return null;
 						}
 						//ProdParamType aItemType = ProdParamType.getArrayInParamType(ProdParamType.valueOf(subParam.getParamType()));
-						EventParam aItemEventParam = new EventParam();
+						PEventParam aItemEventParam = new PEventParam();
 						BeanUtil.copyProperties(subParam, aItemEventParam);
 						aItemEventParam.setParamType(subParam.getParamType());
 						return aItemEventParam;
@@ -171,13 +171,13 @@ public class ProductMeta {
 					
 					//ProdParamType arrayType = ProdParamType.getArrayInParamType(ProdParamType.valueOf(eventParam.getArrayParamType()));
 					
-					EventParam arrayEventParam = new EventParam();
-					BeanUtil.copyProperties(eventParam, arrayEventParam);
-					arrayEventParam.setParamType(eventParam.getArrayParamType());
+					PEventParam arrayEventParam = new PEventParam();
+					BeanUtil.copyProperties(pEventParam, arrayEventParam);
+					arrayEventParam.setParamType(pEventParam.getArrayParamType());
 					
 					return arrayEventParam;
 				}
-				return eventParam;
+				return pEventParam;
 			}
 		}
 		
@@ -185,45 +185,44 @@ public class ProductMeta {
 	}
 	
 	
-	public Attribute getAttrByTag(String attrTag){
-		Attribute attribute = null;
+	public PAttribute getAttrByTag(String attrTag){
+		PAttribute pAttribute = null;
 		if (!CollectionUtil.isEmpty(staticAttrs)) {
-			attribute = getAttrByTag(attrTag, staticAttrs, null);
+			pAttribute = getAttrByTag(attrTag, staticAttrs, null);
 		}
 
-		if (attribute == null && !CollectionUtil.isEmpty(dynamicAttrs)) {
-			attribute = getAttrByTag(attrTag, dynamicAttrs, null);
+		if (pAttribute == null && !CollectionUtil.isEmpty(dynamicAttrs)) {
+			pAttribute = getAttrByTag(attrTag, dynamicAttrs, null);
 		}
 		
-		return attribute;
+		return pAttribute;
 	}
 	
 	
-	private Attribute getAttrByTag(String attrTag, List<Attribute> lstAttrs, Attribute parentAttr){
+	private PAttribute getAttrByTag(String attrTag, List<PAttribute> lstAttrs, PAttribute parentAttr){
 		
 		String[] attrTags = attrTag.split("\\.");
-		for (Attribute attribute : lstAttrs) {
-			String attrIdentifier = attribute.getAttrIdentifier();
+		for (PAttribute pAttribute : lstAttrs) {
+			String attrIdentifier = pAttribute.getAttrIdentifier();
 			if (attrIdentifier.equals(attrTags[0])) {
-				DataType attrType = DataType.valueOf(attribute.getAttrType());
-				attribute.setParentAttr(parentAttr);
+				DataType attrType = DataType.valueOf(pAttribute.getAttrType());
+				pAttribute.setParentAttr(parentAttr);
 				if (attrType == DataType.STRUCT) {
-					return getAttrByTag(attrTag.substring(attrTag.indexOf(".")+1), attribute.getSubAttrs(), attribute);
+					return getAttrByTag(attrTag.substring(attrTag.indexOf(".")+1), pAttribute.getSubAttrs(), pAttribute);
 				}
-				return attribute;
+				return pAttribute;
 			}
 		}
 		
 		return null;
 	}
 	
-	public String getSerCodeBySerId(Long serId){
+	public PService getServiceByCode(String serviceIdent){
 		
-		if (!CollectionUtil.isEmpty(services)) {
-			for (Service service : services) {
-				Long serIdentifier = service.getId();
-				if (serIdentifier == serId) {
-					return service.getServiceIdentifier();
+		if (!CollectionUtil.isEmpty(pServices)) {
+			for (PService pService : pServices) {
+				if (serviceIdent.equals(pService.getServiceIdentifier())) {
+					return pService;
 				}
 			}
 		}

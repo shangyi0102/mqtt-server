@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-public class EventParam {
+public class PEventParam {
 
 	private Long id;
 	
@@ -29,7 +29,7 @@ public class EventParam {
     
     private String parentParamIdentifier;
     
-    private EventParam parentParam ;
+    private PEventParam parentParam ;
     
     private Long productEventId;
 	
@@ -49,7 +49,7 @@ public class EventParam {
     
     private Integer arrayLength;
     
-    private List<EventParam> subParams;
+    private List<PEventParam> subParams;
 
 	public Long getId() {
 		return id;
@@ -187,19 +187,19 @@ public class EventParam {
 		this.arrayLength = arrayLength;
 	}
 
-	public List<EventParam> getSubParams() {
+	public List<PEventParam> getSubParams() {
 		return subParams;
 	}
 
-	public void setSubParams(List<EventParam> subParams) {
+	public void setSubParams(List<PEventParam> subParams) {
 		this.subParams = subParams;
 	}
 
-	public EventParam getParentParam() {
+	public PEventParam getParentParam() {
 		return parentParam;
 	}
 
-	public void setParentParam(EventParam parentParam) {
+	public void setParentParam(PEventParam parentParam) {
 		this.parentParam = parentParam;
 	}
 
