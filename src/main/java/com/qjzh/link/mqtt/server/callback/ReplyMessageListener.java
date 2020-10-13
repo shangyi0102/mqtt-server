@@ -71,7 +71,9 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		//服务标识符
 		String serviceId = split[4];
 		
-		
+		if (validateDevice(productId, deviceId, channel, serviceId)) {
+			
+		};
 		
 		
 		GeneralPublishResponse publishResponse = new GeneralPublishResponse();
@@ -90,7 +92,7 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		
 	}
 	
-	private boolean checkDevice(String productId, String deviceId, 
+	private boolean validateDevice(String productId, String deviceId, 
 			String channel, String serviceId) {
 		/*
 		 * 1. 验证设备是否存在

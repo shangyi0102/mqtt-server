@@ -13,15 +13,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class MqttInitParams {
 
-	public static final String rootCrt = "/root.crt";
-
 	private String[] serverURIs;
 
 	private String username;
 
 	private String password;
-	//客户端标记
-	private String clientMark = "Default";
 
 	private boolean isCheckRootCrt = false;
 
@@ -30,8 +26,7 @@ public class MqttInitParams {
 	private boolean cleanSession = true;
 
 	private int keepAliveInterval = 30;
-	
-	//等待动作完成最大时间	
+	//默认等待动作完成最大时间	
 	private int timeToWait = 5000;
 	
 	private int maxInflight = 100;
@@ -96,14 +91,6 @@ public class MqttInitParams {
 
 	public void setKeepAliveInterval(int keepAliveInterval) {
 		this.keepAliveInterval = keepAliveInterval;
-	}
-	
-	public String getClientMark() {
-		return clientMark;
-	}
-
-	public void setClientMark(String clientMark) {
-		this.clientMark = clientMark;
 	}
 	
 	public int getTimeToWait() {

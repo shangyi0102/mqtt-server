@@ -8,8 +8,9 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.qjzh.link.mqtt.base.AbsMqtt;
+import com.qjzh.link.mqtt.base.AbsMqttDriven;
 import com.qjzh.link.mqtt.base.ErrorCode;
+import com.qjzh.link.mqtt.base.IMqttNet;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
 import com.qjzh.link.mqtt.base.exception.BadNetworkException;
@@ -24,7 +25,7 @@ import com.qjzh.link.mqtt.server.channel.IOnSubscribeListener;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttSubscribe extends AbsMqtt implements IMqttActionListener {
+public class MqttSubscribe extends AbsMqttDriven implements IMqttActionListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//订阅请求
@@ -34,7 +35,7 @@ public class MqttSubscribe extends AbsMqtt implements IMqttActionListener {
 	
 	private IOnSubscribeListener subscribeListener = new SubscribeListenerInternal();
 
-	public MqttSubscribe(MqttNet mqttNet, SubscribeRequest subscribeRequest, 
+	public MqttSubscribe(IMqttNet mqttNet, SubscribeRequest subscribeRequest, 
 			IMqttMessageListener mqttMessageListener,
 			IOnSubscribeListener subscribeListener) {
 		super(mqttNet);
@@ -60,11 +61,12 @@ public class MqttSubscribe extends AbsMqtt implements IMqttActionListener {
 			return;
 		}
 		
-		if (!(getNet() instanceof MqttNet)) {
+		if (!(getMqttNet() instanceof AbsMqttNet)) {
 			logger.error("bad parameter: need MqttNet");
 			return;
 		}
-		MqttNet mqttNet = (MqttNet)getNet();
+		
+		AbsMqttNet mqttNet = (AbsMqttNet)getMqttNet();
 		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
 		if (null == mqttAsyncClient) {
 			logger.error("MqttNet::getClient() return null");

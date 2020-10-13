@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.base.INet;
 import com.qjzh.link.mqtt.model.RequestModel;
+import com.qjzh.link.mqtt.server.PublishMqttNet;
 import com.qjzh.link.mqtt.server.channel.IPushRequestHandler;
 import com.qjzh.link.mqtt.server.request.GeneralPublishRequest;
 import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
@@ -29,14 +29,9 @@ public class RequestMessageListener implements IMqttMessageListener {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private INet mqttNet;
+	private PublishMqttNet publishMqttNet;
 	@Autowired
 	private IPushRequestHandler pushRequestHandler;
-	
-	public RequestMessageListener(INet mqttNet, IPushRequestHandler pushRequestHandler) {
-		this.mqttNet = mqttNet;
-		this.pushRequestHandler = pushRequestHandler;
-	}
 	
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		//logger.debug("Request topic:{}", this.topic);
@@ -72,7 +67,7 @@ public class RequestMessageListener implements IMqttMessageListener {
 			response.setQos(qos);
 			response.setReplyTopic(publishRequest.getReplyTopic());
 			
-			mqttNet.publishReply(response);
+			publishMqttNet.publishReply(response);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

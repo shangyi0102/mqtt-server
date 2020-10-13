@@ -9,8 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.base.AbsMqtt;
+import com.qjzh.link.mqtt.base.AbsMqttDriven;
 import com.qjzh.link.mqtt.base.ErrorCode;
+import com.qjzh.link.mqtt.base.IMqttNet;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.exception.BadNetworkException;
@@ -19,13 +20,13 @@ import com.qjzh.link.mqtt.server.channel.ConnectState;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 
 /**
- * @DESC: mqtt发送者
+ * @DESC: mqtt发布
  * @author LIU.ZHENXING
  * @date 2020年8月18日下午1:50:19
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class MqttPublish extends AbsMqtt implements IMqttActionListener {
+public class MqttPublish extends AbsMqttDriven implements IMqttActionListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	//请求体
@@ -33,7 +34,7 @@ public class MqttPublish extends AbsMqtt implements IMqttActionListener {
 	 
 	private IOnCallListener callListener = new CallListenerInternal();
 
-	public MqttPublish(MqttNet mqttNet, PublishRequest publishRequest, 
+	public MqttPublish(IMqttNet mqttNet, PublishRequest publishRequest, 
 			IOnCallListener callListener) {
 		super(mqttNet);
 		this.publishRequest = publishRequest;
@@ -65,11 +66,12 @@ public class MqttPublish extends AbsMqtt implements IMqttActionListener {
 			return;
 		}
 		
-		if (!(getNet() instanceof MqttNet)) {
-			logger.error("bad parameter: need MqttNet");
+		if (!(getMqttNet() instanceof AbsMqttNet)) {
+			logger.error("bad parameter: need AbsMqttNet");
 			return;
 		}
-		MqttNet mqttNet = (MqttNet)getNet();
+		
+		AbsMqttNet mqttNet = (AbsMqttNet)getMqttNet();
 		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
 		if (null == mqttAsyncClient) {
 			logger.error("MqttNet::getClient() return null");

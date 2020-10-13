@@ -9,7 +9,7 @@ import com.qjzh.link.mqtt.base.SubscribeRequest;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class ReportSubscribeRequest implements SubscribeRequest {
+public class GeneralSubscribeRequest implements SubscribeRequest {
 	
 	//订阅主题
 	private String topic;
@@ -17,6 +17,8 @@ public class ReportSubscribeRequest implements SubscribeRequest {
 	private int qos = 0;
 	//是否取消订阅
 	private boolean isSubscribe = true;
+	
+	private boolean isReply = false;
 
 	public String getTopic() {
 		return topic;
@@ -38,8 +40,17 @@ public class ReportSubscribeRequest implements SubscribeRequest {
 		return isSubscribe;
 	}
 
+	@Override
+	public boolean isReply() {
+		return isReply;
+	}
+	
 	public void setSubscribe(boolean isSubscribe) {
 		this.isSubscribe = isSubscribe;
+	}
+	
+	public void setReply(boolean isReply) {
+		this.isReply = isReply;
 	}
 
 	@Override
@@ -48,10 +59,6 @@ public class ReportSubscribeRequest implements SubscribeRequest {
 		
 	}
 
-	@Override
-	public boolean isReply() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 	
 }

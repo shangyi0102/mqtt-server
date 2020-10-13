@@ -47,5 +47,11 @@ public class ReplySubscribeRequest implements SubscribeRequest {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean isReply() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

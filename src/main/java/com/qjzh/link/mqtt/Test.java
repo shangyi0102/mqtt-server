@@ -16,7 +16,7 @@ public class Test {
 		MqttInitParams mqttConfig = new MqttInitParams(new String[]{"tcp://192.168.49.10:1883"}, "qjzh2020", "qjzh2020");
 		//initParams.setProductKey(name);
 		
-		INet mqttNet = new MqttNet(mqttConfig);
+		INet mqttNet = new MqttNet("client", mqttConfig);
 		mqttNet.init();
 		
 		String replyTopic = QJConstants.PROP_REPORT.replace(QJConstants.REPLACE_PRODUCTID, name).replace(QJConstants.REPLACE_DEVICEID, suffix);

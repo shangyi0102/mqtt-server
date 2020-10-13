@@ -9,5 +9,7 @@ public interface SubscribeRequest {
 	
 	public boolean isSubscribe();
 	
+	public boolean isReply();
+	
 	void check() throws IllegalStateException;
 }

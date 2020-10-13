@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.qjzh.link.mqtt.server.MqttInitParams;
-import com.qjzh.link.mqtt.server.MqttNet;
-import com.qjzh.link.mqtt.server.ThingsInitData;
+import com.qjzh.link.mqtt.server.PublishMqttNet;
+import com.qjzh.link.mqtt.server.SubscribeMqttNet;
+import com.qjzh.link.mqtt.server.ThingsDrivenChannel;
 
 /**
  * @DESC: MQTT 启动 配置类
@@ -41,22 +42,34 @@ public class MqttConfig {
 	public MqttInitParams mqttInitParams(){
 		MqttInitParams mqttConfig = new MqttInitParams(mqttProperties.getUrls(), 
 				mqttProperties.getUsername(), mqttProperties.getPassword());
-		mqttConfig.setClientMark("things");
 		mqttConfig.setTimeToWait(mqttProperties.getTimeToWait());
 		mqttConfig.setMaxInflight(mqttProperties.getMaxInflight());
 		return mqttConfig;
 	}
 	
-	@Bean
+	/*@Bean
 	public MqttNet mqttNet(MqttInitParams mqttInitParams) {
 		MqttNet mqttNet = new MqttNet(mqttInitParams);
 		mqttNet.init();
 		return mqttNet;
+	}*/
+	
+	
+	@Bean
+	public PublishMqttNet publishMqttNet(MqttInitParams mqttInitParams
+			, ThreadPoolTaskScheduler taskScheduler){
+		return new PublishMqttNet("publish", mqttInitParams, taskScheduler);
+	}
+	
+	/*@Bean
+	public SubscribeMqttNet subscribeMqttNet(MqttInitParams mqttInitParams
+			, ThreadPoolTaskScheduler taskScheduler){
+		return new SubscribeMqttNet("subscribe", mqttInitParams, taskScheduler);
 	}
 	
 	@Bean
-	public ThingsInitData thingsInitData(){
-		return new ThingsInitData("+", "+", "+", "+", mqttProperties.getQos());
-	}
+	public ThingsDrivenChannel thingsDrivenChannel(){
+		return new ThingsDrivenChannel("+", "+", "+", "+", mqttProperties.getQos());
+	}*/
 	
 }

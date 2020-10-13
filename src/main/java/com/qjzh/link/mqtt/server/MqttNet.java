@@ -61,6 +61,7 @@ public class MqttNet implements INet{
 	//mqtt初始化连接配置
 	private MqttInitParams mqttInitParams;
 	
+	private String clientId;
 	private IOnCallListener callListener;
 	
 	private IOnCallReplyListener callReplyListener;
@@ -71,11 +72,11 @@ public class MqttNet implements INet{
 	@Autowired
 	private ReplyMessageListener replyMessageListener;
 
-	public MqttNet(MqttInitParams initParams) {
+	public MqttNet(String clientId, MqttInitParams initParams) {
+		this.clientId = clientId;
 		this.mqttInitParams = initParams;
 	}
 	
-	//@PostConstruct
 	public void init() {
 		logger.debug("init");
 
@@ -133,7 +134,7 @@ public class MqttNet implements INet{
 	}
 
 	public void setRequestMessageListener(RequestMessageListener requestMessageListener) {
-		this.requestMessageListener = requestMessageListener;
+		//this.requestMessageListener = requestMessageListener;
 	}
 
 	public void setReplyMessageListener(ReplyMessageListener replyMessageListener) {
@@ -141,7 +142,7 @@ public class MqttNet implements INet{
 	}
 
 	public IMqttAsyncClient getClient() {
-		return (IMqttAsyncClient) this.mqttAsyncClient;
+		return this.mqttAsyncClient;
 	}
 
 	private void mqttClientConnect() {
@@ -149,9 +150,8 @@ public class MqttNet implements INet{
 		String timestamp = System.currentTimeMillis() + "";
 
 		String[] serverURIs = mqttInitParams.getServerURIs();
-		String clientMark = mqttInitParams.getClientMark();
 		
-		String mqttClientId = "clientId=" + clientMark + ",timestamp=" + timestamp + "|";
+		String mqttClientId = "clientId=" + this.clientId + ",timestamp=" + timestamp + "|";
 
 		this.timeToWait = mqttInitParams.getTimeToWait();
 		String username = mqttInitParams.getUsername();
@@ -239,40 +239,42 @@ public class MqttNet implements INet{
 
 	@Override
 	public void publish(PublishRequest publishRequest) {
-		MqttPublish publish = new MqttPublish(this, publishRequest, callListener);
-		publish.send();
+		/*MqttPublish publish = new MqttPublish(this, publishRequest, callListener);
+		publish.send();*/
 	}
 
 	@Override
 	public PublishResponse publishRpc(PublishRequest publishRequest) {
-		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, callListener);
-		return publishRpc.sendRpc();
+		/*MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, callListener);
+		return publishRpc.sendRpc();*/
+		return null;
 	}
 	
 	@Override
 	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout) {
-		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, timeout, callListener);
-		return publishRpc.sendRpc();
+		/*MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, timeout, callListener);
+		return publishRpc.sendRpc();*/
+		return null;
 	}
 
 	@Override
 	public void publishReply(PublishResponse publishResponse) {
-		MqttPublishReply publishReply = new MqttPublishReply(this, publishResponse, callReplyListener);
-		publishReply.send();
+		/*MqttPublishReply publishReply = new MqttPublishReply(this, publishResponse, callReplyListener);
+		publishReply.send();*/
 	}
 	
 	@Override
 	public void subscribe(SubscribeRequest subscribeRequest) {
-		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
+		/*MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
 				requestMessageListener, subscribeListener);
-		mqttSubscribe.receive();
+		mqttSubscribe.receive();*/
 	}
 	
 	@Override
 	public void subscribeReply(SubscribeRequest subscribeRequest) {
-		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
+		/*MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
 				replyMessageListener, subscribeListener);
-		mqttSubscribe.receive();
+		mqttSubscribe.receive();*/
 	}
 	
 	

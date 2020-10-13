@@ -29,8 +29,8 @@ import com.qjzh.tools.core.map.MapUtil;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 public class ProductDevCache {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductDevCache.class);

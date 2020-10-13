@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.qjzh.link.mqtt.base.ErrorCode;
+import com.qjzh.link.mqtt.base.IMqttNet;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.base.exception.MqttRpcException;
@@ -18,7 +19,7 @@ import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 import com.qjzh.link.mqtt.utils.MqttUtils;
 
 /**
- * @DESC: mqtt发送者
+ * @DESC: mqtt发布同步
  * @author LIU.ZHENXING
  * @date 2020年8月18日下午1:50:19
  * @version 1.0.0
@@ -43,12 +44,12 @@ public class MqttPublishRpc extends MqttPublish {
 	//等待开始时间
 	private long start;
 	
-	public MqttPublishRpc(MqttNet mqttNet, PublishRequest publishRequest,
+	public MqttPublishRpc(IMqttNet mqttNet, PublishRequest publishRequest,
 			IOnCallListener listener) {
 		this(mqttNet, publishRequest, DEFAULT_TIMEOUT, listener);
 	}
 	
-	public MqttPublishRpc(MqttNet mqttNet, PublishRequest publishRequest, 
+	public MqttPublishRpc(IMqttNet mqttNet, PublishRequest publishRequest, 
 			int timeout, IOnCallListener listener) {
 		super(mqttNet, publishRequest, listener);
 		this.timeout = timeout;
@@ -98,6 +99,7 @@ public class MqttPublishRpc extends MqttPublish {
 			publishResponse = new GeneralPublishResponse();
 			publishResponse.setStatus(ex.getCode());
 			publishResponse.setErrorMsg(ex.getMessage());
+		}finally {
 			MqttRpcExtractor.remove(matchId);
 		}
 		
@@ -134,7 +136,7 @@ public class MqttPublishRpc extends MqttPublish {
 		return (null != this.publishResponse);
 	}
 	
-	public static void received(PublishResponse publishResponse) {
+	public static void received(PublishResponse publishResponse) { 
 		String matchId = MqttUtils.getMatchId(publishResponse.getReplyTopic(), publishResponse.getMsgId());
 		MqttPublishRpc publishRpc = MqttRpcExtractor.remove(matchId);
 		if (publishRpc == null) {

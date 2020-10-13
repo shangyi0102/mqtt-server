@@ -1,35 +1,88 @@
 package com.qjzh.link.mqtt.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import com.qjzh.link.mqtt.base.INet;
+import com.qjzh.link.mqtt.base.QJConstants;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
-import com.qjzh.link.mqtt.server.request.ReplySubscribeRequest;
-import com.qjzh.link.mqtt.server.request.ReportSubscribeRequest;
+import com.qjzh.link.mqtt.server.request.GeneralSubscribeRequest;
 
-@Component
 public class ThingsDrivenChannel {
 
-	@Autowired
-	private INet mqttNet;
+	private int qos = 1;
+	//产品占位符
+	private String prodPlace = "+";
+	//设备占位符
+	private String devPlace = "+";
+	//事件占位符
+	private String eventPlace = "+";
+	//服务占位符
+	private String servicePlace = "+";
 	
 	@Autowired
-	private ThingsInitData thingsInitData;
+	private SubscribeMqttNet subscribeMqttNet;
+	
+	public ThingsDrivenChannel(String prodPlace, String devPlace, 
+			String eventPlace, String servicePlace, int qos){
+		this.prodPlace = prodPlace;
+		this.devPlace = devPlace;
+		this.eventPlace = eventPlace;
+		this.servicePlace = servicePlace;
+		this.qos = qos;
+	}
 	
 	@PostConstruct
 	public void init(){
-		List<SubscribeRequest> subscribeRequests = thingsInitData.getSubscribeRequest();
+		//初始化订阅请求数据
+		List<SubscribeRequest> subscribeRequests = initSubscribe();
 		for (SubscribeRequest subscribeRequest : subscribeRequests) {
-			if (subscribeRequest instanceof ReportSubscribeRequest) {
-				mqttNet.subscribe(subscribeRequest);
-			}else if(subscribeRequest instanceof ReplySubscribeRequest){
-				mqttNet.subscribeReply(subscribeRequest);
-			}
+			subscribeMqttNet.addSubscribeRequest(subscribeRequest);
 		}
 	}
+	
+	private List<SubscribeRequest> initSubscribe(){
+		
+		List<SubscribeRequest> subscribeRequests = new ArrayList<>();
+		
+		GeneralSubscribeRequest propReportReq = new GeneralSubscribeRequest();
+		propReportReq.setTopic(QJConstants.PROP_REPORT.replace(QJConstants.REPLACE_PRODUCTID, prodPlace)
+				.replace(QJConstants.REPLACE_DEVICEID, devPlace));
+		propReportReq.setQos(qos); 
+		
+		GeneralSubscribeRequest eventReportReq = new GeneralSubscribeRequest();
+		eventReportReq.setTopic(QJConstants.EVENT_REPORT.replace(QJConstants.REPLACE_PRODUCTID, prodPlace)
+				.replace(QJConstants.REPLACE_DEVICEID, devPlace).replace(QJConstants.REPLACE_EVENTID, eventPlace));
+		eventReportReq.setQos(qos);
+		
+		GeneralSubscribeRequest propSetReplyReq = new GeneralSubscribeRequest();
+		propSetReplyReq.setReply(true);
+		propSetReplyReq.setTopic(QJConstants.PROP_SET_REPLY.replace(QJConstants.REPLACE_PRODUCTID, prodPlace)
+				.replace(QJConstants.REPLACE_DEVICEID, devPlace));
+		propSetReplyReq.setQos(qos); 
+		
+		GeneralSubscribeRequest propReadReplyReq = new GeneralSubscribeRequest();
+		propSetReplyReq.setReply(true);
+		propReadReplyReq.setTopic(QJConstants.PROP_READ_REPLY.replace(QJConstants.REPLACE_PRODUCTID, prodPlace)
+				.replace(QJConstants.REPLACE_DEVICEID, devPlace));
+		propReadReplyReq.setQos(qos);
+		
+		GeneralSubscribeRequest serviceInvokeReplyReq = new GeneralSubscribeRequest();
+		propSetReplyReq.setReply(true);
+		serviceInvokeReplyReq.setTopic(QJConstants.SERVICE_INVOKE_REPLY.replace(QJConstants.REPLACE_PRODUCTID, prodPlace)
+				.replace(QJConstants.REPLACE_DEVICEID, devPlace).replace(QJConstants.REPLACE_SERVICEID, servicePlace));
+		serviceInvokeReplyReq.setQos(qos);
+		
+		subscribeRequests.add(propReportReq);
+		subscribeRequests.add(eventReportReq);
+		subscribeRequests.add(propSetReplyReq);
+		subscribeRequests.add(propReadReplyReq);
+		subscribeRequests.add(serviceInvokeReplyReq);
+		
+		return subscribeRequests;
+	}
+	
 }
