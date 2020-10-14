@@ -15,8 +15,7 @@ import com.qjzh.link.mqtt.base.IMqttNet;
 import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.exception.BadNetworkException;
-import com.qjzh.link.mqtt.base.exception.MqttThrowable;
-import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 
 /**
@@ -60,28 +59,22 @@ public class MqttPublish extends AbsMqttDriven implements IMqttActionListener {
 		this.callListener = callListener;
 	}
 
-	public void send() {
+	public void send() throws MqttInvokeException {
 		if (null == this.publishRequest) {
-			logger.error("bad parameters: null");
-			return;
+			onFailure(null, new IllegalArgumentException("bad parameters: publishRequest"));
+			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "bad parameters");
 		}
 		
 		if (!(getMqttNet() instanceof AbsMqttNet)) {
-			logger.error("bad parameter: need AbsMqttNet");
-			return;
+			onFailure(null, new IllegalArgumentException("bad parameter: need AbsMqttNet"));
+			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "bad parameters");
 		}
 		
 		AbsMqttNet mqttNet = (AbsMqttNet)getMqttNet();
 		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
-		if (null == mqttAsyncClient) {
-			logger.error("MqttNet::getClient() return null");
-			return;
-		}
-		
-		if (mqttNet.getConnectState() != ConnectState.CONNECTED) {
-			logger.error("mqtt not connected!");
+		if (null == mqttAsyncClient || !mqttAsyncClient.isConnected()) {
 			onFailure(null, new BadNetworkException());
-			return;
+			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "mqtt server not connected!");
 		}
 		
 		Object objPayload = publishRequest.getPayload();
@@ -89,9 +82,8 @@ public class MqttPublish extends AbsMqttDriven implements IMqttActionListener {
 		int qos = publishRequest.getQos();
 
 		if (StringUtils.isEmpty(topic) || objPayload == null) {
-			logger.error("bad parameters: topic or payload is empty");
-			onFailure(null, new NullPointerException("topic or payload is empty"));
-			return;
+			onFailure(null, new NullPointerException("bad parameters: topic or payload is empty"));
+			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "bad parameters");
 		}
 		try {
 			byte[] payload = null;
@@ -108,9 +100,10 @@ public class MqttPublish extends AbsMqttDriven implements IMqttActionListener {
 
 			mqttAsyncClient.publish(topic, message, null, this).waitForCompletion(mqttNet.getTimeToWait());
 			
-		} catch (Exception e) {
-			logger.error("send publish error! ", e);
-			onFailure(null, new MqttThrowable(e.getMessage()));
+		} catch (Exception ex) {
+			logger.error("send publish error! ", ex);
+			onFailure(null, ex);
+			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, ex.getMessage());
 		}
 	}
 	

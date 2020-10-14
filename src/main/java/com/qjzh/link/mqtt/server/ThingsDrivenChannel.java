@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.qjzh.link.mqtt.base.QJConstants;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
+import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
 import com.qjzh.link.mqtt.server.request.GeneralSubscribeRequest;
 
 public class ThingsDrivenChannel {
@@ -22,7 +23,6 @@ public class ThingsDrivenChannel {
 	private String eventPlace = "+";
 	//服务占位符
 	private String servicePlace = "+";
-	
 	@Autowired
 	private SubscribeMqttNet subscribeMqttNet;
 	
@@ -40,7 +40,11 @@ public class ThingsDrivenChannel {
 		//初始化订阅请求数据
 		List<SubscribeRequest> subscribeRequests = initSubscribe();
 		for (SubscribeRequest subscribeRequest : subscribeRequests) {
-			subscribeMqttNet.addSubscribeRequest(subscribeRequest);
+			try {
+				subscribeMqttNet.addSubscribeRequest(subscribeRequest);
+			} catch (MqttInvokeException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

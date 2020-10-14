@@ -12,10 +12,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClientPersistence;
@@ -28,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 
 import com.qjzh.link.mqtt.base.IMqttNet;
+import com.qjzh.link.mqtt.server.MqttInitParams.Will;
 import com.qjzh.link.mqtt.server.channel.ConnectState;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 
@@ -97,7 +96,7 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			return;
 		}
 		
-		logger.debug("connect.....");
+		logger.debug("connecting.....");
 		if (connectOptions == null) {
 			initConnectOptions();
 		}
@@ -115,26 +114,19 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 		this.mqttAsyncClient.setCallback(this);
 		try {
 			this.connectState = ConnectState.CONNECTING;
-			this.mqttAsyncClient.connect(this.connectOptions, null, new IMqttActionListener() {
-				public void onSuccess(IMqttToken asyncActionToken) {
-					int[] qos = asyncActionToken.getGrantedQos();
-					logger.info("connect success.....{}", qos);
-					AbsMqttNet.this.connectState = ConnectState.CONNECTED;
-				}
-
-				public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-					logger.info("connect failure, exce = {}", exception.toString());
-					AbsMqttNet.this.connectState = ConnectState.CONNECTFAIL;
-				}
-			}).waitForCompletion(timeToWait);
-			
+			this.mqttAsyncClient.connect(this.connectOptions, null, null).waitForCompletion(timeToWait);
 			logger.debug("mqtt client connect url:{}", String.join(",", mqttInitParams.getServerURIs()));
 			
-		} catch (Exception ex) {
+		} catch (MqttException ex) {
 			this.connectState = ConnectState.CONNECTFAIL;
-			throw new MqttException(ex);
+			throw ex;
 		}finally {
 			this.connLock.unlock();
+		}
+		
+		if (mqttAsyncClient.isConnected()) {
+			logger.info("connect success.....");
+			connectState = ConnectState.CONNECTED;
 		}
 		
 	}
@@ -187,7 +179,6 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 				logger.error("connectionLost error! ", ex);
 			}
 		}
-		
 		this.mqttAsyncClient = null;
 		//定时重试连接
 		scheduleReconnect();
@@ -205,8 +196,12 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 
 	@Override
 	public void connectComplete(boolean reconnect, String serverURI) {
-		logger.info("connect complete ----> " + serverURI);
+		if (mqttAsyncClient.isConnected()) {
+			connectSuccess();
+		}
 	}
+	
+	public abstract void connectSuccess();
 	
 	private void scheduleReconnect(){
 		reconnectFuture = taskScheduler.scheduleAtFixedRate(() -> {
@@ -222,7 +217,7 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			} catch (MqttException ex) {
 				logger.error("exception while connecting.... exce = {}", ex.toString());
 			}
-		}, new Date(System.currentTimeMillis() + this.recoveryInterval), this.recoveryInterval);
+		}, new Date(System.currentTimeMillis() + 3000), this.recoveryInterval);
 	}
 	
 	private void initConnectOptions() {
@@ -253,9 +248,16 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			}
 		}
 		
-		this.connectOptions.setAutomaticReconnect(true);
+		this.connectOptions.setAutomaticReconnect(false);
 		this.connectOptions.setCleanSession(mqttInitParams.getCleanSession());
 		this.connectOptions.setKeepAliveInterval(mqttInitParams.getKeepAliveInterval());
+		
+		if (mqttInitParams.getWill() != null) {
+			Will will = mqttInitParams.getWill();
+			this.connectOptions.setWill(will.getTopic(), will.getPayload(), will.getQos(), will.isRetained());
+		}
+		
+		
 	}
 
 	private SSLSocketFactory createSSLSocket() throws Exception {

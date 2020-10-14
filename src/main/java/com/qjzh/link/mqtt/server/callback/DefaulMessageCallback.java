@@ -35,7 +35,7 @@ public class DefaulMessageCallback implements MqttCallbackExtended {
 	@Override
 	public void connectionLost(Throwable cause) {
 		// TODO Auto-generated method stub
-		
+		logger.info("connect Lost ----> ");
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class DefaulMessageCallback implements MqttCallbackExtended {
 
 	@Override
 	public void connectComplete(boolean reconnect, String serverURI) {
-		logger.info("connect complete ----> " + serverURI);
+		logger.info("connect complete ---->{},{} ", reconnect, serverURI);
 		
 	}
 	

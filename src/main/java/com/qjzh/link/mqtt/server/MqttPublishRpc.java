@@ -12,6 +12,7 @@ import com.qjzh.link.mqtt.base.ErrorCode;
 import com.qjzh.link.mqtt.base.IMqttNet;
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
+import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
 import com.qjzh.link.mqtt.base.exception.MqttRpcException;
 import com.qjzh.link.mqtt.base.exception.MqttTimeoutException;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
@@ -67,7 +68,7 @@ public class MqttPublishRpc extends MqttPublish {
 		return (System.currentTimeMillis() - start > timeout);
 	}
 	
-	public PublishResponse sendRpc() {
+	public PublishResponse sendRpc() throws MqttInvokeException {
 		super.send();
 		return this.get(timeout);
 	}
@@ -87,7 +88,7 @@ public class MqttPublishRpc extends MqttPublish {
 					}
 				}
 			} catch (InterruptedException e) {
-				throw new MqttRpcException(ErrorCode.C_HANDLE, "rpc lock Interrupted");
+				throw new MqttRpcException(ErrorCode.RPC_CLIENT_INTERRUPT, "rpc lock Interrupted");
 			} finally {
 				lock.unlock();
 			}
@@ -110,7 +111,7 @@ public class MqttPublishRpc extends MqttPublish {
 		lock.lock();
 		try {
 			publishResponse = new GeneralPublishResponse();
-			publishResponse.setStatus(ErrorCode.S_RPC_CANCEL);
+			publishResponse.setStatus(ErrorCode.RPC_SERVER_CANCEL);
 			publishResponse.setErrorMsg("waiting is cancel of server!");
 			
 			done.signal();

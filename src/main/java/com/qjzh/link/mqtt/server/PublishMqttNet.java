@@ -4,6 +4,7 @@ import org.springframework.scheduling.TaskScheduler;
 
 import com.qjzh.link.mqtt.base.PublishRequest;
 import com.qjzh.link.mqtt.base.PublishResponse;
+import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
 import com.qjzh.link.mqtt.server.channel.IOnCallReplyListener;
 
@@ -31,24 +32,29 @@ public class PublishMqttNet extends AbsMqttNet {
 		this.callReplyListener = callReplyListener;
 	}
 	
-	public void publish(PublishRequest publishRequest) {
+	public void publish(PublishRequest publishRequest) throws MqttInvokeException{
 		MqttPublish publish = new MqttPublish(this, publishRequest, callListener);
 		publish.send();
 	}
 
-	public PublishResponse publishRpc(PublishRequest publishRequest) {
+	public PublishResponse publishRpc(PublishRequest publishRequest) throws MqttInvokeException {
 		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, callListener);
 		return publishRpc.sendRpc();
 	}
 	
-	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout) {
+	public PublishResponse publishRpc(PublishRequest publishRequest, int timeout) throws MqttInvokeException {
 		MqttPublishRpc publishRpc = new MqttPublishRpc(this, publishRequest, timeout, callListener);
 		return publishRpc.sendRpc();
 	}
 
-	public void publishReply(PublishResponse publishResponse) {
+	public void publishReply(PublishResponse publishResponse) throws MqttInvokeException {
 		MqttPublishReply publishReply = new MqttPublishReply(this, publishResponse, callReplyListener);
 		publishReply.send();
+	}
+
+	@Override
+	public void connectSuccess() {
+		
 	}
 	
 	

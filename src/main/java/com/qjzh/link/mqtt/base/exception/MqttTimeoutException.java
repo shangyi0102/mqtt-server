@@ -24,6 +24,6 @@ public class MqttTimeoutException extends MqttRpcException {
 	private static final long serialVersionUID = -4541083227944111553L;
 
 	public MqttTimeoutException(String message) {
-		super(ErrorCode.C_TIMEOUT, message);
+		super(ErrorCode.RPC_CLIENT_TIMEOUT, message);
 	}
 }

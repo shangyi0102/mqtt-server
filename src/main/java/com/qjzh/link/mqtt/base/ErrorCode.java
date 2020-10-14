@@ -16,20 +16,21 @@ public class ErrorCode {
 	
 	//成功
 	public static final int SUCCESS_OK = 0;
-	//接收超时
-	public static final int C_TIMEOUT = 101;
-	//处理
-	public static final int C_HANDLE = 102;
-	//主动取消
-	public static final int S_RPC_CANCEL = 202;
+	//同步-调用超时
+	public static final int RPC_CLIENT_TIMEOUT = 101;
+	//同步-调用处理错误
+	public static final int RPC_CLIENT_HANDLE = 102;
+	//同步-线程中断
+	public static final int RPC_CLIENT_INTERRUPT = 103;
+	//同步-调用主动取消
+	public static final int RPC_SERVER_CANCEL = 202;
 
 	public static final int UNKNOWN = 201;
-	
+	//网络异常
 	public static final int INVOKE_NET = 4101;
-	
+	//服务器异常
 	public static final int INVOKE_SERVER = 4102;
 	
-	public static final int SERVER_BUSINESS = 4103;
 	
 	
 }

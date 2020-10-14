@@ -61,7 +61,7 @@ public class MqttConfig {
 		return new PublishMqttNet("publish", mqttInitParams, taskScheduler);
 	}
 	
-	/*@Bean
+	@Bean
 	public SubscribeMqttNet subscribeMqttNet(MqttInitParams mqttInitParams
 			, ThreadPoolTaskScheduler taskScheduler){
 		return new SubscribeMqttNet("subscribe", mqttInitParams, taskScheduler);
@@ -70,6 +70,6 @@ public class MqttConfig {
 	@Bean
 	public ThingsDrivenChannel thingsDrivenChannel(){
 		return new ThingsDrivenChannel("+", "+", "+", "+", mqttProperties.getQos());
-	}*/
+	}
 	
 }
