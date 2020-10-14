@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.server;
+package com.qjzh.link.mqtt.server.interim;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -16,7 +16,7 @@ import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.base.exception.BadNetworkException;
 import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
-import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.server.AbsMqttNet;
 import com.qjzh.link.mqtt.server.channel.IOnCallReplyListener;
 
 /**

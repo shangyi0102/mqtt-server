@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.server;
+package com.qjzh.link.mqtt.server.interim;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
