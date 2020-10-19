@@ -1,6 +1,8 @@
 package com.qjzh.link.mqtt.base;
 
-public abstract class PublishResponse{
+import com.qjzh.link.mqtt.model.ResponseData;
+
+public class PublishResponse{
 	
 	//OK=正常返回data
 	public static final Integer OK = ErrorCode.SUCCESS_OK;
@@ -9,7 +11,7 @@ public abstract class PublishResponse{
 	//request生成的messageId
 	private String msgId;
 	
-	private Object data;
+	private ResponseData data;
 	
 	private int qos = 0;
 	
@@ -25,11 +27,11 @@ public abstract class PublishResponse{
 		this.msgId = msgId;
 	}
 
-	public Object getData() {
+	public ResponseData getData() {
 		return data;
 	}
 
-	public void setData(Object data) {
+	public void setData(ResponseData data) {
 		this.data = data;
 	}
 

@@ -16,7 +16,6 @@ import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
 import com.qjzh.link.mqtt.base.exception.MqttRpcException;
 import com.qjzh.link.mqtt.base.exception.MqttTimeoutException;
 import com.qjzh.link.mqtt.server.channel.IOnCallListener;
-import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 import com.qjzh.link.mqtt.utils.MqttUtils;
 
 /**
@@ -97,7 +96,7 @@ public class MqttPublishRpc extends MqttPublish {
 				throw new MqttTimeoutException("Waiting client-side response timeout");
 			}
 		} catch (MqttRpcException ex) {
-			publishResponse = new GeneralPublishResponse();
+			publishResponse = new PublishResponse();
 			publishResponse.setStatus(ex.getCode());
 			publishResponse.setErrorMsg(ex.getMessage());
 		}finally {
@@ -110,7 +109,7 @@ public class MqttPublishRpc extends MqttPublish {
 	public PublishResponse cancel() {
 		lock.lock();
 		try {
-			publishResponse = new GeneralPublishResponse();
+			publishResponse = new PublishResponse();
 			publishResponse.setStatus(ErrorCode.RPC_SERVER_CANCEL);
 			publishResponse.setErrorMsg("waiting is cancel of server!");
 			

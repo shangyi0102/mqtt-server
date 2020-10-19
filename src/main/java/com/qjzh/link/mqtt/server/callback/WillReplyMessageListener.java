@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.server.channel.callback;
+package com.qjzh.link.mqtt.server.callback;
 
 import java.util.Map;
 
@@ -8,37 +8,36 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.qjzh.link.mqtt.cache.ProductDevCache;
-import com.qjzh.link.mqtt.model.ResponseModel;
+import com.qjzh.link.mqtt.base.PublishResponse;
+import com.qjzh.link.mqtt.model.ResponseData;
 import com.qjzh.link.mqtt.model.device.Device;
-import com.qjzh.link.mqtt.model.product.Product;
 import com.qjzh.link.mqtt.model.product.PService;
+import com.qjzh.link.mqtt.model.product.Product;
+import com.qjzh.link.mqtt.server.ProductDeviceMemory;
 import com.qjzh.link.mqtt.server.channel.IReplyResponseHandler;
 import com.qjzh.link.mqtt.server.interim.MqttPublishRpc;
 import com.qjzh.link.mqtt.server.interim.MqttRpcExtractor;
-import com.qjzh.link.mqtt.server.response.GeneralPublishResponse;
 import com.qjzh.link.mqtt.utils.MqttUtils;
 import com.qjzh.tools.core.map.MapUtil;
 
 /**
- * @DESC: mqtt Reply回调监听
+ * @DESC: mqtt 设备遗愿Reply回调监听
  * @author LIU.ZHENXING
  * @date 2020年8月18日下午3:26:10
  * @version 1.0.0
  * @copyright www.7g.com
  */
-@Component
-public class ReplyMessageListener implements IMqttMessageListener {
+
+public class WillReplyMessageListener implements IMqttMessageListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	private IReplyResponseHandler replyResponseHandler;
 	
-	public ReplyMessageListener(IReplyResponseHandler replyResponseHandler) {
+	public WillReplyMessageListener(IReplyResponseHandler replyResponseHandler) {
 		this.replyResponseHandler = replyResponseHandler;
 	}
 	
@@ -53,7 +52,7 @@ public class ReplyMessageListener implements IMqttMessageListener {
 			return;
 		}
 		
-		ResponseModel response = JSON.parseObject(payload, ResponseModel.class);
+		ResponseData response = JSON.parseObject(payload, ResponseData.class);
 		String msgId = response.getMsgId();
 		Map<String, Object> mapData = response.getData();
 		if (StringUtils.isEmpty(msgId) || MapUtil.isEmpty(mapData)) {
@@ -71,12 +70,10 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		//服务标识符
 		String serviceId = split[4];
 		
-		if (validateDevice(productId, deviceId, channel, serviceId)) {
-			
-		};
+		//校验产品，设备，服务标识符 是否合法
+		if (!validateDevice(productId, deviceId, channel, serviceId)) return ;
 		
-		
-		GeneralPublishResponse publishResponse = new GeneralPublishResponse();
+		PublishResponse publishResponse = new PublishResponse();
 		publishResponse.setReplyTopic(topic);
 		publishResponse.setQos(qos);
 		publishResponse.setMsgId(msgId);
@@ -97,29 +94,30 @@ public class ReplyMessageListener implements IMqttMessageListener {
 		/*
 		 * 1. 验证设备是否存在
 		 */
-		Device device = ProductDevCache.getDevice(productId, deviceId);
+		Device device = ProductDeviceMemory.getDevice(productId, deviceId);
 		if (device == null) {
 			return false;
 		}
-		/*
-		 * 2. 验证产品是否存在
-		 */
-		Product product = ProductDevCache.getProduct(device.getTenantIdent(), 
-				device.getAppIdent(), productId);
-		if (product == null) {
-			return false;
-		}
+		
 		//如果不为服务应答则直接返回
 		if (!channel.equals("service")) {
 			return true;
 		}
+		/*
+		 * 2. 获取产品信息
+		 */
+		Product product = ProductDeviceMemory.getProduct(device.getTenantIdent(), 
+				device.getAppIdent(), productId);
+		if (product == null) {
+			return false;
+		}
 		
-		PService pService = product.getStruct().getServiceByCode(serviceId);
+		PService pService = product.getStruct().getServiceByIdent(serviceId);
 		
+		if (pService == null) {
+			return false;
+		}
 		return true;
 	} 
-	
-	
-	
 }
 

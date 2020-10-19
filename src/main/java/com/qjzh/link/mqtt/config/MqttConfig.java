@@ -44,6 +44,8 @@ public class MqttConfig {
 				mqttProperties.getUsername(), mqttProperties.getPassword());
 		mqttConfig.setTimeToWait(mqttProperties.getTimeToWait());
 		mqttConfig.setMaxInflight(mqttProperties.getMaxInflight());
+		//Will will = new Will("/platform/lastwill", payload, 1, true);
+		//mqttConfig.setWill(will);
 		return mqttConfig;
 	}
 	

@@ -2,13 +2,14 @@ package com.qjzh.link.mqtt.server.channel;
 
 import org.springframework.stereotype.Component;
 
-import com.qjzh.link.mqtt.base.PublishRequest;
+import com.alibaba.fastjson.JSONObject;
+import com.qjzh.link.mqtt.model.PushRequest;
 
 @Component
 public class MqttPushRequestHandler implements IPushRequestHandler{
 
 	@Override
-	public Object onCommand(PublishRequest publishRequest) throws Exception {
+	public JSONObject onCommand(PushRequest pushRequest) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

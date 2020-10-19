@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class RequestModel {
+public class RequestData {
 
 	private String msgId;
 

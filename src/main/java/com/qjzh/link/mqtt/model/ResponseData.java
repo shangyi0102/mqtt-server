@@ -1,8 +1,7 @@
 package com.qjzh.link.mqtt.model;
 
-import java.util.Map;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @DESC: 数据响应结构
@@ -11,17 +10,17 @@ import com.alibaba.fastjson.JSON;
  * @version 1.0.0
  * @copyright www.7g.com
  */
-public class ResponseModel {
+public class ResponseData {
 
 	private String msgId;
 
-	private Long timestamp;
+	private Long timestamp = System.currentTimeMillis();
 
-	private Integer code;
+	private Integer code = 0;
 
-	private String message;
+	private String message = "";
 
-	private Map<String, Object> data;
+	private JSONObject data;
 
 	public String getMsgId() {
 		return msgId;
@@ -55,11 +54,11 @@ public class ResponseModel {
 		this.message = message;
 	}
 
-	public Map<String, Object> getData() {
+	public JSONObject getData() {
 		return data;
 	}
 
-	public void setData(Map<String, Object> data) {
+	public void setData(JSONObject data) {
 		this.data = data;
 	}
 

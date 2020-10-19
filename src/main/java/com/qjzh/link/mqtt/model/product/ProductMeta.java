@@ -217,7 +217,7 @@ public class ProductMeta {
 		return null;
 	}
 	
-	public PService getServiceByCode(String serviceIdent){
+	public PService getServiceByIdent(String serviceIdent){
 		
 		if (!CollectionUtil.isEmpty(pServices)) {
 			for (PService pService : pServices) {
@@ -228,5 +228,18 @@ public class ProductMeta {
 		}
 		return null;
 	} 
+	
+	public PEvent getEventByIdent(String eventIdent){
+		if (!CollectionUtil.isEmpty(pEvents)) {
+			for (PEvent objEvent : pEvents) {
+				if (eventIdent.equals(objEvent.getEventIdentifier())) {
+					return objEvent;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 	
 }

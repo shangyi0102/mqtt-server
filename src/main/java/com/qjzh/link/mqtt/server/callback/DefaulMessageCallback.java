@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.server.channel.callback;
+package com.qjzh.link.mqtt.server.callback;
 
 import java.util.HashMap;
 import java.util.Map;

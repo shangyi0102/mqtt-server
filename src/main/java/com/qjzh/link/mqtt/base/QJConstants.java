@@ -28,6 +28,8 @@ public class QJConstants {
   
   public static String SERVICE_INVOKE_REPLY = "/device/{productId}/{deviceId}/service/{serviceId}/invoke_reply";
   
+  public static String LAST_WILL = "/device/{productId}/{deviceId}/lastwill";
+  
   
   public static final String TENANT_LIST_KEY = "TENANT_LIST";
   
@@ -80,7 +82,7 @@ public class QJConstants {
 	}
 	
 	/**
-	 * DESC: 生成产品关键路径
+	 * DESC: 生成设备关键路径
 	 * @param tenantCode
 	 * @param appCode
 	 * @param prodCode

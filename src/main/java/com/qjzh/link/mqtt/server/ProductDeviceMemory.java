@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.cache;
+package com.qjzh.link.mqtt.server;
 
 
 import java.util.HashSet;
@@ -29,11 +29,11 @@ import com.qjzh.tools.core.map.MapUtil;
  * @version 1.0.0
  * @copyright www.7gwifi.com
  */
-//@Component
-//@EnableScheduling
-public class ProductDevCache {
+@Component
+@EnableScheduling
+public class ProductDeviceMemory {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ProductDevCache.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductDeviceMemory.class);
 	
 	public static final Map<String, Product> PRODUCT_CACHES = new ConcurrentHashMap<>(64);
 	
