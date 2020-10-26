@@ -26,12 +26,6 @@ public class DefaulMessageCallback implements MqttCallbackExtended {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private INet mqttNet;
-	
-	public DefaulMessageCallback(INet mqttNet){
-		this.mqttNet = mqttNet;
-	}
-	
 	@Override
 	public void connectionLost(Throwable cause) {
 		// TODO Auto-generated method stub

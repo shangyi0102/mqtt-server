@@ -12,8 +12,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClientPersistence;
@@ -59,7 +61,7 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 	//定时任务
 	private TaskScheduler taskScheduler;
 	// 连接状态
-	private volatile ConnectState connectState = ConnectState.DISCONNECTED;
+	private ConnectState connectState = ConnectState.DISCONNECTED;
 	
 	private volatile ScheduledFuture<?> reconnectFuture;
 
@@ -114,9 +116,19 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 		this.mqttAsyncClient.setCallback(this);
 		try {
 			this.connectState = ConnectState.CONNECTING;
-			this.mqttAsyncClient.connect(this.connectOptions, null, null).waitForCompletion(timeToWait);
-			logger.debug("mqtt client connect url:{}", String.join(",", mqttInitParams.getServerURIs()));
+			this.mqttAsyncClient.connect(this.connectOptions, null, new IMqttActionListener() {
+				public void onSuccess(IMqttToken asyncActionToken) {
+					logger.info(" ======> connect success");
+					AbsMqttNet.this.connectState = ConnectState.CONNECTED;
+				}
+
+				public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+					logger.error(" ======> connect failure!, exce = " + exception.toString());
+					AbsMqttNet.this.connectState = ConnectState.CONNECTFAIL;
+				}
+			}).waitForCompletion(timeToWait);
 			
+			logger.debug("mqtt client connect url:{}", String.join(",", mqttInitParams.getServerURIs()));
 		} catch (MqttException ex) {
 			this.connectState = ConnectState.CONNECTFAIL;
 			throw ex;
@@ -124,10 +136,6 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			this.connLock.unlock();
 		}
 		
-		if (mqttAsyncClient.isConnected()) {
-			logger.info("connect success.....");
-			connectState = ConnectState.CONNECTED;
-		}
 		
 	}
 
@@ -166,23 +174,7 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 		}
 	}
 	
-	@Override
-	public void connectionLost(Throwable cause) {
-		logger.info("connection lost.....");
-		this.connectState = ConnectState.DISCONNECTED;
-		if (this.mqttAsyncClient != null) {
-			try {
-				this.mqttAsyncClient.setCallback(null);
-				this.mqttAsyncClient.close();
-			}
-			catch (MqttException ex) {
-				logger.error("connectionLost error! ", ex);
-			}
-		}
-		this.mqttAsyncClient = null;
-		//定时重试连接
-		scheduleReconnect();
-	}
+	
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -196,12 +188,28 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 
 	@Override
 	public void connectComplete(boolean reconnect, String serverURI) {
-		if (mqttAsyncClient.isConnected()) {
-			connectSuccess();
-		}
+		logger.info("connect complete ---->{},{} ", reconnect, serverURI);
+		this.connectState = ConnectState.CONNECTED;
 	}
 	
-	public abstract void connectSuccess();
+	@Override
+	public void connectionLost(Throwable cause) {
+		logger.info("connection lost.....");
+		this.connectState = ConnectState.DISCONNECTED;
+		/*this.connectState = ConnectState.DISCONNECTED;
+		if (this.mqttAsyncClient != null) {
+			try {
+				this.mqttAsyncClient.setCallback(null);
+				this.mqttAsyncClient.close();
+			}
+			catch (MqttException ex) {
+				logger.error("connectionLost error! ", ex);
+			}
+		}
+		this.mqttAsyncClient = null;
+		//定时重试连接
+		scheduleReconnect();*/
+	}
 	
 	private void scheduleReconnect(){
 		reconnectFuture = taskScheduler.scheduleAtFixedRate(() -> {
@@ -248,7 +256,7 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			}
 		}
 		
-		this.connectOptions.setAutomaticReconnect(false);
+		this.connectOptions.setAutomaticReconnect(true);
 		this.connectOptions.setCleanSession(mqttInitParams.getCleanSession());
 		this.connectOptions.setKeepAliveInterval(mqttInitParams.getKeepAliveInterval());
 		
@@ -256,7 +264,6 @@ public abstract class AbsMqttNet implements IMqttNet, MqttCallbackExtended {
 			Will will = mqttInitParams.getWill();
 			this.connectOptions.setWill(will.getTopic(), will.getPayload(), will.getQos(), will.isRetained());
 		}
-		
 		
 	}
 

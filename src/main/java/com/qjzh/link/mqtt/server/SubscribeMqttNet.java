@@ -62,8 +62,12 @@ public class SubscribeMqttNet extends AbsMqttNet {
 		this.replyMessageListener = replyMessageListener;
 	}
 
+	
 	@Override
-	public void connectSuccess() {
+	public void connectComplete(boolean reconnect, String serverURI) {
+		// TODO Auto-generated method stub
+		super.connectComplete(reconnect, serverURI);
+		
 		for (SubscribeRequest subscribeRequest : subscribeRequests) {
 			try {
 				if (subscribeRequest.isReply()) {
@@ -75,9 +79,9 @@ public class SubscribeMqttNet extends AbsMqttNet {
 				logger.error("订阅主题失败!", ex);
 			}
 		}
+		
 	}
-	
-	
+
 	private void subscribe(SubscribeRequest subscribeRequest) throws MqttInvokeException {
 		MqttSubscribe mqttSubscribe = new MqttSubscribe(this, subscribeRequest, 
 				requestMessageListener, subscribeListener);

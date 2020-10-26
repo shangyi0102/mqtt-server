@@ -15,7 +15,6 @@ import com.qjzh.link.mqtt.base.MqttError;
 import com.qjzh.link.mqtt.base.SubscribeRequest;
 import com.qjzh.link.mqtt.base.exception.BadNetworkException;
 import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
-import com.qjzh.link.mqtt.server.AbsMqttNet;
 import com.qjzh.link.mqtt.server.channel.IOnSubscribeListener;
 
 /**
@@ -61,18 +60,11 @@ public class MqttSubscribe extends AbsMqttDriven implements IMqttActionListener 
 			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "bad parameters");
 		}
 		
-		if (!(getMqttNet() instanceof AbsMqttNet)) {
-			onFailure(null, new IllegalArgumentException("bad parameter: need MqttNet"));
-			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "bad parameters");
-		}
-		
-		AbsMqttNet mqttNet = (AbsMqttNet)getMqttNet();
 		IMqttAsyncClient mqttAsyncClient = mqttNet.getClient();
 		if (null == mqttAsyncClient || !mqttAsyncClient.isConnected()) {
 			onFailure(null, new BadNetworkException());
 			throw new MqttInvokeException(ErrorCode.RPC_CLIENT_HANDLE, "mqtt server not connected!");
 		}
-		
 		
 		String topic = subscribeRequest.getTopic();
 		int qos = subscribeRequest.getQos();

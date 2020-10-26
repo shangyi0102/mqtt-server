@@ -54,11 +54,5 @@ public class PublishMqttNet extends AbsMqttNet {
 		MqttPublishReply publishReply = new MqttPublishReply(this, publishResponse, callReplyListener);
 		publishReply.send();
 	}
-
-	@Override
-	public void connectSuccess() {
-		
-	}
-	
 	
 }

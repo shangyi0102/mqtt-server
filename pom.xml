@@ -126,7 +126,7 @@
 		<dependency>
 			<groupId>org.eclipse.paho</groupId>
 			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -162,59 +162,20 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/qjzh-tools-core-1.0.0.jar</systemPath>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-        <profile>
-            <!--不同环境Profile的唯一id-->
-            <id>dev</id>
-            <properties>
-                <!--profiles.active是自定义的字段，自定义字段可以有多个-->
-                <profiles.active>dev</profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profiles.active>prod</profiles.active>
-            </properties>
-            <!--activation用来指定激活方式，可以根据jdk环境，环境变量，文件的存在或缺失-->
-            <activation>
-                <!--这个字段表示默认激活-->
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profiles.active>test</profiles.active>
-            </properties>
-        </profile>
-    </profiles>
 		
 	<build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-                    <exclude>dev/*</exclude>
-                    <exclude>prod/*</exclude>
-                    <exclude>test/*</exclude>
-                </excludes>
-			</resource>
-		
-			<resource>
-				<directory>src/main/resources/${profiles.active}</directory>
-				<filtering>true</filtering>
 			</resource>
 		</resources>
-	
 	
 	</build>	
 

@@ -176,6 +176,9 @@ public class ProductDeviceMemory {
 	 * @return
 	 */
 	private Map<String, Object> getRedisMapByKey(String key){
+		
+		tenantRedisTemplate.isExposeConnection();
+		
 		HashOperations<String, String, Object> hashOprs = 
 				tenantRedisTemplate.opsForHash();
 		//获取所有map信息

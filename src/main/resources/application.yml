@@ -14,7 +14,7 @@ spring:
    
 mqtt:
   urls:
-  - tcp://192.168.49.10:1883
+  - tcp://192.168.49.91:1883
   username: qjzh2020
   password: qjzh2020
   qos: 1

@@ -13,8 +13,10 @@ import com.qjzh.link.mqtt.server.channel.ConnectState;
  */
 public interface IMqttNet {
 	
-	IMqttAsyncClient getClient();
+	public IMqttAsyncClient getClient();
 	
-	ConnectState getConnectState();
+	public int getTimeToWait();
+	
+	public ConnectState getConnectState();
 	
 }

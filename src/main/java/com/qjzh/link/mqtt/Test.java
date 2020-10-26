@@ -1,10 +1,14 @@
 package com.qjzh.link.mqtt;
 
+import java.util.Date;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.qjzh.link.mqtt.server.MqttInitParams;
+import com.qjzh.link.mqtt.server.PublishMqttNet;
 
 public class Test {
 
@@ -31,20 +35,14 @@ public class Test {
 		threadPoolTask.setThreadNamePrefix("task-scheduler-");
 		threadPoolTask.setRejectedExecutionHandler(new CallerRunsPolicy());
 		
-		/*ScheduledFuture<?> scheduledFuture = threadPoolTask.scheduleAtFixedRate(() -> {
-			System.out.println(System.currentTimeMillis());
-		}, new Date(), 1000);
-		
-		System.out.println(scheduledFuture);*/
-		
-		/*PublishMqttNet publishMqttNet = new PublishMqttNet(mqttConfig, threadPoolTask);
+		PublishMqttNet publishMqttNet = new PublishMqttNet(mqttConfig, threadPoolTask);
 		
 		try {
 			publishMqttNet.connect();
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		/*MqttNet mqttNet = (MqttNet)net;
 		

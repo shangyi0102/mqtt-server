@@ -182,7 +182,7 @@ public class MqttNet implements INet{
 		this.connOpts.setPassword(password.toCharArray());
 		this.connOpts.setKeepAliveInterval(mqttInitParams.getKeepAliveInterval());
 
-		this.defaulCallback = new DefaulMessageCallback(this);
+		this.defaulCallback = new DefaulMessageCallback();
 		this.mqttAsyncClient.setCallback(this.defaulCallback);
 		try {
 			this.connectState = ConnectState.CONNECTING;
