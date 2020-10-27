@@ -61,27 +61,35 @@ public class RequestMessageListener implements IMqttMessageListener {
 		
 		String [] split = topic.split("/");
 		//产品标识符
-		String prodIdent = split[2];
+		String productId = split[2];
 		//设备标识符
-		String devSn = split[3];
-		//通道
-		String channel = split[4];
+		String deviceId = split[3];
 		//事件标识符
-		String eventIdent = split[5];
+		String eventIdent = null;
+		if (split[4].equals("event")) eventIdent = split[5];
 		
-		//校验产品，设备，服务标识符 是否合法
-		if (!validateDevice(prodIdent, devSn, channel, eventIdent)) return;
+		Device device = ProductDeviceMemory.getDevice(productId, deviceId);
+		if (device == null) {
+			logger.error("this device information does not exist!");
+			return ;
+		}
+		//校验产品事件标识符 是否合法
+		if (!validateEventIdent(productId, eventIdent, device)) {
+			logger.error("product event identifier is invalid!");
+			return ;
+		}
 		
-		PushRequest pushRequest = new PushRequest("", "", prodIdent, devSn);
-		pushRequest.setRequestData(requestData);
+		PushRequest pushRequest = new PushRequest(device.getTenantIdent(), device.getAppIdent(), productId, deviceId);
+		pushRequest.setRequestData(requestData); 
 		
 		ResponseData responseData = new ResponseData();
 		responseData.setMsgId(msgId);
 		
 		try {
 			//请求调用处理
-			JSONObject payloadData = pushRequestHandler.onCommand(pushRequest);
-			responseData.setData(payloadData);
+			JSONObject jsonData = pushRequestHandler.onCommand(pushRequest);
+			if (jsonData != null) responseData.setData(jsonData);
+			
 		} catch (Exception ex) {
 			logger.error("device ---> server, 处理设备上报消息异常!", ex);
 			responseData.setCode(500);
@@ -101,37 +109,28 @@ public class RequestMessageListener implements IMqttMessageListener {
 		
 	}
 	
-	
-	private boolean validateDevice(String productId, String deviceId, 
-			String channel, String eventId) {
+	/**
+	 * DESC: 校验产品事件标识符是否合法
+	 * @param productId
+	 * @param eventId
+	 * @param device
+	 * @return true=合法 ;false=非法
+	 */
+	private boolean validateEventIdent(String productId, String eventId, Device device){
+		if (StringUtils.isEmpty(eventId)) return true;
 		/*
-		 * 1. 验证设备是否存在
+		 * 1. 校验产品事件标识符
 		 */
-		Device device = ProductDeviceMemory.getDevice(productId, deviceId);
-		if (device == null) {
-			return false;
-		}
-		
-		/*
-		 * 2. 获取产品信息
-		 */
+		//获取产品信息
 		Product product = ProductDeviceMemory.getProduct(device.getTenantIdent(), 
 				device.getAppIdent(), productId);
-		if (product == null) {
-			return false;
-		}
-		//如果不为事件应答则直接返回
-		if (!channel.equals("event")) {
-			return true;
-		}
+		
+		if (product == null) return false;
 		
 		PEvent pEvent = product.getStruct().getEventByIdent(eventId);
 		
-		if (pEvent == null) {
-			return false;
-		}
-		return true;
-	} 
+		return (pEvent != null);
+	}
 	
 }
 

@@ -2,7 +2,7 @@ package com.qjzh.link.mqtt.base;
 
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 
-import com.qjzh.link.mqtt.server.channel.ConnectState;
+import com.qjzh.link.mqtt.model.device.ConnectState;
 
 /**
  * @DESC: 连接接口

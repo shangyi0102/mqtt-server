@@ -8,7 +8,7 @@ public class SubscribeRequest {
 	private int qos = 0;
 	// 是否取消订阅
 	private boolean isSubscribe = true;
-
+	//是否应答请求
 	private boolean isReply = false;
 
 	public String getTopic() {

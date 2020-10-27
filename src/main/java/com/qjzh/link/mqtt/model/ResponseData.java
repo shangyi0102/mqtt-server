@@ -20,7 +20,7 @@ public class ResponseData {
 
 	private String message = "";
 
-	private JSONObject data;
+	private JSONObject data = new JSONObject();
 
 	public String getMsgId() {
 		return msgId;
