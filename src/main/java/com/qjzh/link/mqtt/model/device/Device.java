@@ -1,7 +1,7 @@
 package com.qjzh.link.mqtt.model.device;
 
 /**
- * @DESC: 
+ * @DESC: 设备信息
  * @author LIU.ZHENXING
  * @date 2020年8月31日上午11:22:05
  * @version 1.0.0

@@ -1,4 +1,4 @@
-package com.qjzh.link.mqtt.model.device;
+package com.qjzh.link.mqtt.base;
 
 public enum ConnectState {
 	CONNECTED,

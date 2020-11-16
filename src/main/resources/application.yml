@@ -10,7 +10,17 @@ spring:
     port: 6379 
     #密码
     password: 5vwJ4AghYNH&W4RWejfieo69C2ZPp%r@
-    ssl: false   
+    ssl: false
+  #rabbitmq配置  
+  rabbitmq:
+    #IP地址
+    host: 192.168.49.91
+    #端口
+    port: 5672
+    #用户名
+    username: admin
+    #密码
+    password: admin    
    
 mqtt:
   urls:

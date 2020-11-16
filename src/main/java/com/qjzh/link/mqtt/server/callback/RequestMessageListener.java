@@ -13,10 +13,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qjzh.link.mqtt.base.PublishResponse;
 import com.qjzh.link.mqtt.base.exception.MqttInvokeException;
-import com.qjzh.link.mqtt.model.PushRequest;
 import com.qjzh.link.mqtt.model.RequestData;
 import com.qjzh.link.mqtt.model.ResponseData;
 import com.qjzh.link.mqtt.model.device.Device;
+import com.qjzh.link.mqtt.model.device.DeviceEvent;
+import com.qjzh.link.mqtt.model.device.DeviceSubject;
 import com.qjzh.link.mqtt.model.product.PEvent;
 import com.qjzh.link.mqtt.model.product.Product;
 import com.qjzh.link.mqtt.server.ProductDeviceMemory;
@@ -54,8 +55,9 @@ public class RequestMessageListener implements IMqttMessageListener {
 		RequestData requestData = JSON.parseObject(payload, RequestData.class);
 		//获取请求消息ID
 		String msgId = requestData.getMsgId();
-		if (StringUtils.isEmpty(msgId)) {
-			logger.error("request msgId is null!!!");
+		JSONObject jsonParams = requestData.getParams();
+		if (StringUtils.isEmpty(msgId) || null == jsonParams || jsonParams.isEmpty()) {
+			logger.error("request msgId or params is null!!!");
 			return;
 		}
 		
@@ -70,24 +72,43 @@ public class RequestMessageListener implements IMqttMessageListener {
 		
 		Device device = ProductDeviceMemory.getDevice(productId, deviceId);
 		if (device == null) {
-			logger.error("this device information does not exist!");
-			return ;
-		}
-		//校验产品事件标识符 是否合法
-		if (!validateEventIdent(productId, eventIdent, device)) {
-			logger.error("product event identifier is invalid!");
+			logger.error("device information does not exist! prod=[{}],device=[{}]", productId, deviceId);
 			return ;
 		}
 		
-		PushRequest pushRequest = new PushRequest(device.getTenantIdent(), device.getAppIdent(), productId, deviceId);
-		pushRequest.setRequestData(requestData); 
+		DeviceSubject devSubject = new DeviceSubject();
+		devSubject.setSn(deviceId);
+		devSubject.setRecvTime(System.currentTimeMillis());
+		
+		//判断产品属性结构信息是否合法
+		if (split[4].equals("property")) {
+			if (!validateProps(productId, jsonParams, device)) {
+				logger.error("Illegal product properties! prod=[{}], event=[{}]", productId);
+				return ;
+			}
+			devSubject.setData(jsonParams);
+		}else{
+			//判断产品事件标识符和事件结构是否合法
+			if (!validateEvent(productId, eventIdent, jsonParams, device)) {
+				logger.error("Illegal product event! prod=[{}], event=[{}]", productId, eventIdent);
+				return ;
+			}
+			DeviceEvent devEvent = new DeviceEvent();
+			devEvent.setEventIdent(eventIdent);
+			devEvent.setEventData(jsonParams);
+			
+			devSubject.setEvents(devEvent);
+		}
+		
+		PushRequest pushRequest = new PushRequest(device.getTenantIdent(), device.getAppIdent(), productId);
+		pushRequest.setDevSubject(devSubject);
 		
 		ResponseData responseData = new ResponseData();
 		responseData.setMsgId(msgId);
 		
 		try {
 			//请求调用处理
-			JSONObject jsonData = pushRequestHandler.onCommand(pushRequest);
+			JSONObject jsonData = pushRequestHandler.onCommand(pushRequest); 
 			if (jsonData != null) responseData.setData(jsonData);
 			
 		} catch (Exception ex) {
@@ -116,8 +137,8 @@ public class RequestMessageListener implements IMqttMessageListener {
 	 * @param device
 	 * @return true=合法 ;false=非法
 	 */
-	private boolean validateEventIdent(String productId, String eventId, Device device){
-		if (StringUtils.isEmpty(eventId)) return true;
+	private boolean validateEvent(String productId, String eventId, 
+			JSONObject eventData, Device device){
 		/*
 		 * 1. 校验产品事件标识符
 		 */
@@ -130,6 +151,26 @@ public class RequestMessageListener implements IMqttMessageListener {
 		PEvent pEvent = product.getStruct().getEventByIdent(eventId);
 		
 		return (pEvent != null);
+	}
+	
+	/**
+	 * DESC: 校验产品属性结构是否合法
+	 * @param productId
+	 * @param eventId
+	 * @param device
+	 * @return true=合法 ;false=非法
+	 */
+	private boolean validateProps(String productId, JSONObject propData, Device device){
+		/*
+		 * 1. 校验产品事件标识符
+		 */
+		//获取产品信息
+		Product product = ProductDeviceMemory.getProduct(device.getTenantIdent(), 
+				device.getAppIdent(), productId);
+		
+		if (product == null) return false;
+		
+		return true;
 	}
 	
 }

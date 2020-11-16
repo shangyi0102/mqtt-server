@@ -1,4 +1,6 @@
-package com.qjzh.link.mqtt.model;
+package com.qjzh.link.mqtt.server.callback;
+
+import com.qjzh.link.mqtt.model.device.DeviceSubject;
 
 /**
  * @DESC: 设备上报请求数据
@@ -15,15 +17,12 @@ public class PushRequest {
 	
 	private String prodIdent;
 	
-	private String devSn;
+	private DeviceSubject devSubject;
 	
-	private RequestData requestData;
-	
-	public PushRequest(String tenandIdent, String appIdent, String prodIdent, String devSn) {
+	public PushRequest(String tenandIdent, String appIdent, String prodIdent) {
 		this.tenandIdent = tenandIdent;
 		this.appIdent = appIdent;
 		this.prodIdent = prodIdent;
-		this.devSn = devSn;
 	}
 
 	public String getTenandIdent() {
@@ -50,20 +49,12 @@ public class PushRequest {
 		this.prodIdent = prodIdent;
 	}
 
-	public String getDevSn() {
-		return devSn;
+	public DeviceSubject getDevSubject() {
+		return devSubject;
 	}
 
-	public void setDevSn(String devSn) {
-		this.devSn = devSn;
-	}
-
-	public RequestData getRequestData() {
-		return requestData;
-	}
-
-	public void setRequestData(RequestData requestData) {
-		this.requestData = requestData;
+	public void setDevSubject(DeviceSubject devSubject) {
+		this.devSubject = devSubject;
 	}
 	
 }

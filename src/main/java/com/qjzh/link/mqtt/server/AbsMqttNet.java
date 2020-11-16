@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 
+import com.qjzh.link.mqtt.base.ConnectState;
 import com.qjzh.link.mqtt.base.IMqttNet;
-import com.qjzh.link.mqtt.model.device.ConnectState;
 import com.qjzh.link.mqtt.server.MqttInitParams.Will;
 import com.qjzh.link.mqtt.utils.MqttTrustManager;
 

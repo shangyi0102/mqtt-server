@@ -1,6 +1,7 @@
 package com.qjzh.link.mqtt.model;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @DESC: 数据请求结构
@@ -15,7 +16,7 @@ public class RequestData {
 
 	private Long timestamp;
 
-	private Object params;
+	private JSONObject params;
 
 	public String getMsgId() {
 		return msgId;
@@ -33,11 +34,11 @@ public class RequestData {
 		this.timestamp = timestamp;
 	}
 
-	public Object getParams() {
+	public JSONObject getParams() {
 		return params;
 	}
 
-	public void setParams(Object params) {
+	public void setParams(JSONObject params) {
 		this.params = params;
 	}
 
